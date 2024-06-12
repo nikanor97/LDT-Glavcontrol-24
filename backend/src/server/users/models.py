@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from pydantic import BaseModel
 
 from src.db.users.models import UserBase
@@ -21,3 +23,7 @@ class Token(BaseModel):
 class TokenWithExpiryData(Token):
     access_expires_at: int  # n_seconds to expiry
     refresh_expires_at: int  # n_seconds to expiry
+
+
+class UserDelete(BaseModel):
+    user_id: UUID

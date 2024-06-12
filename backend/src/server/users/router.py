@@ -62,3 +62,27 @@ class UsersRouter:
             methods=[METHOD.GET],
             dependencies=[Depends(Auth(main_db_manager))],
         )
+
+        self.router.add_api_route(
+            path="/user",
+            endpoint=self._users_endpoints.edit_user,
+            response_model=UnifiedResponse[User],
+            methods=[METHOD.PUT],
+            dependencies=[Depends(Auth(main_db_manager))],
+        )
+
+        self.router.add_api_route(
+            path="/user",
+            endpoint=self._users_endpoints.delete_user,
+            response_model=UnifiedResponse[User],
+            methods=[METHOD.DELETE],
+            dependencies=[Depends(Auth(main_db_manager))],
+        )
+
+        self.router.add_api_route(
+            path="/user",
+            endpoint=self._users_endpoints.get_user,
+            response_model=UnifiedResponse[User],
+            methods=[METHOD.GET],
+            dependencies=[Depends(Auth(main_db_manager))],
+        )

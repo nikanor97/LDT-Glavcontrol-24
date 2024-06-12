@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Annotated
+from uuid import UUID
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
@@ -23,7 +24,7 @@ from src.server.users.models import (
     Token,
     TokenWithExpiryData,
     UserCreate,
-    UserLogin,
+    UserLogin, UserDelete,
 )
 
 
@@ -178,3 +179,21 @@ class UsersEndpoints:
         async with self._main_db_manager.users.make_autobegin_session() as session:
             users = await self._main_db_manager.users.get_all_users(session)
         return UnifiedResponse(data=users)
+
+    async def edit_user(
+        self,
+        data: User
+    ) -> UnifiedResponse[User]:
+        pass
+
+    async def delete_user(
+        self,
+        data: UserDelete
+    ) -> UnifiedResponse[User]:
+        pass
+
+    async def get_user(
+        self,
+        user_id: UUID
+    ) -> UnifiedResponse[User]:
+        pass

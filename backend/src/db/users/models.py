@@ -22,6 +22,9 @@ UsersSQLModel.metadata = UsersBase.metadata  # type: ignore
 class UserBase(UsersSQLModel):
     name: str = Field(nullable=False, index=True)
     email: str = Field(nullable=False, index=True, unique=True)
+    permission_read_stat: bool = Field(nullable=False, default=False)
+    permission_create_order: bool = Field(nullable=False, default=False)
+    is_deleted: bool = Field(nullable=False, default=False)
 
 
 class User(UserBase, TimeStampWithIdMixin, table=True):

@@ -7,7 +7,11 @@ from fastapi import APIRouter, Depends
 
 from common.rabbitmq.publisher import Publisher
 from src.db.main_db_manager import MainDbManager
-from src.db.projects.models import Company, Procurement, Forecast, Application, Remains
+from src.db.projects.models.application import Application
+from src.db.projects.models.company import Company
+from src.db.projects.models.forecast import Forecast
+from src.db.projects.models.procurement import Procurement
+from src.db.projects.models.remains import Remains
 from src.server.auth import Auth
 from src.server.common import METHOD, UnifiedResponse, UnifiedResponsePaginated
 from src.server.projects.endpoints import ProjectsEndpoints

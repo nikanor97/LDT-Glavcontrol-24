@@ -16,7 +16,7 @@ class CreateUserRequest(BaseModel):
     permission_create_order: bool
     is_deleted: bool
     password: str
-    role: str
+    role: str = "user"
 
 
 class CreateUser(UsersEndpoints):

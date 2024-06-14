@@ -16,6 +16,7 @@ class CreateUserRequest(BaseModel):
     permission_create_order: bool
     is_deleted: bool
     password: str
+    role: str
 
 
 class CreateUser(UsersEndpoints):
@@ -25,7 +26,7 @@ class CreateUser(UsersEndpoints):
     ) -> UnifiedResponse[User]:
         async with self._main_db_manager.users.make_autobegin_session() as session:
             try:
-                user = UserBase(name=user_create.name, email=user_create.email)
+                user = UserBase(**user_create.dict())
                 new_user = await UserDbManager.create_user(session, user)
 
                 await UserPasswordDbManager.create_user_password(

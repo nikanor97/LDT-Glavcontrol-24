@@ -19,8 +19,8 @@ class ContractsStats(BaseModel):
 
 
 class ProcurementsStats(BaseModel):
-    amount_contracts: int
-    latest_contract_date: date
+    amount_contracts: int | None
+    latest_contract_date: date | None
     contracts_stats: list[ContractsStats]
 
 
@@ -42,12 +42,12 @@ class ProcurementDbManager(DbManager):
 
         start_date, end_date = calculate_quarter_dates(year, quarter)
         stmt = select(Procurement).where(
-            (Procurement.contract_date >= start_date) & (Procurement.contract_date <= end_date)
+            (Procurement.procurement_date >= start_date) & (Procurement.procurement_date <= end_date)
         )
         procurements = (await session.execute(stmt)).scalars().all()
 
-        amount_contracts = sum([p.price for p in procurements])
-        latest_contract_date = max(procurement.contract_date for procurement in procurements)
+        amount_contracts = sum([p.price for p in procurements]) if len(procurements) > 0 else None
+        latest_contract_date = max([procurement.contract_date for procurement in procurements]) if len(procurements) > 0 else None
         contracts_stats = []
         for month in range(1, 13):
             contracts_stats.append(

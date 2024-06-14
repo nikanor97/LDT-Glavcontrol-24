@@ -16,8 +16,8 @@ class ContractsStats(BaseModel):
 
 
 class GetProcurementsStatsResponse(BaseModel):
-    amount_contracts: int
-    latest_contract_date: date
+    amount_contracts: int | None
+    latest_contract_date: date | None
     contracts_stats: list[ContractsStats]
 
 
@@ -26,8 +26,8 @@ class GetProcurementsStats(ProjectsEndpoints):
     async def call(
         self,
         token: Annotated[str, Depends(oauth2_scheme)],
-        year: int | None = None,
-        quarter: int | None = None,
+        year: int | None,
+        quarter: int | None,
     ) -> UnifiedResponse[GetProcurementsStatsResponse]:
         async with self._main_db_manager.projects.make_autobegin_session() as session:
             procurements_stats = await ProcurementDbManager.get_procurements_stats(

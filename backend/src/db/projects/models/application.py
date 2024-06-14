@@ -28,4 +28,4 @@ class ApplicationBase(ProjectsDataSQLModel):
 
 
 class Application(ApplicationBase, TimeStampWithIdMixin, table=True):
-    __tablename__ = "appications"
+    __tablename__ = "applications"

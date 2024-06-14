@@ -49,6 +49,7 @@ def upgrade_users() -> None:
         sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=False),
         sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column('role', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column('permission_read_stat', sa.Boolean(), nullable=False),
         sa.Column('permission_create_order', sa.Boolean(), nullable=False),
         sa.Column('is_deleted', sa.Boolean(), nullable=False),

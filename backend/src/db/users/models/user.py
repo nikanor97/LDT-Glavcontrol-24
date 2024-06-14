@@ -12,6 +12,7 @@ class UserBase(UsersSQLModel):
     permission_read_stat: bool = Field(nullable=False, default=False)
     permission_create_order: bool = Field(nullable=False, default=False)
     is_deleted: bool = Field(nullable=False, default=False)
+    role: str = Field(nullable=False, default="user")  # admin | user
 
 
 class User(UserBase, TimeStampWithIdMixin, table=True):

@@ -17,9 +17,10 @@ class RemainsDbManager(DbManager):
         start_date: date,
         end_date: date,
     ) -> list[Remains]:
-        stmt = select(Remains).where(
-            (Remains.date >= start_date) & (Remains.date <= end_date)
-        )
+        # stmt = select(Remains).where(
+        #     (Remains.date >= start_date) & (Remains.date <= end_date)
+        # )
+        stmt = select(Remains)
         remains = (await session.execute(stmt)).scalars().all()
         return remains
 

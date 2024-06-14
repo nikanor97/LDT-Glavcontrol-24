@@ -96,7 +96,7 @@ class ProjectsRouter:
         self.router.add_api_route(
             path="/applications",
             endpoint=GetApplications(**params).call,
-            response_model=UnifiedResponsePaginated[list[Procurement]],
+            response_model=UnifiedResponsePaginated[list[Application]],
             methods=[METHOD.GET],
             dependencies=[Depends(Auth(main_db_manager))],
         )

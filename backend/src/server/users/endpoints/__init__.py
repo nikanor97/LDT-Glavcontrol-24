@@ -8,5 +8,5 @@ class UsersEndpoints:
     ) -> None:
         self._main_db_manager = main_db_manager
 
-    def call(self, *args, **kwargs):
+    async def call(self, *args, **kwargs):
         raise NotImplementedError

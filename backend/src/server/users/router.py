@@ -7,7 +7,7 @@ from src.server.common import METHOD, UnifiedResponse
 from src.server.users.endpoints import UsersEndpoints
 from src.server.users.endpoints.create_user import CreateUser
 from src.server.users.endpoints.delete_user import DeleteUser
-from src.server.users.endpoints.edit_user import EditUser
+from src.server.users.endpoints.update_user import UpdateUser
 from src.server.users.endpoints.get_all_users import GetAllUsers
 from src.server.users.endpoints.get_current_user import GetCurrentUser
 from src.server.users.endpoints.get_user import GetUser
@@ -75,7 +75,7 @@ class UsersRouter:
 
         self.router.add_api_route(
             path="/user",
-            endpoint=EditUser(**params).call,
+            endpoint=UpdateUser(**params).call,
             response_model=UnifiedResponse[User],
             methods=[METHOD.PUT],
             dependencies=[Depends(Auth(main_db_manager))],

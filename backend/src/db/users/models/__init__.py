@@ -9,6 +9,7 @@ user_sqlmodel_T = TypeVar("user_sqlmodel_T", bound="UsersSQLModel")
 
 
 class UsersSQLModel(CommonSqlModel):
+    # __metadata__ = UsersBase.metadata  # type: ignore
     ...
 
 

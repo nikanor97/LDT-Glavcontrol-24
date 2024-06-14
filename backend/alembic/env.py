@@ -34,6 +34,7 @@ target_metadata = {
     "projects": ProjectsDataSQLModel.metadata,
     "users": UsersSQLModel.metadata,
 }
+print(target_metadata)
 
 db_names = list(target_metadata.keys())
 

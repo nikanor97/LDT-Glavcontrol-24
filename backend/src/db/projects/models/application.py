@@ -1,5 +1,6 @@
 from datetime import date
 from decimal import Decimal
+from uuid import UUID
 
 from sqlmodel import Field
 
@@ -21,6 +22,9 @@ class ApplicationBase(ProjectsDataSQLModel):
     spgz_end_id: str | None = Field(nullable=True)
     amount: Decimal | None = Field(nullable=True)
     unit_of_measurement: str | None = Field(nullable=True)
+
+    author_id: UUID | None = Field(nullable=True)
+    status: str | None = Field(nullable=False)  # draft | ready  # TODO: add enum
 
 
 class Application(ApplicationBase, TimeStampWithIdMixin, table=True):

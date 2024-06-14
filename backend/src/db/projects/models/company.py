@@ -12,7 +12,7 @@ class CompanyBase(ProjectsDataSQLModel):
     region: str = Field(nullable=False)
     inn: str = Field(nullable=False)
     ogrn: str = Field(nullable=False)
-    owner_id: UUID = Field(nullable=False)
+    director: str = Field(nullable=False)
     foundation_date: date = Field(nullable=False)
 
 

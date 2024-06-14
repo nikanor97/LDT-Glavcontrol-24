@@ -64,7 +64,7 @@ def make_server_app(
 
     routers_list: list[RouterProtocol] = [
         UsersRouter(main_db_manager=main_db_manager),
-        # ProjectsRouter(main_db_manager=main_db_manager, publisher=publisher),
+        ProjectsRouter(main_db_manager=main_db_manager, publisher=publisher),
     ]
     for router in routers_list:
         app.include_router(router.router)

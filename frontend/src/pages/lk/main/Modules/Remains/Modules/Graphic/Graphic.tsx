@@ -26,7 +26,6 @@ const Graphic = () => {
                 <XAxis dataKey="name" />
                 <YAxis 
                     tickFormatter={(value) => {
-                        console.log(value);
                         return value;
                     }}
                 />

@@ -1,0 +1,9 @@
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    & > a {
+        display: flex;
+    }
+    margin-bottom: 16px;
+}

@@ -1,0 +1,22 @@
+
+.wrapper {
+    display: flex;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 17px;
+    color: #101828;
+    &:hover {
+        color: inherit;
+        background: #f0f0f0;
+    }
+    &.active {
+        background: #FEF3F2;
+        color: #B42318;
+    }
+}
+
+.icon {
+    display: flex;
+    font-size: 24px;
+    margin-right: 12px;
+}

@@ -26,12 +26,14 @@ class GetForcastResponse(BaseModel):
 class GetForecast(ProjectsEndpoints):
 
     async def call(
-        self,  # TODO: добавить год и квартал
+        self,
+        quarter: int | None = None,
+        year: int | None = None,
         offset: int = 0,
         limit: int = 10,
     ) -> UnifiedResponsePaginated[list[Forecast]]:
         async with self._main_db_manager.projects.make_autobegin_session() as session:
-            forecast = await ForecastDbManager.get_forecast(session, offset, limit)
+            forecast = await ForecastDbManager.get_forecast(session, quarter, year, offset, limit)
 
             res: list[GetForcastResponse] = []
             for idx, forc in enumerate(forecast.objects):
@@ -51,4 +53,4 @@ class GetForecast(ProjectsEndpoints):
                     items=res,
                     pagination=Pagination(offset=offset, limit=limit, count=forecast.count),
                 )
-            )  # TODO: присобачить продукты
+            )

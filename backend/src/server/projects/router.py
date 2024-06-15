@@ -193,7 +193,6 @@ class ProjectsRouter:
             dependencies=[Depends(Auth(main_db_manager))],
         )
 
-        # TODO: СДЕЛАТЬ МЕТОД
         self.router.add_api_route(
             path="/application",
             endpoint=UpdateApplicationWithProducts(**params).call,
@@ -201,6 +200,8 @@ class ProjectsRouter:
             methods=[METHOD.PUT],
             dependencies=[Depends(Auth(main_db_manager))],
         )
+
+        # TODO: Добавить ручку создания заявок по списку id прогнозов. возвращать список ids созданных заявок
 
         # self.router.add_api_route(
         #     path="/companies",

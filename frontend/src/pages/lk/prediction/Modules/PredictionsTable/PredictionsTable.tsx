@@ -24,6 +24,12 @@ const PredictionTable = () => {
                 scroll={{
                     x: '100%'
                 }}
+                rowSelection={{
+                    preserveSelectedRowKeys: true,
+                    onChange: () => {
+                        
+                    }
+                }}
                 rowKey={(record) => record.product_id}
                 columns={[
                     {

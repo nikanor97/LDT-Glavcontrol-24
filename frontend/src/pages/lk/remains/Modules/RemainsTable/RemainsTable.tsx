@@ -33,24 +33,24 @@ const RemainsTable = () => {
                             columns={[
                                 {
                                     title: 'ЦМО',
-                                    dataIndex: 'id',
+                                    dataIndex: 'cmo',
                                     width: 180,
                                     fixed: 'left'
                                 },
                                 {
                                     title: 'КОЦ',
-                                    dataIndex: 'id',
+                                    dataIndex: 'koc',
                                     width: 240,
                                 },
                                 {
                                     title: 'Количество',
-                                    dataIndex: 'id',
+                                    dataIndex: 'number',
                                     width: 208,
 
                                 },
                                 {
                                     title: 'Показатели',
-                                    dataIndex: 'id',
+                                    dataIndex: 'indicator',
                                     width: 164,
 
                                 },
@@ -59,7 +59,7 @@ const RemainsTable = () => {
                                     children: [
                                         {
                                             title: 'Дебет',
-                                            dataIndex: 'id',
+                                            dataIndex: 'saldo_begin_debet',
                                             width: 260
                                         }
                                     ]
@@ -70,12 +70,12 @@ const RemainsTable = () => {
                                     children: [
                                         {
                                             title: 'Дебет',
-                                            dataIndex: 'id',
+                                            dataIndex: 'saldo_period_debet',
                                             width: 170
                                         },
                                         {
                                             title: 'Кредит',
-                                            dataIndex: 'id',
+                                            dataIndex: 'saldo_period_credit',
                                             width: 170
                                         }
                                     ]
@@ -86,7 +86,7 @@ const RemainsTable = () => {
                                     children: [
                                         {
                                             title: 'Дебет',
-                                            dataIndex: 'id',
+                                            dataIndex: 'saldo_end_debet',
                                             width: 260
                                         },
                                     ]

@@ -8,6 +8,7 @@ import {useProcurements} from '@/Hooks/Procurements/useProcurements';
 import {usePrivateStore} from '../../Store/Store';
 import { getPageByOffset } from '@/Utils/Pagination/getPageByOffset';
 import { getOffsetByPage } from '@/Utils/Pagination/getOffsetByPage';
+import dayjs from 'dayjs';
 
 const OrdersTable = () => {
     const [sticked, setSticked] = useState(false);
@@ -32,36 +33,43 @@ const OrdersTable = () => {
                             columns={[
                                 {
                                     title: 'ID СПГЗ',
-                                    dataIndex: 'id',
+                                    dataIndex: 'spgz_id',
                                     width: 180,
-                                    fixed: 'left'
                                 },
                                 {
                                     title: 'Наименование СПГЗ',
-                                    dataIndex: 'id',
+                                    dataIndex: 'spgz_name',
                                     width: 240,
+                                    fixed: 'left'
                                 },
                                 {
                                     title: 'Дата заключения',
-                                    dataIndex: 'id',
+                                    dataIndex: 'procurement_date',
                                     width: 208,
+                                    render: (value) => {
+                                        return dayjs(value, {format: 'YYYY-MM-DD'}).format('DD.MM.YYYY')
+                                    }
 
                                 },
                                 {
                                     title: 'Цена ГК, руб.',
-                                    dataIndex: 'id',
+                                    dataIndex: 'price',
                                     width: 164,
+                                    render: (value) => {
+                                        if (typeof value !== 'number') return '-'
+                                        return Math.floor(value);
+                                    }
 
                                 },
                                 {
                                     title: 'Способ определения поставщика',
-                                    dataIndex: 'id',
+                                    dataIndex: 'way_to_define_supplier',
                                     width: 320,
 
                                 },
                                 {
                                     title: 'Основание заключения контракта',
-                                    dataIndex: 'id',
+                                    dataIndex: 'contract_basis',
                                     width: 384,
 
                                 },

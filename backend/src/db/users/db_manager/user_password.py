@@ -17,5 +17,5 @@ class UserPasswordDbManager(DbManager):
         hashed_password = get_password_hash(password)
         user_password = UserPassword(hashed_password=hashed_password, user_id=user_id)
         session.add(user_password)
-        await session.commit()
+        # await session.commit()
         return True

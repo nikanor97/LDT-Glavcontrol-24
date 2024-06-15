@@ -37,3 +37,12 @@ class ForecastDbManager(DbManager):
         stmt = select(Forecast).where(col(Forecast.id).in_(ids))
         forecast = (await session.execute(stmt)).scalars().all()
         return forecast
+
+    @staticmethod
+    async def create_forecast(
+        session: AsyncSession,
+        forecast: Forecast,
+    ) -> Forecast:
+        forecast = Forecast(**forecast.dict())
+        session.add(forecast)
+        return forecast

@@ -38,6 +38,7 @@ ujson = "^5.7.0"
 #torch = "^2.0.1"
 #plotly = "^5.14.1"
 openpyxl = "^3.1.2"
+faker = "^25.8.0"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^3.3.1"

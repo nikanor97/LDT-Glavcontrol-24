@@ -37,7 +37,7 @@ from src.server.projects.models import ProcurementsStats, RemainsStats
 
 class ProjectsRouter:
     def __init__(self, main_db_manager: MainDbManager, publisher: Publisher):
-        self._projects_endpoints = ProjectsEndpoints(main_db_manager, publisher)
+        # self._projects_endpoints = ProjectsEndpoints(main_db_manager, publisher)
         params = {"main_db_manager": main_db_manager, "publisher": publisher}
 
         self.router = APIRouter(

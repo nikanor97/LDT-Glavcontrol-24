@@ -47,12 +47,12 @@ class ProcurementDbManager(DbManager):
         procurements = (await session.execute(stmt)).scalars().all()
 
         amount_contracts = sum([p.price for p in procurements]) if len(procurements) > 0 else None
-        latest_contract_date = max([procurement.contract_date for procurement in procurements]) if len(procurements) > 0 else None
+        latest_contract_date = max([procurement.procurement_date for procurement in procurements]) if len(procurements) > 0 else None
         contracts_stats = []
         for month in range(1, 13):
             contracts_stats.append(
                 ContractsStats(
-                    amount_contracts=len([procurement for procurement in procurements if procurement.contract_date.month == month]),
+                    amount_contracts=len([procurement for procurement in procurements if procurement.procurement_date.month == month]),
                     contracts_date=date(year=year, month=month, day=1)
                 )
             )
@@ -87,6 +87,6 @@ class ProcurementDbManager(DbManager):
         session: AsyncSession,
         procurements: list[Procurement]
     ) -> list[Procurement]:
-        for procurement in procurements:
-            session.add(procurement)
+        procurements = [Procurement(**procurement.dict()) for procurement in procurements]
+        session.add_all(procurements)
         return procurements

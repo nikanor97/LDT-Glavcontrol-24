@@ -7,7 +7,7 @@ from src.db.projects.models import ProjectsDataSQLModel
 
 
 class UserCompanyBase(ProjectsDataSQLModel):
-    user_id: UUID | None = Field(nullable=False, foreign_key="users.id")
+    user_id: UUID | None = Field(nullable=False)
     company_id: UUID | None = Field(nullable=False, foreign_key="companies.id")
 
 

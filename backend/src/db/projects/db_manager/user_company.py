@@ -11,6 +11,7 @@ class UserCompanyDbManager(DbManager):
         session: AsyncSession,
         user_company: UserCompany
     ) -> UserCompany:
+        user_company = UserCompany(**user_company.dict())
         session.add(user_company)
         return user_company
 

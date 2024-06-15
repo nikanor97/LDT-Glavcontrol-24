@@ -1,0 +1,27 @@
+
+
+.table {
+    :global {
+        .ant-table-thead {
+            tr {
+                th {
+                    background: #fff;
+                }
+            }
+        }
+        .ant-table {
+            &:not(.ant-table-bordered) {
+                .ant-table-container {
+                    .ant-table-header {
+                        padding: 0 24px;
+                        padding-top: 8px;
+                    }
+                    .ant-table-body {
+                        padding: 0 24px;
+                        padding-bottom: 24px;
+                    }
+                }
+            }
+        }
+    }
+}

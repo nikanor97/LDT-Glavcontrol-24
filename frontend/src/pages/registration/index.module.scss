@@ -1,0 +1,51 @@
+.wrapper {
+    position: relative;
+}
+.content {
+    padding: 32px 40px 56px;
+    background: #F4F6F8;
+    border-radius: 24px;
+    min-width: 426px;
+    z-index: 2;
+    position: relative;
+}
+
+.btn {
+    margin-top: 24px;
+    width: 100%;
+}
+
+.logo {
+    max-width: 27px;
+    height: unset;
+    &Wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 32px;
+    }
+}
+
+.title {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.basket, .discount {
+    position: absolute;
+}
+.discount {
+    max-width: 240px;
+    height: unset;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(83%, 38%);
+}
+.basket {
+    max-width: 377px;
+    height: unset;
+    position: absolute;
+    transform: translate(-67%, -45%);
+    top: 0;
+}

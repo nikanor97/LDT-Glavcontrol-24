@@ -1,0 +1,12 @@
+.card {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E4E7EC;
+    & + & {
+        margin-top: 16px;
+    }
+}
+
+.delete {
+    display: flex;
+    justify-content: flex-end;
+}

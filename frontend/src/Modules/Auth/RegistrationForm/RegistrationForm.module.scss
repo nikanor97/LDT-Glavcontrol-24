@@ -1,0 +1,22 @@
+
+.title {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 20px;
+    margin-bottom: 16px;
+}
+
+.block {
+    & + & {
+        margin-top: 32px;
+    }
+}
+
+.switch {
+    display: flex;
+    justify-content: space-between;
+}
+
+.space {
+    width: 100%;
+}

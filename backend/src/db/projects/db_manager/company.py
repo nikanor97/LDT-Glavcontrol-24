@@ -54,5 +54,8 @@ class CompanyDbManager(DbManager):
         session: AsyncSession,
         company: Company
     ) -> Company:
-        session.add(company)
-        return company
+        stmt = select(Company).where(Company.id == company.id)
+        db_company: Company = (await session.execute(stmt)).scalar_one_or_none()
+        if db_company is not None:
+            updated_company = await session.merge(company)
+            return updated_company

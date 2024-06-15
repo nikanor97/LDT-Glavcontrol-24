@@ -12,6 +12,7 @@ from common.rabbitmq.connection_pool import ConnectionPool as AmqpConnectionPool
 from common.rabbitmq.publisher import Publisher
 from src.db.main_db_manager import MainDbManager
 from src.db.projects.db_manager.application import ApplicationDbManager
+from src.db.projects.db_manager.application_product import ApplicationProductDbManager
 from src.db.projects.db_manager.company import CompanyDbManager
 from src.db.projects.db_manager.forecast import ForecastDbManager
 from src.db.projects.db_manager.procurement import ProcurementDbManager
@@ -19,6 +20,7 @@ from src.db.projects.db_manager.product import ProductDbManager
 from src.db.projects.db_manager.remains import RemainsDbManager
 from src.db.projects.db_manager.user_company import UserCompanyDbManager
 from src.db.projects.models.application import Application
+from src.db.projects.models.application_product import ApplicationProduct
 from src.db.projects.models.company import Company
 from faker import Faker
 
@@ -166,6 +168,20 @@ async def init_db():
         ) for _ in range(500)]
 
         products = await ProductDbManager.create_products(session, products_raw)
+
+        await session.flush()
+
+        application_products_raw: list[ApplicationProduct] = []
+
+        for i in range(3):
+            application_products_raw.extend([ApplicationProduct(
+                application_id=a.id,
+                product_id=products[idx + i * len(applications)].id
+            ) for idx, a in enumerate(applications)])
+
+        application_products = await ApplicationProductDbManager.create_application_products(
+            session, application_products_raw
+        )
 
         remains_raw = [Remains(
             cmo=fake.word(),

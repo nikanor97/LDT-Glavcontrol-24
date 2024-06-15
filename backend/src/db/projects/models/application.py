@@ -1,11 +1,16 @@
 from datetime import date
 from decimal import Decimal
+from typing import TYPE_CHECKING
 from uuid import UUID
 
-from sqlmodel import Field
+from sqlmodel import Field, Relationship
 
 from src.db.mixins import TimeStampWithIdMixin
 from src.db.projects.models import ProjectsDataSQLModel
+from src.db.projects.models.application_product import ApplicationProduct
+
+if TYPE_CHECKING:
+    from src.db.projects.models.product import Product
 
 
 class ApplicationBase(ProjectsDataSQLModel):
@@ -29,3 +34,7 @@ class ApplicationBase(ProjectsDataSQLModel):
 
 class Application(ApplicationBase, TimeStampWithIdMixin, table=True):
     __tablename__ = "applications"
+    products: list["Product"] = Relationship(
+        back_populates="application",
+        link_model=ApplicationProduct,
+    )

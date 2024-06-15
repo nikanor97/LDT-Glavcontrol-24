@@ -15,11 +15,12 @@ from src.db.projects.models.remains import Remains
 from src.server.auth import Auth
 from src.server.common import METHOD, UnifiedResponse, UnifiedResponsePaginated
 from src.server.projects import ProjectsEndpoints
-from src.server.projects.endpoints.create_application import CreateApplication
+from src.server.projects.endpoints.create_application import CreateApplication, CreateApplicationResponse
 from src.server.projects.endpoints.create_company import CreateCompany
 from src.server.projects.endpoints.export_forecast_excel import ExportForecastExcel
 from src.server.projects.endpoints.export_procurements_excel import ExportProcurementsExcel
 from src.server.projects.endpoints.export_remains_excel import ExportRemainsExcel
+from src.server.projects.endpoints.get_application import GetApplication, GetApplicationResponse
 from src.server.projects.endpoints.get_applications import GetApplications
 from src.server.projects.endpoints.get_companies import GetCompanies
 from src.server.projects.endpoints.get_company import GetCompany
@@ -29,6 +30,8 @@ from src.server.projects.endpoints.get_procurements_stats import GetProcurements
 from src.server.projects.endpoints.get_remains import GetRemains
 from src.server.projects.endpoints.get_remains_stats import GetRemainsStatsResponse, GetRemainsStats
 from src.server.projects.endpoints.get_users_companies import GetUsersCompanies, UserWithCompany
+from src.server.projects.endpoints.update_application import UpdateApplicationWithProducts, \
+    UpdateApplicationWithProductsResponse
 from src.server.projects.endpoints.update_company import UpdateCompany
 from src.server.projects.endpoints.upload_procurements_excel import UploadProcurementsExcel
 from src.server.projects.endpoints.upload_remains_excel import UploadRemainsExcel
@@ -105,8 +108,16 @@ class ProjectsRouter:
         self.router.add_api_route(
             path="/application",
             endpoint=CreateApplication(**params).call,
-            response_model=UnifiedResponse[Application],
+            response_model=UnifiedResponse[CreateApplicationResponse],
             methods=[METHOD.POST],
+            dependencies=[Depends(Auth(main_db_manager))],
+        )
+
+        self.router.add_api_route(
+            path="/application",
+            endpoint=GetApplication(**params).call,
+            response_model=UnifiedResponse[GetApplicationResponse],
+            methods=[METHOD.GET],
             dependencies=[Depends(Auth(main_db_manager))],
         )
 
@@ -179,6 +190,15 @@ class ProjectsRouter:
             endpoint=GetUsersCompanies(**params).call,
             response_model=UnifiedResponsePaginated[list[UserWithCompany]],
             methods=[METHOD.GET],
+            dependencies=[Depends(Auth(main_db_manager))],
+        )
+
+        # TODO: СДЕЛАТЬ МЕТОД
+        self.router.add_api_route(
+            path="/application",
+            endpoint=UpdateApplicationWithProducts(**params).call,
+            response_model=UnifiedResponse[UpdateApplicationWithProductsResponse],
+            methods=[METHOD.PUT],
             dependencies=[Depends(Auth(main_db_manager))],
         )
 

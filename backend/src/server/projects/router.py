@@ -23,7 +23,7 @@ from src.server.projects.endpoints.export_remains_excel import ExportRemainsExce
 from src.server.projects.endpoints.get_applications import GetApplications
 from src.server.projects.endpoints.get_companies import GetCompanies
 from src.server.projects.endpoints.get_company import GetCompany
-from src.server.projects.endpoints.get_forecast import GetForecast
+from src.server.projects.endpoints.get_forecast import GetForecast, GetForcastResponse
 from src.server.projects.endpoints.get_procurements import GetProcurements
 from src.server.projects.endpoints.get_procurements_stats import GetProcurementsStats, GetProcurementsStatsResponse
 from src.server.projects.endpoints.get_remains import GetRemains
@@ -134,10 +134,10 @@ class ProjectsRouter:
             dependencies=[Depends(Auth(main_db_manager))],
         )
 
-        self.router.add_api_route(  # TODO: присобачить продукты
+        self.router.add_api_route(
             path="/forecast",
             endpoint=GetForecast(**params).call,
-            response_model=UnifiedResponsePaginated[list[Forecast]],
+            response_model=UnifiedResponsePaginated[list[GetForcastResponse]],
             methods=[METHOD.GET],
             dependencies=[Depends(Auth(main_db_manager))],
         )

@@ -2,6 +2,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from sqlmodel import col
 
 from src.db.common import ObjectsWithCount, paginated, count_objects
@@ -16,7 +17,7 @@ class ForecastDbManager(DbManager):
         offset: int,
         limit: int,
     ) -> ObjectsWithCount[list[Forecast]]:
-        stmt = select(Forecast)
+        stmt = select(Forecast).options(selectinload(Forecast.product))
         forecast = await paginated(session, stmt, offset, limit)
         count = await count_objects(session, stmt)
         return ObjectsWithCount(objects=forecast, count=count)

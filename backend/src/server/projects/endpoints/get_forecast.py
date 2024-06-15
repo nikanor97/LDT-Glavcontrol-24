@@ -7,7 +7,7 @@ from src.server.projects import ProjectsEndpoints
 class GetForecast(ProjectsEndpoints):
 
     async def call(
-        self,
+        self,  # TODO: добавить год и квартал
         offset: int = 0,
         limit: int = 10,
     ) -> UnifiedResponsePaginated[list[Forecast]]:
@@ -18,4 +18,4 @@ class GetForecast(ProjectsEndpoints):
                     items=forecast.objects,
                     pagination=Pagination(offset=offset, limit=limit, count=forecast.count),
                 )
-            )
+            )  # TODO: присобачить продукты

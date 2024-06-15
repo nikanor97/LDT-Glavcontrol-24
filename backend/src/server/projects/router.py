@@ -28,6 +28,7 @@ from src.server.projects.endpoints.get_procurements import GetProcurements
 from src.server.projects.endpoints.get_procurements_stats import GetProcurementsStats, GetProcurementsStatsResponse
 from src.server.projects.endpoints.get_remains import GetRemains
 from src.server.projects.endpoints.get_remains_stats import GetRemainsStatsResponse, GetRemainsStats
+from src.server.projects.endpoints.get_users_companies import GetUsersCompanies, UserWithCompany
 from src.server.projects.endpoints.update_company import UpdateCompany
 from src.server.projects.endpoints.upload_procurements_excel import UploadProcurementsExcel
 from src.server.projects.endpoints.upload_remains_excel import UploadRemainsExcel
@@ -133,7 +134,7 @@ class ProjectsRouter:
             dependencies=[Depends(Auth(main_db_manager))],
         )
 
-        self.router.add_api_route(
+        self.router.add_api_route(  # TODO: присобачить продукты
             path="/forecast",
             endpoint=GetForecast(**params).call,
             response_model=UnifiedResponsePaginated[list[Forecast]],
@@ -148,8 +149,6 @@ class ProjectsRouter:
             methods=[METHOD.GET],
             dependencies=[Depends(Auth(main_db_manager))],
         )
-
-# ------------------------------------------------------------------------------------------------
 
         self.router.add_api_route(
             path="/companies",
@@ -175,6 +174,14 @@ class ProjectsRouter:
             dependencies=[Depends(Auth(main_db_manager))],
         )
 
+        self.router.add_api_route(
+            path="/users-companies",
+            endpoint=GetUsersCompanies(**params).call,
+            response_model=UnifiedResponsePaginated[list[UserWithCompany]],
+            methods=[METHOD.GET],
+            dependencies=[Depends(Auth(main_db_manager))],
+        )
+
         # self.router.add_api_route(
         #     path="/companies",
         #     endpoint=self._projects_endpoints.delete_companies,
@@ -182,37 +189,4 @@ class ProjectsRouter:
         #     methods=[METHOD.DELETE],
         #     dependencies=[Depends(Auth(main_db_manager))],
         # )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        # self.router.add_api_route(
-        #     path="/create-upload-video",
-        #     endpoint=self._projects_endpoints.create_and_upload_video,
-        #     response_model=UnifiedResponse[Video],
-        #     methods=[METHOD.POST],
-        #     dependencies=[Depends(Auth(main_db_manager))],
-        #     tags=["projects"],
-        # )
-        #
-        # self.router.add_api_route(
-        #     path="/frames-with-markups",
-        #     endpoint=self._projects_endpoints.create_frames_with_markups,
-        #     response_model=UnifiedResponse[list[FrameMarkup]],
-        #     methods=[METHOD.POST],
-        #     dependencies=[Depends(Auth(main_db_manager))],
-        #     tags=["bpla"]
-        # )
-
 

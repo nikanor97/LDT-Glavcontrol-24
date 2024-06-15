@@ -23,6 +23,14 @@ class CompanyDbManager(DbManager):
         return company
 
     @staticmethod
+    async def get_all_companies(
+        session: AsyncSession,
+    ) -> list[Company]:
+        stmt = select(Company)
+        companies = (await session.execute(stmt)).scalars().all()
+        return companies
+
+    @staticmethod
     async def get_companies(
         session: AsyncSession,
         offset: int,

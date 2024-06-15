@@ -10,7 +10,7 @@ from src.server.projects import ProjectsEndpoints
 
 class ExportForecastExcel(ProjectsEndpoints):
     async def call(
-        self,
+        self,  # TODO: добавить год и квартал и если ids пустые то исходя из года и квартала сформировать
         forecast_ids: list[UUID],
     ) -> StreamingResponse:
         async with self._main_db_manager.projects.make_autobegin_session() as session:

@@ -2,13 +2,14 @@ import {App} from '@/Types'
 import UserLayout from '@/Layouts/UserLayout/UserLayout';
 import Header from './Modules/Header/Header';
 import PredictionsTable from './Modules/PredictionsTable/PredictionsTable';
+import {ContextComponent} from './Store/Store';
 
 const PredictionPage:App.Next.NextPage = () => {
     return (
-        <div>
+        <ContextComponent>
             <Header />
             <PredictionsTable />
-        </div>
+        </ContextComponent>
     )
 }
 

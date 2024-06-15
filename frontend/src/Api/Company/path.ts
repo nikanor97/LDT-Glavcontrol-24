@@ -8,5 +8,6 @@ export default {
     getRequests: '/v1/projects/applications',
     uploadProcurementsExcel: '/v1/projects/procurements-upload-excel',
     getCompanies: '/v1/projects/companies',
-    createCompany: '/v1/projects/company'
+    createCompany: '/v1/projects/company',
+    getPredictions: '/v1/projects/forecast'
 }

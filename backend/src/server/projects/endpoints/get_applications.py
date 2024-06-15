@@ -25,4 +25,4 @@ class GetApplications(ProjectsEndpoints):
                     items=applications.objects,
                     pagination=Pagination(offset=offset, limit=limit, count=applications.count),
                 )
-            )
+            )  # TODO: добавить колво продуктов в заявке

@@ -1,14 +1,16 @@
 version: "3.3"
 services:
+
   frontend:
     image: hack_front:development
     build:
       context: frontend/
     restart: on-failure
+
   nginx:
     image: nginx:1.27
     ports:
-      - "80:80"
+      - "${FRONTEND_PORT_ON_HOST}:80"
       - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d

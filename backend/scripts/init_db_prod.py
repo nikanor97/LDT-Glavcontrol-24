@@ -116,7 +116,7 @@ async def init_db():
         for user in admin_users + regular_users:
             await UserPasswordDbManager.create_user_password(session, user.id, "test")
 
-    async with main_db_manager.projects.make_autobegin_session() as session:
+    async with (main_db_manager.projects.make_autobegin_session() as session):
         companies_raw = [Company(
             name=fake.company(),
             region=fake.city(),
@@ -201,11 +201,13 @@ async def init_db():
         for r in remains_raw:
             remains.append(await RemainsDbManager.create_remains(session, r))
 
-        forecasts_raw = [Forecast(
+        forecasts_raw: list[Forecast] = []
+        for i in range(20):
+            forecasts_raw.extend([Forecast(
             product_id=p.id,
             quarter=random.randint(1, 50),
             year=random.randint(2020, 2024)
-        ) for p in products]
+        ) for p in products])
 
         forecasts: list[Forecast] = []
         for f in forecasts_raw:

@@ -88,7 +88,7 @@ class ProjectsRouter:
             endpoint=ExportProcurementsExcel(**params).call,
             response_class=StreamingResponse,
             methods=[METHOD.GET],
-            dependencies=[Depends(Auth(main_db_manager))],
+            # dependencies=[Depends(Auth(main_db_manager))],
         )
 
         self.router.add_api_route(
@@ -96,7 +96,7 @@ class ProjectsRouter:
             endpoint=UploadProcurementsExcel(**params).call,
             response_model=UnifiedResponse[list[Procurement]],
             methods=[METHOD.POST],
-            # dependencies=[Depends(Auth(main_db_manager))],
+            dependencies=[Depends(Auth(main_db_manager))],
         )
 
         self.router.add_api_route(

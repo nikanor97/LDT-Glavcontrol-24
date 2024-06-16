@@ -1,4 +1,3 @@
-import {data} from './Data/Menu';
 import MenuItem from './Components/MenuItem/MenuItem';
 import {Row, Col} from 'antd';
 import {iMenuItem} from './types';

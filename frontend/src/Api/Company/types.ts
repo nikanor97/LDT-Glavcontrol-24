@@ -1,4 +1,4 @@
-import {Company, Procurement, Pagination, Remains, Requests, Products} from '@/Types';
+import {Company, Procurement, Pagination, Remains, Requests, Products, Predictions} from '@/Types';
 
 export declare namespace iApi {
     type oGetMyCompany = Company.LegalInfo.Item
@@ -41,7 +41,7 @@ export declare namespace iApi {
         year: number;
     }
     type oGetPrediction = {
-        items: Products.Product[];
+        items: Predictions.Item[];
         pagination: Pagination.Info;
     }
     type iGetRequest = {
@@ -50,4 +50,10 @@ export declare namespace iApi {
     type oGetRequest = Requests.WithProduct;
     type iCreateRequest = Requests.CreateRequest;
     type oCreateRequest = Requests.WithProduct;
+    type iCreateRequestFromPrediction = {
+        forecast_ids: Predictions.ID[]
+    };
+    type oCreateRequestFromPrediction = {
+        application_ids: Requests.ID[];
+    }
 }

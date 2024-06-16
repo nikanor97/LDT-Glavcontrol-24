@@ -10,9 +10,4 @@ export type Info = {
     "number": number,
     "amount": number
 }
-export type Product = {
-    product: Info;
-    year: number;
-    quarter: number;
-    product_id: ID;   
-}
+

@@ -12,7 +12,13 @@ export const {
         quarter: dayjs().quarter(),
         year: dayjs().year()
     },
+    selected: [],
     actions: {
+        setSelected: (items) => {
+            set((state) => {
+                state.selected = items;
+            })
+        },
         changeParams: (params) => {
             set((state) => {
                 state.params = {

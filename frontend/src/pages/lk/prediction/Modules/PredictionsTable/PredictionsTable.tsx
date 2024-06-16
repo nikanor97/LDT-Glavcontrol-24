@@ -14,6 +14,8 @@ const PredictionTable = () => {
     const {data} = usePredictions();
     const params = usePrivateStore((state) => state.params);
     const changeParams = usePrivateStore((state) => state.actions.changeParams);
+    const setSelected = usePrivateStore((state) => state.actions.setSelected);
+    const selected = usePrivateStore((state) => state.selected);
     if (!data) return null;
     return (
         <div className={styles.wrapper}>
@@ -26,8 +28,10 @@ const PredictionTable = () => {
                 }}
                 rowSelection={{
                     preserveSelectedRowKeys: true,
-                    onChange: () => {
-                        
+                    selectedRowKeys: selected,
+                    onChange: (selected) => {
+                        console.log(selected)
+                        setSelected(selected.map(String));
                     }
                 }}
                 rowKey={(record) => record.product_id}

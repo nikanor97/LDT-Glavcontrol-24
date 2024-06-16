@@ -1,0 +1,29 @@
+
+
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.body {
+    background: #F9FAFB;
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu {
+    padding: 24px 16px 24px 32px;
+    width: 288px;
+    position: absolute;
+}
+
+.content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px;
+    padding-left: calc(288px + 24px);
+}

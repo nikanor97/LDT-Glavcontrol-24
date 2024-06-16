@@ -1,0 +1,15 @@
+
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.pagination {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    &Active {
+        background: #F9FAFB;
+    }
+}

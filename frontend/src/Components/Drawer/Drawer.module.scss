@@ -1,0 +1,22 @@
+.drawer {
+    :global {
+        .ant-drawer-body {
+            padding-top: 16px;
+        }
+        .ant-drawer-header {
+            border: none;
+            padding-top: 33px;
+            padding-bottom: 17px;
+            .ant-drawer-header-title {
+                flex-direction: row-reverse;
+                .ant-drawer-title {
+                    font-size: 26px;
+                }
+                .ant-drawer-close {
+                    margin-right: 0;
+                    margin-left: 8px;
+                }
+            }
+        }
+    }
+}

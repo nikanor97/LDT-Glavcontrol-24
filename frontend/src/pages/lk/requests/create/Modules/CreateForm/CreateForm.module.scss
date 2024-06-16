@@ -1,0 +1,21 @@
+
+
+.form {
+    .space {
+        width: 100%;
+    }
+    :global {
+        .ant-picker, .ant-input-number {
+            width: 100%;
+        }
+    }
+}
+
+.wrapper {
+    max-width: 1040px;
+}
+
+.controls {
+    display: flex;
+    justify-content: flex-end;
+}

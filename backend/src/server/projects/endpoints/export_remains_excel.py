@@ -15,9 +15,10 @@ from src.server.projects import ProjectsEndpoints
 class ExportRemainsExcel(ProjectsEndpoints):
     async def call(
         self,
-        token: Annotated[str, Depends(oauth2_scheme)],
+        user_id: UUID,
+        # token: Annotated[str, Depends(oauth2_scheme)],
     ) -> StreamingResponse:
-        user_id = get_user_id_from_token(token)
+        # user_id = get_user_id_from_token(token)
         async with self._main_db_manager.projects.make_autobegin_session() as session:
             user_company = await UserCompanyDbManager.get_user_company_by_user_id(session, user_id)
             remains = await RemainsDbManager.get_all_remains(

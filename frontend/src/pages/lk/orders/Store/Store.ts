@@ -7,7 +7,7 @@ export const {
     usePrivateStore
 } = createPrivateStore<iStore<iState, iActions>>('lk/orders', (set) => ({
     params: {
-        limit: 10,
+        limit: 20,
         offset: 0
     },
     selected: [],

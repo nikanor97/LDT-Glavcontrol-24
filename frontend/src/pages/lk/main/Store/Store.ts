@@ -1,6 +1,5 @@
 import { createPrivateStore, iStore } from "@/Utils/Zustand/createPrivate";
 import {iActions, iState} from './types';
-import dayjs from "dayjs";
 
 export const {
     ContextComponent,

@@ -3,6 +3,7 @@ import {Form, Col, Row, Input, InputNumber, Button, FormInstance} from 'antd';
 import { HiMiniTrash, HiMiniPlus } from "react-icons/hi2";
 import Card from './Components/Card/Card';
 import styles from './ItemsForm.module.scss';
+import { required } from "@/Utils/Form/required";
 
 type iItemsForm = {
     form: FormInstance;

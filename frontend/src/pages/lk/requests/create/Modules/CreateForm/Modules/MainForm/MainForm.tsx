@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import Block from "../../Components/Block/Block"
 import {Col, Row, Form, Input, DatePicker, InputNumber} from 'antd';
 import { getDateValue, getNormalizedValue } from "@/Utils/Transform/getDateTransform";
-import { required } from "@/Utils/Form/required";
 
 const MainForm = () => {
     return (
@@ -12,17 +11,17 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={8}>
-                            <Form.Item rules={[required()]} name="calculation_id" label="Идетнификатор расчета">
+                            <Form.Item name="calculation_id" label="Идетнификатор расчета">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={8}>
-                            <Form.Item rules={[required()]} name="lot_id" label="Идентификатор лота ">
+                            <Form.Item name="lot_id" label="Идентификатор лота ">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={8}>
-                            <Form.Item rules={[required()]} name="client_id" label="Идентификатор заказчика ">
+                            <Form.Item name="client_id" label="Идентификатор заказчика ">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
@@ -33,7 +32,7 @@ const MainForm = () => {
                     <Row gutter={16}>
                         <Col span={7}>
                             <Form.Item 
-                                rules={[required()]}
+                            
                                 normalize={getNormalizedValue()}
                                 getValueProps={getDateValue()} 
                                 name="shipment_end_date" 
@@ -43,7 +42,7 @@ const MainForm = () => {
                         </Col>
                         <Col span={7}>
                             <Form.Item 
-                                rules={[required()]}
+                            
                                 normalize={getNormalizedValue()}
                                 getValueProps={getDateValue()} 
                                 name="shipment_start_date" 
@@ -53,7 +52,7 @@ const MainForm = () => {
                         </Col>
                         <Col span={10}>
                             <Form.Item 
-                                rules={[required()]}
+                            
                                 name="shipment_volume"
                                 label="Объем поставки">
                                 <Input placeholder="Введите идентификатор" size="large" />
@@ -66,7 +65,7 @@ const MainForm = () => {
                     <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item 
-                                rules={[required()]}
+                            
                                 name="shipment_address"
                                 label="Адрес поставки">
                                 <Input placeholder="Введите адрес" size="large" />
@@ -78,13 +77,13 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item rules={[required()]} name="shipment_terms" label="Условия поставки">
+                            <Form.Item name="shipment_terms" label="Условия поставки">
                                 <Input placeholder="Введите условия" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
                             <Form.Item 
-                                rules={[required()]}
+                            
                                 normalize={getNormalizedValue('YYYY')}
                                 getValueProps={(value) => {
                                     return {
@@ -102,12 +101,12 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item rules={[required()]} name="gar_id" label="Идентификатор ГАР">
+                            <Form.Item name="gar_id" label="Идентификатор ГАР">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item rules={[required()]} name="spgz_end_id" label="Сквозной идентификатор СПГЗ">
+                            <Form.Item name="spgz_end_id" label="Сквозной идентификатор СПГЗ">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
@@ -117,12 +116,12 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item rules={[required()]} name="amount" label="Сумма спецификации">
+                            <Form.Item name="amount" label="Сумма спецификации">
                                 <InputNumber placeholder="Введите сумму" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item rules={[required()]} name="unit_of_measurement" label="Ед. измерения по ОКЕИ">
+                            <Form.Item name="unit_of_measurement" label="Ед. измерения по ОКЕИ">
                                 <Input placeholder="Введите единицы измерения" size="large" />
                             </Form.Item>
                         </Col>

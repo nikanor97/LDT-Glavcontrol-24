@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import Table from '@/Components/Table/Table';
-import {Pagination, Affix} from 'antd';
+import {Pagination, Affix, Space, Avatar} from 'antd';
 import styles from './RequestsTable.module.scss';
 import classNames from 'classnames';
 import {usePrivateStore} from '../../Store/Store';
@@ -12,6 +12,9 @@ import dayjs from 'dayjs';
 import Status from './Components/Status/Status';
 import Controls from './Components/Controls/Controls';
 import {Requests} from '@/Types';
+import { getUserAvatar } from '@/Utils/User/getUserAvatar/getUserAvatar';
+
+
 
 const RequestsTable = () => {
     const [sticked, setSticked] = useState(false);
@@ -29,10 +32,6 @@ const RequestsTable = () => {
                             dataSource={data.items}
                             pagination={false}
                             sticky
-                            rowSelection={{
-                                fixed: 'left',
-                                type: 'checkbox'
-                            }}
                             rowKey={(record) => record.id}
                             scroll={{
                                 x: '100%'
@@ -40,9 +39,21 @@ const RequestsTable = () => {
                             columns={[
                                 {
                                     title: 'Автор',
-                                    dataIndex: 'author_id',
                                     width: 278,
-                                    fixed: 'left'
+                                    fixed: 'left',
+                                    render: (value: Requests.Item) => {
+                                        return (
+                                            <Space 
+                                                size={8}
+                                                direction="horizontal">
+                                                <Avatar 
+                                                    size={20}
+                                                    src={getUserAvatar(value.author_id).src}
+                                                />
+                                                {value.author_name}
+                                            </Space>
+                                        )
+                                    }
                                 },
                                 {
                                     title: 'Дата создания',
@@ -54,7 +65,7 @@ const RequestsTable = () => {
                                 },
                                 {
                                     title: 'Кол-во товаров',
-                                    dataIndex: 'id',
+                                    dataIndex: 'product_count',
                                     width: 278,
 
                                 },

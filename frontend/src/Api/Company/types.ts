@@ -56,4 +56,6 @@ export declare namespace iApi {
     type oCreateRequestFromPrediction = {
         application_ids: Requests.ID[];
     }
+    type iUpdateCompany = Company.Item;
+    type oUpdateCompany = Company.ExistItem;
 }

@@ -30,7 +30,6 @@ const PredictionTable = () => {
                     preserveSelectedRowKeys: true,
                     selectedRowKeys: selected,
                     onChange: (selected) => {
-                        console.log(selected)
                         setSelected(selected.map(String));
                     }
                 }}

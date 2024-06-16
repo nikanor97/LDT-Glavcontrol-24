@@ -8,7 +8,9 @@ import {useCompanies} from '@/Hooks/Company/useCompanies';
 import {usePrivateStore} from '../../Store/Store';
 import { getPageByOffset } from '@/Utils/Pagination/getPageByOffset';
 import { getOffsetByPage } from '@/Utils/Pagination/getOffsetByPage';
+import Controls from './Components/Controls/Controls';
 import dayjs from 'dayjs';
+import { Company } from '@/Types';
 
 const OrdersTable = () => {
     const [sticked, setSticked] = useState(false);
@@ -67,6 +69,16 @@ const OrdersTable = () => {
                                     title: 'ОГРН',
                                     dataIndex: 'ogrn',
                                     width: 140,
+                                },
+                                {
+                                    title: 'Действия',
+                                    width: 140,
+                                    render: (item: Company.ExistItem) => {
+                                        return (
+                                            <Controls item={item} />
+                                        )
+                                    }
+
                                 },
                             ]}
                         />

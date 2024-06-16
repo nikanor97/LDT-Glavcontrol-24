@@ -1,0 +1,33 @@
+.wrapper {
+    min-width: 352px;
+    margin-top: 16px;
+}
+
+.desc {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+}
+
+.qr {
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    display: flex;
+    &Wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+}
+
+.btn {
+    min-width: 100%;
+}
+.link {
+    min-width: 100%;
+    display: flex;
+    margin-top: 16px;
+}

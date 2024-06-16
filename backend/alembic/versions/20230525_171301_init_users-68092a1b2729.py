@@ -50,6 +50,7 @@ def upgrade_users() -> None:
         sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column('role', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column('telegram_username', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column('permission_read_stat', sa.Boolean(), nullable=False),
         sa.Column('permission_create_order', sa.Boolean(), nullable=False),
         sa.Column('is_deleted', sa.Boolean(), nullable=False),

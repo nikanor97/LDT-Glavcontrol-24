@@ -15,7 +15,7 @@ const Header = () => {
                 items={[
                     {
                         title: (
-                            <Link href={getRoute.lk.requests}>
+                            <Link href={getRoute.lk.requests()}>
                                 Заявки
                             </Link>
                         ),

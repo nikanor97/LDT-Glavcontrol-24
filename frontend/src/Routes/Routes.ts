@@ -9,7 +9,12 @@ export const Routes = {
         orders: '/lk/orders',
         prediction: '/lk/prediction',
         remains: '/lk/remains',
-        requests: '/lk/requests',
+        requests: (ids?: Requests.ID[]) => {
+            const query = qs.stringify({ids}, {
+                addQueryPrefix: true,
+            })
+            return '/lk/requests' + query;
+        },
         createRequest: (id?: Requests.ID) => {
             const query = qs.stringify({id}, {
                 addQueryPrefix: true,

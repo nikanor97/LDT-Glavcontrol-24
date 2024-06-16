@@ -7,3 +7,4 @@ export * as Procurement from './Procurement/Procurement';
 export * as Remains from './Remains/Remains';
 export * as Products from './Products/Products';
 export * as Requests from './Requests/Requests';
+export * as Predictions from './Predictions/Predictions';

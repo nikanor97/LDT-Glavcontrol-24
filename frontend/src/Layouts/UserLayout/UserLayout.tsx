@@ -25,7 +25,7 @@ export const UserLayout = (props: iUserLayout) => {
                     {
                         text: 'Заявки',
                         icon: <HiClipboardDocument />,
-                        link: Routes.lk.requests
+                        link: Routes.lk.requests()
                     },
                     {
                         text: 'Прогноз',

@@ -15,7 +15,7 @@ const Header = () => {
             <Button 
                 icon={<HiMiniPlus />}
                 size="large"
-                onClick={openDrawer}
+                onClick={() => openDrawer()}
                 type="primary">
                 Добавить
             </Button>

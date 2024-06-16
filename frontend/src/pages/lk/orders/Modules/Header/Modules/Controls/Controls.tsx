@@ -6,19 +6,28 @@ import {queryKey} from '@/Hooks/Procurements/useProcurements';
 import {useQueryClient} from '@tanstack/react-query';
 import NotificationContent from '@/Components/Notification/ContentInfo/ContentInfo';
 import {nanoid} from 'nanoid';
+import {Routes} from '@/Routes/Routes';
+import { useUser } from '@/Hooks/User/useUser';
+
 
 const Controls = () => {
     const uploadExcel = useUploadExcel();
     const client = useQueryClient();
+    const {data} = useUser();
+    if (!data) return null;
     return (
         <Space 
             size={16}
             direction='horizontal'>
-            <Button 
-                icon={<HiOutlineDownload />}
-                size="large">
-                Скачать xlsx
-            </Button>
+            <a 
+                download="procurements.xlsx"
+                href={Routes.api.ordersExportExcel(data.id)}>
+                <Button 
+                    icon={<HiOutlineDownload />}
+                    size="large">
+                    Скачать xlsx
+                </Button>
+            </a>
             <Upload     
                 multiple={false}
                 customRequest={(options) => {

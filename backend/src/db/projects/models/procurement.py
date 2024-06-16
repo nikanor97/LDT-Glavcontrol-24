@@ -9,12 +9,12 @@ from src.db.projects.models import ProjectsDataSQLModel
 
 
 class ProcurementBase(ProjectsDataSQLModel):
-    spgz_id: str = Field(nullable=False)
-    spgz_name: str = Field(nullable=False)
-    procurement_date: date = Field(nullable=False)
-    price: Decimal = Field(nullable=False)
-    way_to_define_supplier: str = Field(nullable=False)
-    contract_basis: str = Field(nullable=False)
+    spgz_id: str | None = Field(nullable=True)
+    spgz_name: str | None = Field(nullable=True)
+    procurement_date: date | None = Field(nullable=True)
+    price: Decimal | None = Field(nullable=True)
+    way_to_define_supplier: str | None = Field(nullable=True)
+    contract_basis: str | None = Field(nullable=True)
     company_id: UUID = Field(nullable=False, foreign_key="companies.id")
 
 

@@ -65,6 +65,8 @@ import pandas as pd
 from fastapi import UploadFile, File, HTTPException, Depends
 from io import BytesIO
 
+from starlette.responses import Response
+
 from src.db.projects.db_manager.procurement import ProcurementDbManager
 from src.db.projects.db_manager.user_company import UserCompanyDbManager
 from src.db.projects.models.procurement import Procurement
@@ -87,7 +89,8 @@ class UploadProcurementsExcel(ProjectsEndpoints):
         self,
         token: Annotated[str, Depends(oauth2_scheme)],
         file: UploadFile = File(...)
-    ) -> UnifiedResponse[list[Procurement]]:
+    # ) -> UnifiedResponse[list[Procurement]]:  # убрал ибо очень много объектов может вернуть
+    ) -> Response:
         user_id = get_user_id_from_token(token)
 
         async with self._main_db_manager.projects.make_autobegin_session() as session:
@@ -167,4 +170,5 @@ class UploadProcurementsExcel(ProjectsEndpoints):
             # Сохраняем данные в базу
             new_procurements = await ProcurementDbManager.create_procurements(session, procurements)
 
-        return UnifiedResponse(data=new_procurements)
+        # return UnifiedResponse(data=new_procurements)
+        return Response(content="OK", media_type="text/plain")

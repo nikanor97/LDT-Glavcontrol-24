@@ -1,8 +1,13 @@
 import { PropsWithChildren } from "react"
-import {ConfigProvider} from 'antd';
+import {ConfigProvider, notification} from 'antd';
 
 
 type iAntPropvider = PropsWithChildren;
+
+notification.config({
+    showProgress: true,
+    closable: true
+})
 
 const AntProvider = (props: iAntPropvider) => {
     return (

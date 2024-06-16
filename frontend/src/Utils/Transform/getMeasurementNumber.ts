@@ -1,6 +1,6 @@
 
 
-export const getMeasurementNumber = (number: number) => {
+export const getMeasurementNumber = (number: number, parseLessItem: boolean = true) => {
     //Получили количество разрядов
     const digitCount = number.toString().length;
     const data = [
@@ -21,15 +21,31 @@ export const getMeasurementNumber = (number: number) => {
             measurement: 'тыс.'
         }
     ];
-    
-    for (const measurement of data) {
-        if (digitCount > measurement.count) {
+    for (let index = 0; index < data.length; index = index + 1) {
+        const item = data[index];
+        if (digitCount > item.count) {
             return {
                 number,
-                beautified: number / Math.pow(10, measurement.count),
-                measurement: measurement.measurement
+                beautified: number / Math.pow(10, item.count),
+                measurement: item.measurement
             }
-            break;
         }
-    } 
+    }
+    //Если число очень маленькое
+    const lastItem = data[data.length - 1];
+    if (parseLessItem) {
+        //Если включена опция парсинга мелкий чисел
+        return {
+            number,
+            beautified: number / Math.pow(10, lastItem.count),
+            measurement: lastItem.measurement
+        }
+    } else {
+        return {
+            number,
+            beautified: number,
+            measurement: null
+        }
+    }
+
 }

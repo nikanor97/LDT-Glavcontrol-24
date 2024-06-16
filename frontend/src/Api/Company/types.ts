@@ -44,4 +44,10 @@ export declare namespace iApi {
         items: Products.Product[];
         pagination: Pagination.Info;
     }
+    type iGetRequest = {
+        application_id: Requests.ID;
+    }
+    type oGetRequest = Requests.WithProduct;
+    type iCreateRequest = Requests.CreateRequest;
+    type oCreateRequest = Requests.WithProduct;
 }

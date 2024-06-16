@@ -1,13 +1,17 @@
 import Block from "../../Components/Block/Block"
-import {Form, Col, Row, Input, InputNumber, Button} from 'antd';
+import {Form, Col, Row, Input, InputNumber, Button, FormInstance} from 'antd';
 import { HiMiniTrash, HiMiniPlus } from "react-icons/hi2";
 import Card from './Components/Card/Card';
 import styles from './ItemsForm.module.scss';
 
-const ItemsForm = () => {
+type iItemsForm = {
+    form: FormInstance;
+}
+
+const ItemsForm = (props: iItemsForm) => {
     return (
         <Block title="Детали по товарам">
-            <Form.List name="items">
+            <Form.List name="products">
                 {(fields, {add, remove}) => {
                     return (
                         <>
@@ -17,12 +21,12 @@ const ItemsForm = () => {
                                     key={field.key}
                                     field={field}
                                     onDelete={remove}
-                                    path={['items']}
+                                    form={props.form}
                                 />
                             ))}
                             <div className={styles.addItems}>
                                 <Button 
-                                    onClick={add}
+                                    onClick={() => add({})}
                                     icon={<HiMiniPlus />}
                                     type="link">
                                     Добавить товар

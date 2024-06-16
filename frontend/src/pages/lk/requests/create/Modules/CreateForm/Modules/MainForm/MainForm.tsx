@@ -1,5 +1,8 @@
+import dayjs from "dayjs";
 import Block from "../../Components/Block/Block"
 import {Col, Row, Form, Input, DatePicker, InputNumber} from 'antd';
+import { getDateValue, getNormalizedValue } from "@/Utils/Transform/getDateTransform";
+import { required } from "@/Utils/Form/required";
 
 const MainForm = () => {
     return (
@@ -9,17 +12,17 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={8}>
-                            <Form.Item label="Идетнификатор расчета">
+                            <Form.Item rules={[required()]} name="calculation_id" label="Идетнификатор расчета">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={8}>
-                            <Form.Item label="Идентификатор лота ">
+                            <Form.Item rules={[required()]} name="lot_id" label="Идентификатор лота ">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={8}>
-                            <Form.Item label="Идентификатор заказчика ">
+                            <Form.Item rules={[required()]} name="client_id" label="Идентификатор заказчика ">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
@@ -29,17 +32,30 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={7}>
-                            <Form.Item label="Дата окончания поставки">
+                            <Form.Item 
+                                rules={[required()]}
+                                normalize={getNormalizedValue()}
+                                getValueProps={getDateValue()} 
+                                name="shipment_end_date" 
+                                label="Дата окончания поставки">
                                 <DatePicker placeholder="Выберите дату" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={7}>
-                            <Form.Item label="Дата начала поставки">
+                            <Form.Item 
+                                rules={[required()]}
+                                normalize={getNormalizedValue()}
+                                getValueProps={getDateValue()} 
+                                name="shipment_start_date" 
+                                label="Дата начала поставки">
                                 <DatePicker placeholder="Выберите дату" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={10}>
-                            <Form.Item label="Объем поставки">
+                            <Form.Item 
+                                rules={[required()]}
+                                name="shipment_volume"
+                                label="Объем поставки">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
@@ -48,13 +64,11 @@ const MainForm = () => {
                 {/* 3 */}
                 <Col span={24}>
                     <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item label="Адрес поставки">
-                                <Input placeholder="Введите адрес" size="large" />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item label="Адрес в текстовой форме">
+                        <Col span={24}>
+                            <Form.Item 
+                                rules={[required()]}
+                                name="shipment_address"
+                                label="Адрес поставки">
                                 <Input placeholder="Введите адрес" size="large" />
                             </Form.Item>
                         </Col>
@@ -64,12 +78,21 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="Условия поставки">
+                            <Form.Item rules={[required()]} name="shipment_terms" label="Условия поставки">
                                 <Input placeholder="Введите условия" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Год">
+                            <Form.Item 
+                                rules={[required()]}
+                                normalize={getNormalizedValue('YYYY')}
+                                getValueProps={(value) => {
+                                    return {
+                                        value: value && dayjs(`01.01.${value}`, {format: 'DD.MM.YYYY'})
+                                    };
+                                }}
+                                name="year" 
+                                label="Год">
                                 <DatePicker.YearPicker placeholder="Выберите год" size="large" />
                             </Form.Item>
                         </Col>
@@ -79,12 +102,12 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="Идентификатор ГАР">
+                            <Form.Item rules={[required()]} name="gar_id" label="Идентификатор ГАР">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Сквозной идентификатор СПГЗ">
+                            <Form.Item rules={[required()]} name="spgz_end_id" label="Сквозной идентификатор СПГЗ">
                                 <Input placeholder="Введите идентификатор" size="large" />
                             </Form.Item>
                         </Col>
@@ -94,12 +117,12 @@ const MainForm = () => {
                 <Col span={24}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="Сумма спецификации">
+                            <Form.Item rules={[required()]} name="amount" label="Сумма спецификации">
                                 <InputNumber placeholder="Введите сумму" size="large" />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Ед. измерения по ОКЕИ">
+                            <Form.Item rules={[required()]} name="unit_of_measurement" label="Ед. измерения по ОКЕИ">
                                 <Input placeholder="Введите единицы измерения" size="large" />
                             </Form.Item>
                         </Col>

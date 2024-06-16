@@ -1,6 +1,5 @@
 import { createPrivateStore, iStore } from "@/Utils/Zustand/createPrivate";
 import {iActions, iState} from './types';
-import dayjs from "dayjs";
 
 export const {
     ContextComponent,
@@ -10,6 +9,10 @@ export const {
         limit: 10,
         offset: 0
     },
+    deleteModal: {
+        visible: false,
+        item: null,
+    },
     actions: {
         changeParams: (params) => {
             set((state) => {
@@ -18,6 +21,18 @@ export const {
                     ...params
                 }
             })
-        }
+        },
+        openDeleteModal: (item) => {
+            set((state) => {
+                state.deleteModal.visible = true;
+                state.deleteModal.item = item;
+            })
+        },
+        closeDeleteModal: () => {
+            set((state) => {
+                state.deleteModal.visible = false;
+                state.deleteModal.item = null;
+            })
+        },
     }
 }))

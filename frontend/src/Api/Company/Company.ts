@@ -29,6 +29,12 @@ export default {
         axios.post<iApi.oCreateCompany>(paths.createCompany, params),
     getPrediction: (params: iApi.iGetPrediction) => 
         axios.get<iApi.oGetPrediction>(paths.getPredictions, {params}),
+    getRequest: (params: iApi.iGetRequest) => 
+        axios.get<iApi.oGetRequest>(paths.getRequest, {params}),
+    createRequest: (params: iApi.iCreateRequest) => 
+        axios.post<iApi.oCreateRequest>(paths.createRequest, params),
+    updateReqest: (params: iApi.iCreateRequest) => 
+        axios.put<iApi.oCreateRequest>(paths.createRequest, params)
 
 
 }

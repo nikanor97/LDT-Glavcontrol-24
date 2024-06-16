@@ -26,6 +26,7 @@ const RemainsTable = () => {
                             dataSource={data.items}
                             pagination={false}
                             bordered
+                            rowKey="id"
                             sticky
                             scroll={{
                                 x: '100%'

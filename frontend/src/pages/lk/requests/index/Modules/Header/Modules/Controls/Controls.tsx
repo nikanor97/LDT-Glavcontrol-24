@@ -7,7 +7,7 @@ const Controls = () => {
         <Space 
             size={16}
             direction='horizontal'>
-            <Link href={getRoute.lk.createRequest}>
+            <Link href={getRoute.lk.createRequest()}>
                 <Button 
                     type="primary"
                     size="large">

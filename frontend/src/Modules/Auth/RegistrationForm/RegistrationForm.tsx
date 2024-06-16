@@ -5,7 +5,9 @@ import {useRegistration} from '@/Hooks/User/useRegistration';
 import styles from './RegistrationForm.module.scss';
 import { required } from '@/Utils/Form/required';
 import { getErrorMessage } from '@/Utils/Api/getErrorMessage';
+import CompanySelect from './Modules/CompanySelect/CompanySelect';
 export {useRegistrationState} from '@/Hooks/User/useRegistration';
+
 
 type iRegistrationForm = {
     form: FormInstance;
@@ -45,6 +47,21 @@ const RegistrationForm = (props: iRegistrationForm) => {
                 </Form.Item>
                 <Form.Item rules={[required('Пароль')]} name="password" label="Пароль">
                     <Input.Password  size="large" placeholder="Пароль" />
+                </Form.Item>
+                <Form.Item rules={[required('Компания')]} name="company_id" label="Компания">
+                    <CompanySelect 
+                        allowClear 
+                        showSearch 
+                        size="large" 
+                        placeholder="Выберите компанию" 
+                        filterOption={(input, option) => 
+                            (option?.label || '')
+                                .toString()
+                                .toLowerCase()
+                                .includes(
+                                    input.toLowerCase()
+                                )}    
+                    />
                 </Form.Item>
             </div>
             <div className={styles.block}>

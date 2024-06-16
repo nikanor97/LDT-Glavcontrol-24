@@ -40,7 +40,10 @@ const CreateForm = () => {
                                 status: 'ready'
                             })
                         } else {
-                            createRequest.mutateAsync(values)   
+                            createRequest.mutateAsync({
+                                ...values,
+                                status: 'ready'
+                            })   
                         }
                         message.success('Заявка успешно сохранена')
                     } catch (ex: any) {

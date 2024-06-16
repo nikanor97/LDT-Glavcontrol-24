@@ -49,7 +49,7 @@ const RequestsTable = () => {
                                     dataIndex: 'created_at',
                                     width: 278,
                                     render: (value: string) => {
-                                        return dayjs(value).format('DD.MM.YYYY')
+                                        return dayjs(value).format('DD.MM.YYYY HH:mm')
                                     }
                                 },
                                 {

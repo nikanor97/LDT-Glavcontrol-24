@@ -34,7 +34,7 @@ const PredictionTable = () => {
                         setSelected(selected.map(String));
                     }
                 }}
-                rowKey={(record) => record.product_id}
+                rowKey={(record) => record.id}
                 columns={[
                     {
                         title: 'Наименование',

@@ -58,4 +58,7 @@ export declare namespace iApi {
     }
     type iUpdateCompany = Company.Item;
     type oUpdateCompany = Company.ExistItem;
+
+    type iUploadRemainsExcel = File|Blob;
+    type oUploadRemainsExcel = Remains.Item[];
 }

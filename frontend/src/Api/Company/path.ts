@@ -13,5 +13,6 @@ export default {
     getRequest: '/v1/projects/application',
     createRequest: '/v1/projects/application',
     createRequestFromPredictions: '/v1/projects/applications-from-forecast',
-    updateCompany: '/v1/projects/company'
+    updateCompany: '/v1/projects/company',
+    uploadRemainsExcel: '/v1/projects/remains-upload-excel'
 }

@@ -23,6 +23,14 @@ export default {
             fileData
         );
     },
+    uploadRemainsExcel: (file: iApi.iUploadRemainsExcel) => {
+        const fileData = new FormData();
+        fileData.append("file", file);
+        return axios.post<iApi.oUploadRemainsExcel>(
+            paths.uploadRemainsExcel,
+            fileData
+        );
+    },
     getCompanies: (params: iApi.iGetCompanies) => 
         axios.get<iApi.oGetCompanies>(paths.getCompanies, {params}),
     createCompany: (params: iApi.iCreateCompany) => 

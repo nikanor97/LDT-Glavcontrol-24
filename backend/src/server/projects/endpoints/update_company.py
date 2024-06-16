@@ -1,5 +1,6 @@
 from datetime import date
 from decimal import Decimal
+from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -10,7 +11,7 @@ from src.server.projects import ProjectsEndpoints
 
 
 class UpdateCompanyRequest(BaseModel):
-    id: int
+    id: UUID
     name: str
     region: str
     inn: str

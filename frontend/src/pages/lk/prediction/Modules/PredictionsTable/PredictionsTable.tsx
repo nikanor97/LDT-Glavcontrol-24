@@ -3,50 +3,58 @@ import Table from '@/Components/Table/Table';
 import {Pagination, Affix} from 'antd';
 import styles from './PredictionsTable.module.scss';
 import classNames from 'classnames';
+import {usePrivateStore} from '../../Store/Store';
+import {usePredictions} from '../../Hooks/usePredictions';
+import { getOffsetByPage } from '@/Utils/Pagination/getOffsetByPage';
+import { getPageByOffset } from '@/Utils/Pagination/getPageByOffset';
+
 
 const PredictionTable = () => {
     const [sticked, setSticked] = useState(false);
+    const {data} = usePredictions();
+    const params = usePrivateStore((state) => state.params);
+    const changeParams = usePrivateStore((state) => state.actions.changeParams);
+    if (!data) return null;
     return (
         <div className={styles.wrapper}>
-            <Table 
-                dataSource={new Array(99).fill('').map((item, index) => ({id: index}))}
+            <Table
+                dataSource={data.items}
                 pagination={false}
                 sticky
                 scroll={{
                     x: '100%'
                 }}
-                rowKey={(record) => record.id}
-                expandable={{
-                    expandedRowRender: () => {
-                        return (
-                            <div>
-                                expand content
-                            </div>
-                        )
+                rowSelection={{
+                    preserveSelectedRowKeys: true,
+                    onChange: () => {
+                        
                     }
                 }}
+                rowKey={(record) => record.product_id}
                 columns={[
                     {
                         title: 'Наименование',
-                        dataIndex: 'id',
+                        dataIndex: ['product', 'name'],
                         width: 240,
                         fixed: 'left'
                     },
                     {
                         title: 'Цена',
-                        dataIndex: 'id',
+                        dataIndex: ['product', 'price'],
                         width: 240,
+                        render: (value: number) => Math.floor(value)
                     },
                     {
                         title: 'Количество',
-                        dataIndex: 'id',
+                        dataIndex: ['product', 'number'],
                         width: 240,
 
                     },
                     {
                         title: 'Сумма',
-                        dataIndex: 'id',
+                        dataIndex: ['product', 'amount'],
                         width: 240,
+                        render: (value: number) => Math.floor(value)
 
                     },
                 ]}
@@ -62,9 +70,14 @@ const PredictionTable = () => {
                 })}>
                     <Pagination 
                         hideOnSinglePage
-                        total={200}
-                        current={1}
+                        total={data.pagination.count}
+                        current={getPageByOffset(params.offset, params.limit)}
                         showSizeChanger={false}
+                        onChange={(page) => {
+                            changeParams({
+                                offset: getOffsetByPage(page, params.limit)
+                            })
+                        }}
                     />
                 </div>
             </Affix>

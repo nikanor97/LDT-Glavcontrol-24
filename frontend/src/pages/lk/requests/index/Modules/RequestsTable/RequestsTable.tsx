@@ -8,6 +8,10 @@ import {useRequests} from '@/Hooks/Requests/useRequests';
 import StateController from '@/Containers/StateController/StateController';
 import { getPageByOffset } from '@/Utils/Pagination/getPageByOffset';
 import { getOffsetByPage } from '@/Utils/Pagination/getOffsetByPage';
+import dayjs from 'dayjs';
+import Status from './Components/Status/Status';
+import Controls from './Components/Controls/Controls';
+import {Requests} from '@/Types';
 
 const RequestsTable = () => {
     const [sticked, setSticked] = useState(false);
@@ -36,14 +40,17 @@ const RequestsTable = () => {
                             columns={[
                                 {
                                     title: 'Автор',
-                                    dataIndex: 'id',
+                                    dataIndex: 'author_id',
                                     width: 278,
                                     fixed: 'left'
                                 },
                                 {
                                     title: 'Дата создания',
-                                    dataIndex: 'id',
+                                    dataIndex: 'created_at',
                                     width: 278,
+                                    render: (value: string) => {
+                                        return dayjs(value).format('DD.MM.YYYY')
+                                    }
                                 },
                                 {
                                     title: 'Кол-во товаров',
@@ -53,9 +60,22 @@ const RequestsTable = () => {
                                 },
                                 {
                                     title: 'Статус',
-                                    dataIndex: 'id',
-                                    render: () => 'badge',
+                                    dataIndex: 'status',
+                                    render: (value: Requests.Status) => (
+                                        <Status 
+                                            status={value}
+                                        />
+                                    ),
                                     width: 172,
+                                },
+                                {
+                                    title: 'Действия',
+                                    width: 140,
+                                    render: (item: Requests.Item) => {
+                                        return (
+                                            <Controls item={item} />
+                                        )
+                                    }
                                 }
                             ]}
                         />

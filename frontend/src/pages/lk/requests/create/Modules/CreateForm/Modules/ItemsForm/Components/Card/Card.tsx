@@ -1,19 +1,32 @@
-import {Row, Col, Button, Form, Input, InputNumber, FormListFieldData} from 'antd';
+import {useEffect} from 'react';
+import {Row, Col, Button, Form, Input, InputNumber, FormListFieldData, FormInstance} from 'antd';
 import { HiMiniTrash} from "react-icons/hi2";
 import styles from './Card.module.scss';
 import { NamePath } from 'antd/es/form/interface';
 import { isNumber } from 'lodash';
+import { required } from '@/Utils/Form/required';
+
 
 type iCard = {
     field: FormListFieldData;
     onDelete: (index: number | number[]) => any;
     allowDelete: boolean;
-    path: NamePath
+    form: FormInstance;
 }
 
 export const Card = (props: iCard) => {
     const {field} = props;
-    
+    const price = Form.useWatch(['products', field.name, 'price'])
+    const count = Form.useWatch(['products', field.name, 'number'])
+
+    useEffect(() => {
+        let total: string | number = '';
+        if (isNumber(price) && isNumber(count)) {
+            total = price * count;
+        }
+        props.form.setFieldValue(['products',field.name, 'amount'], total)
+    }, [price, count])
+
     return (
         <div 
             className={styles.card}
@@ -21,6 +34,7 @@ export const Card = (props: iCard) => {
             <Row gutter={[16,0]}>
                 <Col span={6}>
                     <Form.Item 
+                        rules={[required()]}
                         name={[field.name, 'name']}
                         label="Наименование">
                         <Input placeholder="Введите наименование" size="large" />
@@ -28,6 +42,7 @@ export const Card = (props: iCard) => {
                 </Col>
                 <Col span={6}>
                     <Form.Item 
+                        rules={[required()]}
                         name={[field.name, 'price']}
                         label="Цена">
                         <InputNumber placeholder="Введите цену" size="large" />
@@ -35,26 +50,15 @@ export const Card = (props: iCard) => {
                 </Col>
                 <Col span={6}>
                     <Form.Item 
-                        name={[field.name, 'count']}
+                        rules={[required()]}
+                        name={[field.name, 'number']}
                         label="Количество">
                         <InputNumber placeholder="Введите количество" size="large" />
                     </Form.Item>
                 </Col>
                 <Col span={6}>
-                    <Form.Item 
-                        shouldUpdate
-                        label="Сумма">
-                        {(form) => {
-                            const price = form.getFieldValue([...props.path,field.name, 'price']);
-                            const count = form.getFieldValue([...props.path,field.name, 'count']);
-                            let total: string | number = '';
-                            if (isNumber(price) && isNumber(count)) {
-                                total = price * count;
-                            }
-                            return (    
-                                <Input placeholder="Мы расчитаем сумму" size="large" disabled value={total} />
-                            )
-                        }}
+                    <Form.Item label="Сумма" name={[field.name, 'amount']}>
+                        <Input placeholder="Мы расчитаем сумму" size="large" disabled />
                     </Form.Item>
                 </Col>
             </Row>

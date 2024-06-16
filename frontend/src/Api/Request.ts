@@ -31,6 +31,10 @@ export default {
         const response = await axios.delete<Api.SuccessResponse<T>>(...args);
         return response.data.data;
     },
+    put: async <T>(...args: Parameters<typeof axios.put>) => {
+        const response = await axios.put<Api.SuccessResponse<T>>(...args);
+        return response.data.data;
+    },
 }
 
 

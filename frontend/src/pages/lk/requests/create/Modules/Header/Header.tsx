@@ -3,8 +3,12 @@ import styles from './Header.module.scss';
 import {Breadcrumb} from 'antd';
 import getRoute from '@/Routes/Routes';
 import Link from 'next/link';
+import { useIsEdit } from "../../Hooks/useIsEdit";
+
 
 const Header = () => {
+    const isEdit = useIsEdit();
+
     return (
         <div className={styles.wrapper}>
             <Breadcrumb 
@@ -17,12 +21,14 @@ const Header = () => {
                         ),
                     },
                     {
-                        title: 'Новая заявка',
+                        title: isEdit ? 'Редаетирование заявки' : 'Новая заявка',
                     },
                 ]}
             />
             <PageTitle className={styles.title}>
-                Создать новую заявку
+                {
+                    isEdit ? 'Редактировать заявку' : 'Создать новую заявку'
+                }
             </PageTitle>
         </div>
     )

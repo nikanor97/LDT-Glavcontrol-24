@@ -10,10 +10,14 @@ import { getPageByOffset } from '@/Utils/Pagination/getPageByOffset';
 import { getOffsetByPage } from '@/Utils/Pagination/getOffsetByPage';
 import dayjs from 'dayjs';
 
+
 const OrdersTable = () => {
     const [sticked, setSticked] = useState(false);
     const params = usePrivateStore((state) => state.params);
     const changeParams = usePrivateStore((state) => state.actions.changeParams);
+    const setSelected = usePrivateStore((state) => state.actions.setSelected);
+    const selected = usePrivateStore((state) => state.selected);
+
     const {data, isError, isLoading} = useProcurements(params)
     return (
         <StateController 
@@ -28,6 +32,14 @@ const OrdersTable = () => {
                             sticky
                             scroll={{
                                 x: '100%'
+                            }}
+                            rowSelection={{
+                                preserveSelectedRowKeys: true,
+                                selectedRowKeys: selected,
+                                onChange: (selected) => {
+                                    console.log(selected)
+                                    setSelected(selected.map(String));
+                                }
                             }}
                             rowKey={(record) => record.id}
                             columns={[

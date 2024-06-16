@@ -1,4 +1,5 @@
-
+import {Requests} from '@/Types';
+import qs from 'qs';
 
 export const Routes = {
     login: '/login',
@@ -9,7 +10,12 @@ export const Routes = {
         prediction: '/lk/prediction',
         remains: '/lk/remains',
         requests: '/lk/requests',
-        createRequest: '/lk/requests/create'
+        createRequest: (id?: Requests.ID) => {
+            const query = qs.stringify({id}, {
+                addQueryPrefix: true,
+            })
+            return '/lk/requests/create' + query;
+        }
     },
     lkAdmin: {
         main: '/lk-admin',

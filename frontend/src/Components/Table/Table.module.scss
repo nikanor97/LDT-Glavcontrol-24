@@ -1,6 +1,15 @@
 
 
 .table {
+    &:global {
+        &.ant-table-wrapper {
+            .ant-table-container {
+                &::before {
+                    background: #fff;
+                }
+            }
+        }
+    }
     :global {
         .ant-table-thead {
             tr {

@@ -10,7 +10,13 @@ export const {
         limit: 10,
         offset: 0
     },
+    selected: [],
     actions: {
+        setSelected: (items) => {
+            set((state) => {
+                state.selected = items;
+            })
+        },
         changeParams: (params) => {
             set((state) => {
                 state.params = {

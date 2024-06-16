@@ -72,7 +72,7 @@ class ApplicationDbManager(DbManager):
         # db_application.unit_of_measurement = application.unit_of_measurement
         # db_application.status = application.status
 
-        application.status = db_application.status
+        # application.status = db_application.status
         application.author_id = db_application.author_id
 
         updated_application = await session.merge(application)

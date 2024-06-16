@@ -16,8 +16,8 @@ class GetApplicationResponse(BaseModel):
     calculation_id: str | None
     lot_id: str | None
     client_id: str | None
-    shipment_start_date: date
-    shipment_end_date: date
+    shipment_start_date: date | None
+    shipment_end_date: date | None
     shipment_volume: int | None
     shipment_address: str | None
     shipment_terms: str | None
@@ -26,7 +26,7 @@ class GetApplicationResponse(BaseModel):
     spgz_end_id: str | None
     amount: Decimal | None
     unit_of_measurement: str | None
-    status: str
+    status: str | None
     author_id: UUID
     created_at: datetime
     updated_at: datetime

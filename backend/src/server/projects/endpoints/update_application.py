@@ -28,8 +28,8 @@ class UpdateApplicationWithProductsRequest(BaseModel):
     calculation_id: str | None
     lot_id: str | None
     client_id: str | None
-    shipment_start_date: date
-    shipment_end_date: date
+    shipment_start_date: date | None
+    shipment_end_date: date | None
     shipment_volume: int | None
     shipment_address: str | None
     shipment_terms: str | None
@@ -38,11 +38,13 @@ class UpdateApplicationWithProductsRequest(BaseModel):
     spgz_end_id: str | None
     amount: Decimal | None
     unit_of_measurement: str | None
+    status: str | None  # draft | ready
 
     products: list[UpdateApplicationWithProductsRequestProduct]
 
 
 class UpdateApplicationWithProductsResponseProduct(BaseModel):
+    id: UUID
     name: str | None
     price: Decimal | None
     number: int | None
@@ -54,8 +56,8 @@ class UpdateApplicationWithProductsResponse(BaseModel):
     calculation_id: str | None
     lot_id: str | None
     client_id: str | None
-    shipment_start_date: date
-    shipment_end_date: date
+    shipment_start_date: date | None
+    shipment_end_date: date | None
     shipment_volume: int | None
     shipment_address: str | None
     shipment_terms: str | None
@@ -64,7 +66,7 @@ class UpdateApplicationWithProductsResponse(BaseModel):
     spgz_end_id: str | None
     amount: Decimal | None
     unit_of_measurement: str | None
-    status: str
+    status: str | None  # draft | ready
     # author_id: UUID
     created_at: datetime
     updated_at: datetime
@@ -83,22 +85,22 @@ class UpdateApplicationWithProducts(ProjectsEndpoints):
                 session, application
             )
 
-            products = [Product(**p.dict()) for p in data.products]
+            # products = [Product(**p.dict()) for p in data.products]
 
             # print(f"{products=}")
 
-            products_to_create = [Product(**p.dict()) for p in products if p.id is None]
+            products_to_create = [Product(**p.dict()) for p in data.products if p.id is None]
             new_products = await ProductDbManager.create_products(session, products_to_create)
 
             await session.flush()
 
-            products_to_update = [Product(**p.dict()) for p in products if p.id is not None]
+            products_to_update = [Product(**p.dict()) for p in data.products if p.id is not None]
             updated_products = await ProductDbManager.update_products(session, products_to_update)
 
             await session.flush()
 
             application_products = await ApplicationProductDbManager.update_application_products(
-                session, application.id, [p.id for p in products_to_create]
+                session, application.id, [p.id for p in new_products + updated_products]
             )
 
             await session.flush()

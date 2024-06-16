@@ -17,7 +17,12 @@ class ApplicationDbManager(DbManager):
         offset: int,
         limit: int
     ) -> ObjectsWithCount[list[Application]]:
-        stmt = select(Application).where(Application.author_id == author_id)
+        stmt = (
+            select(Application)
+            .where(Application.author_id == author_id)
+            .options(selectinload(Application.products))
+        ).order_by(Application.created_at.desc())
+
         applications = await paginated(session, stmt, offset, limit)
         count = await count_objects(session, stmt)
         return ObjectsWithCount(objects=applications, count=count)

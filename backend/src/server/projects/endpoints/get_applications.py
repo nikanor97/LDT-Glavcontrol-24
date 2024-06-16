@@ -31,6 +31,7 @@ class GetApplicationsResponse(BaseModel):
     author_id: UUID | None
     status: str | None
     author_name: str | None
+    product_count: int
 
 
 class GetApplications(ProjectsEndpoints):
@@ -67,6 +68,7 @@ class GetApplications(ProjectsEndpoints):
             author_id=app.author_id,
             status=app.status,
             author_name=user_id_to_name[app.author_id],
+            product_count=len(app.products),
         ) for app in applications.objects]
 
         return UnifiedResponsePaginated(

@@ -17,6 +17,7 @@ class GetForcastResponseProduct(BaseModel):
 
 
 class GetForcastResponse(BaseModel):
+    id: UUID
     product_id: UUID | None
     quarter: int | None
     year: int | None
@@ -38,6 +39,7 @@ class GetForecast(ProjectsEndpoints):
             res: list[GetForcastResponse] = []
             for idx, forc in enumerate(forecast.objects):
                 res.append(GetForcastResponse(
+                    id=forc.id,
                     product_id=forc.product_id,
                     quarter=forc.quarter,
                     year=forc.year,

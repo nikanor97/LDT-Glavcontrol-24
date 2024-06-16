@@ -16,6 +16,8 @@ from src.server.auth import Auth
 from src.server.common import METHOD, UnifiedResponse, UnifiedResponsePaginated
 from src.server.projects import ProjectsEndpoints
 from src.server.projects.endpoints.create_application import CreateApplication, CreateApplicationResponse
+from src.server.projects.endpoints.create_applications_by_forecast import CreateApplicationsFromForecast, \
+    CreateApplicationsFromForecastResponse
 from src.server.projects.endpoints.create_company import CreateCompany
 from src.server.projects.endpoints.export_forecast_excel import ExportForecastExcel
 from src.server.projects.endpoints.export_procurements_excel import ExportProcurementsExcel
@@ -202,6 +204,14 @@ class ProjectsRouter:
         )
 
         # TODO: Добавить ручку создания заявок по списку id прогнозов. возвращать список ids созданных заявок
+
+        self.router.add_api_route(
+            path="/applications-from-forecast",
+            endpoint=CreateApplicationsFromForecast(**params).call,
+            response_model=UnifiedResponse[CreateApplicationsFromForecastResponse],
+            methods=[METHOD.POST],
+            dependencies=[Depends(Auth(main_db_manager))],
+        )
 
         # self.router.add_api_route(
         #     path="/companies",

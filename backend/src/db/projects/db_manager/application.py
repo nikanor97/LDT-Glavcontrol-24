@@ -41,6 +41,15 @@ class ApplicationDbManager(DbManager):
         return application
 
     @staticmethod
+    async def create_applications(
+        session: AsyncSession,
+        application: list[Application]
+    ) -> list[Application]:
+        applications = [Application(**a.dict()) for a in application]
+        session.add_all(applications)
+        return applications
+
+    @staticmethod
     async def update_application(
         session: AsyncSession,
         application: Application

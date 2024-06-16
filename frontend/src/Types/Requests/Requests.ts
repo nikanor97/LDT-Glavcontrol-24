@@ -3,6 +3,7 @@ import {Products, User} from '../';
 export type Status = 'draft' | 'ready'
 export type ID = string;
 export type Item = {
+    "author_name": string;
     "id": ID;
     "created_at": string;
     "updated_at": string;
@@ -21,6 +22,7 @@ export type Item = {
     "unit_of_measurement": string;
     "author_id": User.Id;
     "status": Status;
+    "product_count": number;
 }
 
 export type WithProduct = Item & {

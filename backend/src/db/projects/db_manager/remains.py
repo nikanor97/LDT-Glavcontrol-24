@@ -14,26 +14,37 @@ class RemainsDbManager(DbManager):
     @staticmethod
     async def get_remains_for_period(
         session: AsyncSession,
+        company_id: UUID,
         start_date: date,
         end_date: date,
     ) -> list[Remains]:
         # stmt = select(Remains).where(
         #     (Remains.date >= start_date) & (Remains.date <= end_date)
         # )
-        stmt = select(Remains)
+        stmt = select(Remains).where(Remains.company_id == company_id)
         remains = (await session.execute(stmt)).scalars().all()
         return remains
 
     @staticmethod
     async def get_remains(
         session: AsyncSession,
+        company_id: UUID,
         offset: int,
         limit: int,
     ) -> ObjectsWithCount[list[Remains]]:
-        stmt = select(Remains)
+        stmt = select(Remains).where(Remains.company_id == company_id)
         remains = await paginated(session, stmt, offset, limit)
         count = await count_objects(session, stmt)
         return ObjectsWithCount(objects=remains, count=count)
+
+    @staticmethod
+    async def get_all_remains(
+        session: AsyncSession,
+        company_id: UUID,
+    ) -> list[Remains]:
+        stmt = select(Remains).where(Remains.company_id == company_id)
+        remains = (await session.execute(stmt)).scalars().all()
+        return remains
 
     @staticmethod
     async def get_remains_by_ids(

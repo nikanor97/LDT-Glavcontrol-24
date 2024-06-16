@@ -198,7 +198,8 @@ async def init_db():
             saldo_period_credit=Decimal(random.randint(10000, 100000) * random.random()),
             saldo_end_debet=Decimal(random.randint(10000, 100000) * random.random()),
             saldo_end_credit=Decimal(random.randint(10000, 100000) * random.random()),
-            product_id=random.choice(products).id
+            product_id=random.choice(products).id,
+            company_id=random.choice(companies).id
         ) for _ in range(100)]
 
         remains: list[Remains] = []
@@ -210,7 +211,8 @@ async def init_db():
             forecasts_raw.extend([Forecast(
             product_id=p.id,
             quarter=random.randint(1, 50),
-            year=random.randint(2020, 2024)
+            year=random.randint(2020, 2024),
+            company_id=random.choice(companies).id
         ) for p in products])
 
         forecasts: list[Forecast] = []
@@ -223,7 +225,8 @@ async def init_db():
             procurement_date=fake.date_of_birth(minimum_age=0, maximum_age=4),
             price=Decimal(random.randint(10000, 100000) * random.random()),
             way_to_define_supplier=fake.word(),
-            contract_basis=fake.word()
+            contract_basis=fake.word(),
+            company_id=random.choice(companies).id
         ) for _ in range(500)]
 
         procurements = await ProcurementDbManager.create_procurements(session, procurements_raw)

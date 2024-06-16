@@ -5,7 +5,8 @@ from fastapi import Depends
 from pydantic import BaseModel
 
 from src.db.projects.db_manager.procurement import ProcurementDbManager
-from src.server.auth_utils import oauth2_scheme
+from src.db.projects.db_manager.user_company import UserCompanyDbManager
+from src.server.auth_utils import oauth2_scheme, get_user_id_from_token
 from src.server.common import UnifiedResponse
 from src.server.projects import ProjectsEndpoints
 
@@ -29,8 +30,10 @@ class GetProcurementsStats(ProjectsEndpoints):
         year: int | None,
         quarter: int | None,
     ) -> UnifiedResponse[GetProcurementsStatsResponse]:
+        user_id = get_user_id_from_token(token)
         async with self._main_db_manager.projects.make_autobegin_session() as session:
+            user_company = await UserCompanyDbManager.get_user_company_by_user_id(session, user_id)
             procurements_stats = await ProcurementDbManager.get_procurements_stats(
-                session, year, quarter
+                session, user_company.company_id, year, quarter
             )
             return UnifiedResponse(data=procurements_stats)

@@ -1,5 +1,6 @@
 from datetime import date
 from decimal import Decimal
+from uuid import UUID
 
 from sqlmodel import Field
 
@@ -14,6 +15,7 @@ class ProcurementBase(ProjectsDataSQLModel):
     price: Decimal = Field(nullable=False)
     way_to_define_supplier: str = Field(nullable=False)
     contract_basis: str = Field(nullable=False)
+    company_id: UUID = Field(nullable=False, foreign_key="companies.id")
 
 
 class Procurement(ProcurementBase, TimeStampWithIdMixin, table=True):

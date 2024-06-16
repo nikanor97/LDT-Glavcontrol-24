@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -21,4 +23,13 @@ class UserCompanyDbManager(DbManager):
     ) -> list[UserCompany]:
         stmt = select(UserCompany)
         user_company = (await session.execute(stmt)).scalars().all()
+        return user_company
+
+    @staticmethod
+    async def get_user_company_by_user_id(
+        session: AsyncSession,
+        user_id: UUID
+    ) -> UserCompany:
+        stmt = select(UserCompany).where(UserCompany.user_id == user_id)
+        user_company = (await session.execute(stmt)).scalar_one()
         return user_company

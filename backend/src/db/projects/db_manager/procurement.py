@@ -28,6 +28,7 @@ class ProcurementDbManager(DbManager):
     @staticmethod
     async def get_procurements_stats(
         session: AsyncSession,
+        company_id: UUID,
         year: int,
         quarter: int,
     ) -> ProcurementsStats:
@@ -43,7 +44,7 @@ class ProcurementDbManager(DbManager):
         start_date, end_date = calculate_quarter_dates(year, quarter)
         stmt = select(Procurement).where(
             (Procurement.procurement_date >= start_date) & (Procurement.procurement_date <= end_date)
-        )
+        ).where(Procurement.company_id == company_id)
         procurements = (await session.execute(stmt)).scalars().all()
 
         amount_contracts = sum([p.price for p in procurements]) if len(procurements) > 0 else None
@@ -65,13 +66,24 @@ class ProcurementDbManager(DbManager):
     @staticmethod
     async def get_procurements(
         session: AsyncSession,
+        company_id: UUID,
         offset: int,
         limit: int
     ) -> ObjectsWithCount[list[Procurement]]:
-        stmt = select(Procurement)
+        stmt = select(Procurement).where(Procurement.company_id == company_id)
         procurements = await paginated(session, stmt, offset, limit)
         count = await count_objects(session, stmt)
         return ObjectsWithCount(objects=procurements, count=count)
+
+    @staticmethod
+    async def get_all_procurements(
+        session: AsyncSession,
+        company_id: UUID,
+    ) -> list[Procurement]:
+        stmt = select(Procurement).where(Procurement.company_id == company_id)
+        procurements = (await session.execute(stmt)).scalars().all()
+        return procurements
+
 
     @staticmethod
     async def get_procurements_by_ids(

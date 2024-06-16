@@ -1,10 +1,14 @@
 from datetime import date
+from typing import TYPE_CHECKING
 from uuid import UUID
 
-from sqlmodel import Field
+from sqlmodel import Field, Relationship
 
 from src.db.mixins import TimeStampWithIdMixin
 from src.db.projects.models import ProjectsDataSQLModel
+
+if TYPE_CHECKING:
+    from src.db.projects.models.forecast import Forecast
 
 
 class CompanyBase(ProjectsDataSQLModel):
@@ -18,3 +22,5 @@ class CompanyBase(ProjectsDataSQLModel):
 
 class Company(CompanyBase, TimeStampWithIdMixin, table=True):
     __tablename__ = "companies"
+    forecast: list["Forecast"] = Relationship(back_populates="company")
+

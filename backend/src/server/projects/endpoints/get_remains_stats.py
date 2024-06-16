@@ -5,8 +5,9 @@ from fastapi import Depends
 from pydantic import BaseModel
 
 from src.db.projects.db_manager.remains import RemainsDbManager
+from src.db.projects.db_manager.user_company import UserCompanyDbManager
 from src.db.projects.models.remains import Remains
-from src.server.auth_utils import oauth2_scheme
+from src.server.auth_utils import oauth2_scheme, get_user_id_from_token
 from src.server.common import UnifiedResponse
 from src.server.projects import ProjectsEndpoints
 from src.server.projects.utils.calculate_quarter_dates import calculate_quarter_dates
@@ -29,11 +30,14 @@ class GetRemainsStats(ProjectsEndpoints):
         year: int,
         quarter: int,
     ) -> UnifiedResponse[GetRemainsStatsResponse]:
+        user_id = get_user_id_from_token(token)
         start_date, end_date = calculate_quarter_dates(year, quarter)
 
         async with self._main_db_manager.projects.make_autobegin_session() as session:
+            user_company = await UserCompanyDbManager.get_user_company_by_user_id(session, user_id)
+
             remains: list[Remains] = await RemainsDbManager.get_remains_for_period(
-                session, start_date, end_date
+                session, user_company.company_id, start_date, end_date
             )
 
         res = GetRemainsStatsResponse(

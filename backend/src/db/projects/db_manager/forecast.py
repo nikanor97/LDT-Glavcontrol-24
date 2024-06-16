@@ -14,20 +14,37 @@ class ForecastDbManager(DbManager):
     @staticmethod
     async def get_forecast(
         session: AsyncSession,
+        company_id: UUID,
         quarter: int | None,
         year: int | None,
         offset: int,
         limit: int,
     ) -> ObjectsWithCount[list[Forecast]]:
-        stmt = select(Forecast)
+        stmt = select(Forecast).where(Forecast.company_id == company_id)
         if quarter is not None:
             stmt = stmt.where(Forecast.quarter == quarter)
         if year is not None:
             stmt = stmt.where(Forecast.year == year)
-        stmt = stmt.options(selectinload(Forecast.product))
+        stmt = stmt.options(selectinload(Forecast.product), selectinload(Forecast.company))
         forecast = await paginated(session, stmt, offset, limit)
         count = await count_objects(session, stmt)
         return ObjectsWithCount(objects=forecast, count=count)
+
+    @staticmethod
+    async def get_all_forecast(
+        session: AsyncSession,
+        company_id: UUID,
+        quarter: int | None,
+        year: int | None,
+    ) -> list[Forecast]:
+        stmt = select(Forecast).where(Forecast.company_id == company_id)
+        if quarter is not None:
+            stmt = stmt.where(Forecast.quarter == quarter)
+        if year is not None:
+            stmt = stmt.where(Forecast.year == year)
+        stmt = stmt.options(selectinload(Forecast.product), selectinload(Forecast.company))
+        forecast = (await session.execute(stmt)).scalars().all()
+        return forecast
 
     @staticmethod
     async def get_forecast_by_ids(

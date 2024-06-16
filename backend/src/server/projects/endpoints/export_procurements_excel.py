@@ -1,21 +1,27 @@
 from io import BytesIO
+from typing import Annotated
 from uuid import UUID
 
 import pandas as pd
+from fastapi import Depends
 from starlette.responses import FileResponse, StreamingResponse
 
 from src.db.projects.db_manager.procurement import ProcurementDbManager
+from src.db.projects.db_manager.user_company import UserCompanyDbManager
+from src.server.auth_utils import oauth2_scheme, get_user_id_from_token
 from src.server.projects import ProjectsEndpoints
 
 
 class ExportProcurementsExcel(ProjectsEndpoints):
     async def call(
         self,
-        procurements_ids: list[UUID],
+        token: Annotated[str, Depends(oauth2_scheme)],
     ) -> StreamingResponse:
+        user_id = get_user_id_from_token(token)
         async with self._main_db_manager.projects.make_autobegin_session() as session:
-            procurements = ProcurementDbManager.get_procurements_by_ids(
-                session, procurements_ids
+            user_company = await UserCompanyDbManager.get_user_company_by_user_id(session, user_id)
+            procurements = await ProcurementDbManager.get_all_procurements(
+                session, user_company.company_id
             )
 
         df = pd.DataFrame([p.dict() for p in procurements])

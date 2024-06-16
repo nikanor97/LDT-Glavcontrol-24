@@ -111,11 +111,13 @@ def upgrade_projects() -> None:
     op.create_table('forecasts',
                     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=False),
                     sa.Column('product_id', sqlmodel.sql.sqltypes.GUID(), nullable=False),
+                    sa.Column('company_id', sqlmodel.sql.sqltypes.GUID(), nullable=False),
                     sa.Column('quarter', sa.Integer(), nullable=False),
                     sa.Column('year', sa.Integer(), nullable=False),
                     sa.Column('created_at', sa.DateTime(), nullable=False),
                     sa.Column('updated_at', sa.DateTime(), nullable=False),
                     sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
+                    sa.ForeignKeyConstraint(['company_id'], ['companies.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
     op.create_index(op.f('ix_forecasts_product_id'), 'forecasts', ['product_id'], unique=False)
@@ -132,8 +134,10 @@ def upgrade_projects() -> None:
                     sa.Column('price', sa.Numeric(), nullable=False),
                     sa.Column('way_to_define_supplier', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
                     sa.Column('contract_basis', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+                    sa.Column('company_id', sqlmodel.sql.sqltypes.GUID(), nullable=False),
                     sa.Column('created_at', sa.DateTime(), nullable=False),
                     sa.Column('updated_at', sa.DateTime(), nullable=False),
+                    sa.ForeignKeyConstraint(['company_id'], ['companies.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
     op.create_index(op.f('ix_procurements_spgz_id'), 'procurements', ['spgz_id'], unique=False)
@@ -154,8 +158,10 @@ def upgrade_projects() -> None:
                     sa.Column('saldo_end_debet', sa.Numeric(), nullable=True),
                     sa.Column('saldo_end_credit', sa.Numeric(), nullable=True),
                     sa.Column('product_id', sqlmodel.sql.sqltypes.GUID(), sa.ForeignKey('products.id'), nullable=True),
+                    sa.Column('company_id', sqlmodel.sql.sqltypes.GUID(), nullable=False),
                     sa.Column('created_at', sa.DateTime(), nullable=False),
                     sa.Column('updated_at', sa.DateTime(), nullable=False),
+                    sa.ForeignKeyConstraint(['company_id'], ['companies.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
     op.create_index(op.f('ix_remains_product_id'), 'remains', ['product_id'], unique=False)

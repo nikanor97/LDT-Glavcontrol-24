@@ -19,6 +19,7 @@ class RemainsBase(ProjectsDataSQLModel):
     saldo_end_debet: Decimal | None = Field(nullable=True)
     saldo_end_credit: Decimal | None = Field(nullable=True)
     product_id: UUID | None = Field(nullable=True, foreign_key="products.id")  # TODO выкинуть нафиг
+    company_id: UUID | None = Field(nullable=True, foreign_key="companies.id")
 
 
 class Remains(RemainsBase, TimeStampWithIdMixin, table=True):

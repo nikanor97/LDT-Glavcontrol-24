@@ -1,21 +1,30 @@
 from io import BytesIO
+from typing import Annotated
 from uuid import UUID
 
 import pandas as pd
-from starlette.responses import StreamingResponse
+from fastapi import Depends
+from starlette.responses import StreamingResponse, FileResponse
 
 from src.db.projects.db_manager.forecast import ForecastDbManager
+from src.db.projects.db_manager.user_company import UserCompanyDbManager
+from src.server.auth_utils import oauth2_scheme, get_user_id_from_token
 from src.server.projects import ProjectsEndpoints
 
 
 class ExportForecastExcel(ProjectsEndpoints):
     async def call(
         self,  # TODO: добавить год и квартал и если ids пустые то исходя из года и квартала сформировать
-        forecast_ids: list[UUID],
-    ) -> StreamingResponse:
+        quarter: int,
+        year: int,
+        token: Annotated[str, Depends(oauth2_scheme)],
+    ) -> FileResponse:
+        user_id = get_user_id_from_token(token)
         async with self._main_db_manager.projects.make_autobegin_session() as session:
-            forecast = ForecastDbManager.get_forecast_by_ids(
-                session, forecast_ids
+            user_company = await UserCompanyDbManager.get_user_company_by_user_id(session, user_id)
+
+            forecast = await ForecastDbManager.get_all_forecast(
+                session, user_company.company_id, quarter, year,
             )
 
         df = pd.DataFrame([p.dict() for p in forecast])

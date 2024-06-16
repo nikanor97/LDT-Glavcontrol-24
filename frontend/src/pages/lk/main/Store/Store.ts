@@ -7,12 +7,12 @@ export const {
     usePrivateStore
 } = createPrivateStore<iStore<iState, iActions>>('lk/main', (set) => ({
     orders: {
-        quarter: dayjs().quarter(),
-        year:  dayjs().year(),
+        quarter: 4,
+        year:  2022,
     },
     remains: {
-        quarter: dayjs().quarter(),
-        year:  dayjs().year(),
+        quarter: 4,
+        year:  2022,
     },
     actions: {
         setOrderDates: (year, quarter) => {

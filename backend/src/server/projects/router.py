@@ -94,7 +94,6 @@ class ProjectsRouter:
         self.router.add_api_route(
             path="/procurements-upload-excel",
             endpoint=UploadProcurementsExcel(**params).call,
-            response_model=UnifiedResponse[list[Procurement]],
             methods=[METHOD.POST],
             dependencies=[Depends(Auth(main_db_manager))],
         )

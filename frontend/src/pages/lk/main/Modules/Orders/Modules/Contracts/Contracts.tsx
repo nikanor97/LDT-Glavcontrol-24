@@ -1,11 +1,15 @@
+import {useMemo} from 'react';
 import StatisticItem from "../../Components/StatsticItem/StatisticItem";
 import { HiBanknotes } from "react-icons/hi2";
 import { HiClock } from "react-icons/hi";
 import {useProcuremtns} from '../../Hooks/useProcurementsStats';
+import { getMeasurementNumber } from "@/Utils/Transform/getMeasurementNumber";
+
 
 const Contracts = () => {
     const {data} = useProcuremtns();
     const value = data?.amount_contracts || '-'
+    
     return (
         <StatisticItem 
             name="Сумма размещённых контрактов"

@@ -1,12 +1,15 @@
+import {useEffect} from 'react';
 import { required } from "@/Utils/Form/required";
 import { Form, Input, DatePicker, FormInstance, message } from "antd";
 import {Company} from '@/Types';
 import {useCreateCompany} from '@/Hooks/Company/useCreateCompany';
+import {useUpdateCompany} from '@/Hooks/Company/useUpdateCompany';
 import { getErrorMessage } from "@/Utils/Api/getErrorMessage";
 import {useQueryClient} from '@tanstack/react-query';
 import {usePrivateStore} from '../../../../Store/Store';
 import {queryKey} from '@/Hooks/Company/useCompanies';
-import dayjs from "dayjs";
+import { getNormalizedValue, getDateValue } from "@/Utils/Transform/getDateTransform";
+import { useIsEdit } from '../../Hooks/useIsEdit';
 
 type iCreateCompanyForm = {
     form: FormInstance;
@@ -14,25 +17,36 @@ type iCreateCompanyForm = {
 
 const CreateCompanyForm = (props: iCreateCompanyForm) => {
     const createCompany = useCreateCompany();
+    const updateCompany = useUpdateCompany();
     const closeDrawer = usePrivateStore((state) => state.actions.closeDrawer);
+    const item = usePrivateStore((state) => state.addCompany.item);
     const client = useQueryClient();
+    const isEdit = useIsEdit();
+
+    useEffect(() => {
+        if (item) props.form.setFieldsValue(item)
+    }, [item]);
+
     return (
         <Form<Company.Item> 
-            onFinish={(values) => {
-                values.foundation_date = dayjs(values.foundation_date).format('YYYY-MM-DD');
+            onFinish={async (values) => {
 
-                createCompany.mutate(values, {
-                    onSuccess: () => {
-                        closeDrawer();
+                try {
+                    if (item) {
+                        await updateCompany.mutateAsync({...values, id: item.id})
+                        message.success('Компания успешно сохранена');
+                    } else {
+                        await createCompany.mutateAsync(values)
                         message.success('Компания успешно создана');
-                        client.resetQueries({
-                            queryKey
-                        })
-                    },
-                    onError: (err) => {
-                        message.error(getErrorMessage(err))
                     }
-                })
+                    closeDrawer();
+                    client.resetQueries({
+                        queryKey
+                    })
+                } catch (ex: unknown) {
+                    message.error(getErrorMessage(ex))
+                }
+
             }}
             layout="vertical"
             form={props.form}>
@@ -58,6 +72,8 @@ const CreateCompanyForm = (props: iCreateCompanyForm) => {
             <Form.Item
                 name="foundation_date"
                 rules={[required('Дата основание')]}
+                normalize={getNormalizedValue()}
+                getValueProps={getDateValue()}
                 label="Дата основание">
                 <DatePicker  
                     size="large" 

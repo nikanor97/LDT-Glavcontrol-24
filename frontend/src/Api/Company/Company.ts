@@ -36,6 +36,8 @@ export default {
     updateReqest: (params: iApi.iCreateRequest) => 
         axios.put<iApi.oCreateRequest>(paths.createRequest, params),
     createRequestFromPrediction: (params: iApi.iCreateRequestFromPrediction) => 
-        axios.post<iApi.oCreateRequestFromPrediction>(paths.createRequestFromPredictions, params)
+        axios.post<iApi.oCreateRequestFromPrediction>(paths.createRequestFromPredictions, params),
+    updateCompany: (params: iApi.iUpdateCompany) =>
+        axios.put<iApi.oUpdateCompany>(paths.updateCompany, params)
 
 }

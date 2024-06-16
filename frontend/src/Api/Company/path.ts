@@ -12,6 +12,6 @@ export default {
     getPredictions: '/v1/projects/forecast',
     getRequest: '/v1/projects/application',
     createRequest: '/v1/projects/application',
-    createRequestFromPredictions: '/v1/projects/applications-from-forecast'
-
+    createRequestFromPredictions: '/v1/projects/applications-from-forecast',
+    updateCompany: '/v1/projects/company'
 }

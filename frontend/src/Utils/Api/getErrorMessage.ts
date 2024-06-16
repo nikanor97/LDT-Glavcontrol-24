@@ -2,7 +2,7 @@ import {isAxiosError, AxiosResponse} from 'axios';
 import {Api} from '@/Types';
 
 
-export const getErrorMessage = (ex: Error) => {
+export const getErrorMessage = (ex: unknown) => {
     const messages = {
         front: {
             default: 'Ошибка при выполнении запроса',

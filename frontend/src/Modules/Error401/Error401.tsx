@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import ErrorImage from './Images/error.png'
+import ErrorImage from './Images/err.png'
 import styles from './Error401.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -49,6 +49,7 @@ const Page401 = (props: iPage401) => {
                 <Image 
                     src={ErrorImage}
                     alt="401"
+                    quality={100}
                 />
             </div>          
             <div className={styles.code}>

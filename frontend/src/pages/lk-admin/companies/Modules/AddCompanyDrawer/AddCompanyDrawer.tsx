@@ -4,17 +4,20 @@ import {usePrivateStore} from '../../Store/Store';
 import CreateCompanyForm from "./Modules/CreateCompanyForm/CreateCompanyForm";
 import {useCreateCompanyState} from '@/Hooks/Company/useCreateCompany';
 import styles from './AddCompanyDrawer.module.scss';
+import { useIsEdit } from './Hooks/useIsEdit';
 
 const AddCompanyDrawer = () => {
     const visible = usePrivateStore((state) => state.addCompany.visible);
     const close = usePrivateStore((state) => state.actions.closeDrawer);
     const state = useCreateCompanyState();
     const [form] = Form.useForm();
+    const isEdit = useIsEdit();
 
     return (
         <DrawerModule 
             width="unset"
-            title="Добавить компанию" 
+            destroyOnClose
+            title={isEdit ? 'Редактировать компанию' : 'Добавить компанию'} 
             onClose={close}
             footer={
                 <>
@@ -27,13 +30,15 @@ const AddCompanyDrawer = () => {
                             form.submit();
                         }}
                         type="primary">
-                        Добавить
+                        {isEdit ? 'Сохранить' : 'Создать'} 
                     </Button>
                 </>
             }
             open={visible}>
             <div className={styles.content}>
-                <CreateCompanyForm form={form} />
+                <CreateCompanyForm 
+                    form={form} 
+                />
             </div>
         </DrawerModule>
     )

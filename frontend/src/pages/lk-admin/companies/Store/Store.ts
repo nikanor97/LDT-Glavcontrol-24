@@ -7,6 +7,7 @@ export const {
 } = createPrivateStore<iStore<iState, iActions>>('lk-admin/companies', (set) => ({
     addCompany: {
         visible: false,
+        item: null,
     },
     params: {
         limit: 10,
@@ -24,11 +25,13 @@ export const {
         closeDrawer: () => {
             set((state) => {
                 state.addCompany.visible = false;
+                state.addCompany.item = null;
             })
         },
-        openDrawer: () => {
+        openDrawer: (item) => {
             set((state) => {
                 state.addCompany.visible = true;
+                if (item) state.addCompany.item = item;
             })
         }
     }

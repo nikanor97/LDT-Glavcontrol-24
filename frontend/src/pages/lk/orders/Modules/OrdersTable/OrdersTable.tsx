@@ -37,7 +37,6 @@ const OrdersTable = () => {
                                 preserveSelectedRowKeys: true,
                                 selectedRowKeys: selected,
                                 onChange: (selected) => {
-                                    console.log(selected)
                                     setSelected(selected.map(String));
                                 }
                             }}

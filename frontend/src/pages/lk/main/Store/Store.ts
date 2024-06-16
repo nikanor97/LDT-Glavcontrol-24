@@ -23,8 +23,8 @@ export const {
         },
         setRemainsDates: (year, quarter) => {
             set((state) => {
-                state.orders.quarter = quarter;
-                state.orders.year = year;
+                state.remains.quarter = quarter;
+                state.remains.year = year;
             })
         }
     }

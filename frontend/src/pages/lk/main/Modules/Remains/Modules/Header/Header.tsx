@@ -3,12 +3,15 @@ import getRoute from '@/Routes/Routes';
 import BlockTitle from "../../../../Components/BlockTitle/BlockTitle"
 import styles from './Header.module.scss';
 import {DatePicker} from 'antd';
-import dayjs from 'dayjs';
 import {usePrivateStore} from '../../../../Store/Store';
+import { useDateByQuarter } from '@/Hooks/Date/useDateByQuarter';
 
 
 const Header = () => {
     const setRemainsDates = usePrivateStore((state) => state.actions.setRemainsDates);
+    const params = usePrivateStore((state) => state.remains);
+    const value = useDateByQuarter(params.quarter, params.year);
+
     return (
         <div className={styles.wrapper}>
             <Link href={getRoute.lk.remains}>
@@ -18,7 +21,7 @@ const Header = () => {
             </Link>
             <DatePicker
                 picker="quarter"
-                defaultValue={dayjs()} 
+                value={value}
                 size="large"
                 onChange={(value) => {
                     setRemainsDates(

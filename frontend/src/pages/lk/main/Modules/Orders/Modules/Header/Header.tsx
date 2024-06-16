@@ -5,9 +5,15 @@ import {usePrivateStore} from '../../../../Store/Store';
 import styles from './Header.module.scss';
 import {DatePicker} from 'antd';
 import dayjs from 'dayjs';
+import { useDateByQuarter } from '@/Hooks/Date/useDateByQuarter';
+
+
 
 const Header = () => {
     const setOrderDates = usePrivateStore((state) => state.actions.setOrderDates);
+    const params = usePrivateStore((state) => state.orders);
+    const value = useDateByQuarter(params.quarter, params.year);
+
     return (
         <div className={styles.wrapper}>
             <Link href={getRoute.lk.orders}>
@@ -17,7 +23,7 @@ const Header = () => {
             </Link>
             <DatePicker
                 picker="quarter"
-                defaultValue={dayjs()} 
+                value={value}
                 size="large"
                 onChange={(value) => {
                     setOrderDates(

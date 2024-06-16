@@ -159,7 +159,7 @@ async def init_db():
             unit_of_measurement=fake.word(),
             author_id=random.choice(regular_users).id,
             status="draft"
-        ) for _ in range(100)]
+        ) for _ in range(500)]
 
         for application in applications:
             await ApplicationDbManager.create_application(session, application)
@@ -169,7 +169,7 @@ async def init_db():
             price=Decimal(random.randint(100, 1000) * random.random()),
             number=random.randint(1, 100),
             amount=Decimal(random.randint(10000, 100000) * random.random())
-        ) for _ in range(500)]
+        ) for _ in range(2000)]
 
         products = await ProductDbManager.create_products(session, products_raw)
 
@@ -200,7 +200,7 @@ async def init_db():
             saldo_end_credit=Decimal(random.randint(10000, 100000) * random.random()),
             product_id=random.choice(products).id,
             company_id=random.choice(companies).id
-        ) for _ in range(100)]
+        ) for _ in range(500)]
 
         remains: list[Remains] = []
         for r in remains_raw:
@@ -227,7 +227,7 @@ async def init_db():
             way_to_define_supplier=fake.word(),
             contract_basis=fake.word(),
             company_id=random.choice(companies).id
-        ) for _ in range(500)]
+        ) for _ in range(1500)]
 
         procurements = await ProcurementDbManager.create_procurements(session, procurements_raw)
 

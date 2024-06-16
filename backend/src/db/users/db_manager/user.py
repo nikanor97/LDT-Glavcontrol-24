@@ -49,6 +49,19 @@ class UserDbManager(DbManager):
         return user
 
     @staticmethod
+    async def get_users_by_ids(
+        session: AsyncSession, user_ids: set[UUID]
+    ) -> list[User]:
+        stmt = select(User).where(col(User.id).in_(user_ids))
+        users: list[User] = (await session.execute(stmt)).scalars().all()
+        wrong_user_ids = set(user_ids) - set([u.id for u in users])
+        if len(wrong_user_ids) > 0:
+            raise NoResultFound(
+                f"Users with ids {wrong_user_ids} were not found in the DB"
+            )
+        return users
+
+    @staticmethod
     async def get_users(
         session: AsyncSession, user_ids: set[UUID]
     ) -> list[User]:

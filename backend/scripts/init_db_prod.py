@@ -75,7 +75,8 @@ async def init_db():
             permission_read_stat=bool(random.getrandbits(1)),
             permission_create_order=bool(random.getrandbits(1)),
             is_deleted=False,
-            role="admin"
+            role="admin",
+            telegram_username=fake.user_name()
         ) for _ in range(10)]
 
         regular_users_raw = [User(
@@ -84,7 +85,8 @@ async def init_db():
             permission_read_stat=bool(random.getrandbits(1)),
             permission_create_order=bool(random.getrandbits(1)),
             is_deleted=False,
-            role="user"
+            role="user",
+            telegram_username=fake.user_name()
         ) for _ in range(25)]
 
         custom_admin_user_raw = User(
@@ -93,7 +95,8 @@ async def init_db():
             permission_read_stat=True,
             permission_create_order=True,
             is_deleted=False,
-            role="admin"
+            role="admin",
+            telegram_username=fake.user_name()
         )
         admin_users_raw.append(custom_admin_user_raw)
         custom_regular_user_raw = User(
@@ -102,7 +105,8 @@ async def init_db():
             permission_read_stat=True,
             permission_create_order=True,
             is_deleted=False,
-            role="user"
+            role="user",
+            telegram_username=fake.user_name()
         )
         regular_users_raw.append(custom_regular_user_raw)
 

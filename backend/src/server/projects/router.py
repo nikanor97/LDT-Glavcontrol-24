@@ -23,7 +23,7 @@ from src.server.projects.endpoints.export_forecast_excel import ExportForecastEx
 from src.server.projects.endpoints.export_procurements_excel import ExportProcurementsExcel
 from src.server.projects.endpoints.export_remains_excel import ExportRemainsExcel
 from src.server.projects.endpoints.get_application import GetApplication, GetApplicationResponse
-from src.server.projects.endpoints.get_applications import GetApplications
+from src.server.projects.endpoints.get_applications import GetApplications, GetApplicationsResponse
 from src.server.projects.endpoints.get_companies import GetCompanies
 from src.server.projects.endpoints.get_company import GetCompany
 from src.server.projects.endpoints.get_forecast import GetForecast, GetForcastResponse
@@ -102,7 +102,7 @@ class ProjectsRouter:
         self.router.add_api_route(
             path="/applications",
             endpoint=GetApplications(**params).call,
-            response_model=UnifiedResponsePaginated[list[Application]],
+            response_model=UnifiedResponsePaginated[list[GetApplicationsResponse]],
             methods=[METHOD.GET],
             dependencies=[Depends(Auth(main_db_manager))],
         )
@@ -202,8 +202,6 @@ class ProjectsRouter:
             methods=[METHOD.PUT],
             dependencies=[Depends(Auth(main_db_manager))],
         )
-
-        # TODO: Добавить ручку создания заявок по списку id прогнозов. возвращать список ids созданных заявок
 
         self.router.add_api_route(
             path="/applications-from-forecast",

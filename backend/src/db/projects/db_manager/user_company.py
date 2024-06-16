@@ -26,10 +26,10 @@ class UserCompanyDbManager(DbManager):
         return user_company
 
     @staticmethod
-    async def get_user_company_by_user_id(
+    async def get_user_company_by_user_id(  # TODO: сейчас возвращает только первую запись
         session: AsyncSession,
         user_id: UUID
     ) -> UserCompany:
         stmt = select(UserCompany).where(UserCompany.user_id == user_id)
-        user_company = (await session.execute(stmt)).scalar_one()
+        user_company = (await session.execute(stmt)).scalars().first()
         return user_company

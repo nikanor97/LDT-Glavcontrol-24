@@ -16,7 +16,6 @@ class ExportRemainsExcel(ProjectsEndpoints):
     async def call(
         self,
         token: Annotated[str, Depends(oauth2_scheme)],
-        remains_ids: list[UUID],
     ) -> StreamingResponse:
         user_id = get_user_id_from_token(token)
         async with self._main_db_manager.projects.make_autobegin_session() as session:

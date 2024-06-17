@@ -9,8 +9,8 @@ export const {
     params: {
         limit: 10,
         offset: 0,
-        quarter: dayjs().quarter(),
-        year: dayjs().year()
+        quarter: 1,
+        year: 2023
     },
     selected: [],
     actions: {

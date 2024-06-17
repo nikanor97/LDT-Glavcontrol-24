@@ -1,18 +1,17 @@
 import { createPrivateStore, iStore } from "@/Utils/Zustand/createPrivate";
 import {iActions, iState} from './types';
-import dayjs from "dayjs";
 
 export const {
     ContextComponent,
     usePrivateStore
 } = createPrivateStore<iStore<iState, iActions>>('lk/main', (set) => ({
     orders: {
-        quarter: dayjs().quarter(),
-        year:  dayjs().year(),
+        quarter: 4,
+        year:  2022,
     },
     remains: {
-        quarter: dayjs().quarter(),
-        year:  dayjs().year(),
+        quarter: 4,
+        year:  2022,
     },
     actions: {
         setOrderDates: (year, quarter) => {

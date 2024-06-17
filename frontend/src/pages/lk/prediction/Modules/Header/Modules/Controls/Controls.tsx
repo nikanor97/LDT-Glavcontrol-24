@@ -44,7 +44,7 @@ const Controls = () => {
                     </>
                 )
             }
-            <DatePicker 
+            {/* <DatePicker 
                 picker="quarter"
                 value={value}
                 size="large"
@@ -58,7 +58,7 @@ const Controls = () => {
                     if (selected) setSelected([]);
 
                 }}
-            />
+            /> */}
             <a 
                 download="forecast.xlsx"
                 href={Routes.api.predictionsExportExcel(params.quarter, params.year, user.id)}>

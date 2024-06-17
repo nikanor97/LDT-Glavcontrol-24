@@ -21,10 +21,12 @@ const CreateForm = () => {
             if (data.products.length) return data;
             else return {
                 ...data,
-                products: []
+                products: [{}]
             }
         }
-        return {};
+        return {
+            products: [{}]
+        };
     }, [data]);
     return (
         <div className={styles.wrapper}>
@@ -40,7 +42,7 @@ const CreateForm = () => {
                                 status: 'ready'
                             })
                         } else {
-                            createRequest.mutateAsync({
+                            await createRequest.mutateAsync({
                                 ...values,
                                 status: 'ready'
                             })   

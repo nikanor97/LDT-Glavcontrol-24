@@ -7,6 +7,7 @@ import {useCreateRequestByPredicitions} from '@/Hooks/Requests/useCreateRequestB
 import { useDateByQuarter } from '@/Hooks/Date/useDateByQuarter';
 import {Routes} from '@/Routes/Routes';
 import { useUser } from '@/Hooks/User/useUser';
+import {usePredictions} from '../../../../Hooks/usePredictions';
 
 const Controls = () => {
     const changeParams = usePrivateStore((state) => state.actions.changeParams);
@@ -15,6 +16,8 @@ const Controls = () => {
     const params = usePrivateStore((state) => state.params);
     const createRequest = useCreateRequestByPredicitions();
     const value = useDateByQuarter(params.quarter, params.year);
+    const {data} = usePredictions();
+
     const {data: user} = useUser();
     if (!user) return null;
     return (
@@ -42,6 +45,19 @@ const Controls = () => {
                             Создать заявку
                         </Button>
                     </>
+                )
+            }
+            {
+                Boolean(data?.items.length) && (
+                    <a 
+                        download="forecast.xlsx"
+                        href={Routes.api.predictionsExportJSON()}>
+                        <Button 
+                            icon={<HiOutlineDownload />}
+                            size="large">
+                            Скачать JSON
+                        </Button>
+                    </a>
                 )
             }
             {/* <DatePicker 

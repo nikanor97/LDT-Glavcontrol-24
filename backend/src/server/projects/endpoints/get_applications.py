@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Annotated
 from uuid import UUID
@@ -15,6 +15,7 @@ from src.server.projects import ProjectsEndpoints
 
 
 class GetApplicationsResponse(BaseModel):
+    id: UUID
     calculation_id: str | None
     lot_id: str | None
     client_id: str | None
@@ -32,6 +33,8 @@ class GetApplicationsResponse(BaseModel):
     status: str | None
     author_name: str | None
     product_count: int
+    created_at: datetime
+    updated_at: datetime
 
 
 class GetApplications(ProjectsEndpoints):
@@ -52,6 +55,7 @@ class GetApplications(ProjectsEndpoints):
             user_id_to_name = {user.id: user.name for user in users}
 
         res = [GetApplicationsResponse(
+            id=app.id,
             calculation_id=app.calculation_id,
             lot_id=app.lot_id,
             client_id=app.client_id,
@@ -69,6 +73,8 @@ class GetApplications(ProjectsEndpoints):
             status=app.status,
             author_name=user_id_to_name[app.author_id],
             product_count=len(app.products),
+            created_at=app.created_at,
+            updated_at=app.updated_at,
         ) for app in applications.objects]
 
         return UnifiedResponsePaginated(

@@ -148,7 +148,7 @@ def upgrade_projects() -> None:
     op.create_table('remains',
                     sa.Column('id', sqlmodel.sql.sqltypes.GUID(), nullable=False),
                     sa.Column('cmo', sa.String(), nullable=True),
-                    sa.Column('koc', sa.Integer(), nullable=True),
+                    sa.Column('koc', sa.String(), nullable=True),
                     sa.Column('number', sa.Integer(), nullable=True),
                     sa.Column('indicator', sa.Integer(), nullable=True),
                     sa.Column('saldo_begin_debet', sa.Numeric(), nullable=True),

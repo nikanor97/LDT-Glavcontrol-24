@@ -9,7 +9,7 @@ from src.db.projects.models import ProjectsDataSQLModel
 
 class RemainsBase(ProjectsDataSQLModel):
     cmo: str | None = Field(nullable=True)
-    koc: int | None = Field(nullable=True)
+    koc: str | None = Field(nullable=True)
     number: int | None = Field(nullable=True)
     indicator: int | None = Field(nullable=True)
     saldo_begin_debet: Decimal | None = Field(nullable=True)

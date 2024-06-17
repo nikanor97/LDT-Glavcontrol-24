@@ -97,10 +97,13 @@ async def init_db():
         #     regular_users.append(await UserDbManager.create_user(session, user))
 
         # await UserDbManager.create_user(session, custom_regular_user_raw)
-        await UserDbManager.create_user(session, custom_admin_user_raw)
+        try:
+            await UserDbManager.create_user(session, custom_admin_user_raw)
 
-        for user in [custom_admin_user_raw]:
-            await UserPasswordDbManager.create_user_password(session, user.id, "test")
+            for user in [custom_admin_user_raw]:
+                await UserPasswordDbManager.create_user_password(session, user.id, "admin")
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

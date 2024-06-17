@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class ProductBase(ProjectsDataSQLModel):
-    name: str | None = Field(nullable=False)
+    name: str | None = Field(nullable=False)  # TODO: исправить |None
     price: Decimal | None = Field(nullable=False)
     number: int | None = Field(nullable=False)
     amount: Decimal | None = Field(nullable=False)

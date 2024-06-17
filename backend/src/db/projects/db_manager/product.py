@@ -7,7 +7,7 @@ from src.db.projects.models.product import Product
 
 class ProductDbManager(DbManager):
     @staticmethod
-    async def create_products(session, products) -> list[Product]:
+    async def create_products(session, products: list[Product]) -> list[Product]:
         products = [Product(**product.dict()) for product in products]
         session.add_all(products)
         return products

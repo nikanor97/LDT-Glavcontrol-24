@@ -58,7 +58,8 @@ class RemainsDbManager(DbManager):
     @staticmethod
     async def create_remains(
         session: AsyncSession,
-        remains: Remains,
-    ) -> Remains:
-        session.add(remains)
+        remains: list[Remains],
+    ) -> list[Remains]:
+        remains = [Remains(**item.dict()) for item in remains]
+        session.add_all(remains)
         return remains

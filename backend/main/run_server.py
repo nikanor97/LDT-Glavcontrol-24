@@ -5,6 +5,7 @@ import uvloop
 
 from common.rabbitmq.consumer import Consumer
 from common.rabbitmq.publisher import Publisher
+from scripts.init_db_users_only import init_db
 from src.db.base_manager import run_migrations
 # from internal_common.logging.logging import get_uvicorn_log_file, loguru_json_serializer
 # from internal_common.rabbitmq import ConnectionPool as AmqpConnectionPool, Consumer
@@ -95,6 +96,8 @@ async def main(loop: asyncio.AbstractEventLoop) -> None:
     #     )
     # else:
     #     config = uvicorn.Config(server_app, host="0.0.0.0", port=settings.APP_PORT)
+
+    await init_db()
 
     config = uvicorn.Config(server_app, host="0.0.0.0", port=settings.APP_PORT)
 

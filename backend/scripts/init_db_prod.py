@@ -189,7 +189,7 @@ async def init_db():
 
         remains_raw = [Remains(
             cmo=fake.word(),
-            koc=random.randint(1, 100),
+            koc=fake.word(),
             number=random.randint(1, 100),
             indicator=random.randint(1, 100),
             saldo_begin_debet=Decimal(random.randint(10000, 100000) * random.random()),
@@ -202,9 +202,7 @@ async def init_db():
             company_id=random.choice(companies).id
         ) for _ in range(500)]
 
-        remains: list[Remains] = []
-        for r in remains_raw:
-            remains.append(await RemainsDbManager.create_remains(session, r))
+        remains = await RemainsDbManager.create_remains(session, remains_raw)
 
         forecasts_raw: list[Forecast] = []
         for i in range(20):

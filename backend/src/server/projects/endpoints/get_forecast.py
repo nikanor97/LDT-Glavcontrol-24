@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from src.db.projects.db_manager.application import ApplicationDbManager
 from src.db.projects.db_manager.forecast import ForecastDbManager
+from src.db.projects.db_manager.procurement import ProcurementDbManager
 from src.db.projects.db_manager.user_company import UserCompanyDbManager
 from src.db.projects.models.forecast import Forecast
 from src.server.auth_utils import oauth2_scheme, get_user_id_from_token
@@ -43,10 +44,10 @@ class GetForecast(ProjectsEndpoints):
         async with self._main_db_manager.projects.make_autobegin_session() as session:
             user_company = await UserCompanyDbManager.get_user_company_by_user_id(session, user_id)
 
-            applications = await ApplicationDbManager.get_applications_by_author_id(
-                session, user_id, offset=0, limit=1
+            procurements = await ProcurementDbManager.get_procurements(
+                session, user_company.company_id, offset=0, limit=1
             )
-            if applications.count == 0:
+            if procurements.count == 0:
                 return UnifiedResponsePaginated(
                     data=DataWithPagination(
                         items=[],

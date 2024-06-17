@@ -21,6 +21,9 @@ export const Routes = {
             })
             return `/api/v1/projects/forecast-export-excel${query}`
         },
+        predictionsExportJSON: () => {
+            return `/api/v1/projects/forecast-json-full`
+        },
         remainsExportExcel: (userId: User.Id) => {
             const query = qs.stringify({
                 user_id: userId,

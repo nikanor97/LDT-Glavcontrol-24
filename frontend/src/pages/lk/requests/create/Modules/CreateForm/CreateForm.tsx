@@ -16,6 +16,7 @@ const CreateForm = () => {
     const isEdit = useIsEdit();
     const updateRequest = useUpdateRequest();
     const createRequest = useCreateRequest();
+    //@ts-ignore
     const mergeddata = useMemo<Partial<Requests.WithProduct>>(() => {
         if (data) {
             if (data.products.length) return data;

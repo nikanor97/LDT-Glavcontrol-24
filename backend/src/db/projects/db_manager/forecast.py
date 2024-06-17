@@ -73,7 +73,7 @@ class ForecastDbManager(DbManager):
         session: AsyncSession,
         company_id: UUID,
     ) -> None:
-        with open(f'{settings.BASE_DIR}/date/рекомендации.json', 'r') as f:
+        with open(f'{settings.BASE_DIR}/data/рекомендации.json', 'r') as f:
             recom = json.load(f)
 
         products = [Product(

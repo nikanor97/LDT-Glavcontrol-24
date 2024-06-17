@@ -5,6 +5,7 @@ from uuid import UUID
 from fastapi import Depends
 from pydantic import BaseModel
 
+from src.db.projects.db_manager.application import ApplicationDbManager
 from src.db.projects.db_manager.forecast import ForecastDbManager
 from src.db.projects.db_manager.user_company import UserCompanyDbManager
 from src.db.projects.models.forecast import Forecast
@@ -42,27 +43,38 @@ class GetForecast(ProjectsEndpoints):
         async with self._main_db_manager.projects.make_autobegin_session() as session:
             user_company = await UserCompanyDbManager.get_user_company_by_user_id(session, user_id)
 
-            forecast = await ForecastDbManager.get_forecast(
-                session, user_company.company_id, quarter, year, offset, limit
+            applications = await ApplicationDbManager.get_applications_by_author_id(
+                session, user_id, offset=0, limit=1
             )
-
-            res: list[GetForcastResponse] = []
-            for idx, forc in enumerate(forecast.objects):
-                res.append(GetForcastResponse(
-                    id=forc.id,
-                    product_id=forc.product_id,
-                    quarter=forc.quarter,
-                    year=forc.year,
-                    product=GetForcastResponseProduct(
-                        name=forc.product.name,
-                        price=forc.product.price,
-                        number=forc.product.number,
-                        amount=forc.product.amount,
+            if applications.count == 0:
+                return UnifiedResponsePaginated(
+                    data=DataWithPagination(
+                        items=[],
+                        pagination=Pagination(offset=offset, limit=limit, count=0),
                     )
-                ))
-            return UnifiedResponsePaginated(
-                data=DataWithPagination(
-                    items=res,
-                    pagination=Pagination(offset=offset, limit=limit, count=forecast.count),
                 )
-            )
+            else:
+                forecast = await ForecastDbManager.get_forecast(
+                    session, user_company.company_id, quarter, year, offset, limit
+                )
+
+                res: list[GetForcastResponse] = []
+                for idx, forc in enumerate(forecast.objects):
+                    res.append(GetForcastResponse(
+                        id=forc.id,
+                        product_id=forc.product_id,
+                        quarter=forc.quarter,
+                        year=forc.year,
+                        product=GetForcastResponseProduct(
+                            name=forc.product.name,
+                            price=forc.product.price,
+                            number=forc.product.number,
+                            amount=forc.product.amount,
+                        )
+                    ))
+                return UnifiedResponsePaginated(
+                    data=DataWithPagination(
+                        items=res,
+                        pagination=Pagination(offset=offset, limit=limit, count=forecast.count),
+                    )
+                )

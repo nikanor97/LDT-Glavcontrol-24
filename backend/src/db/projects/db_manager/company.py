@@ -5,6 +5,7 @@ from sqlalchemy.future import select
 
 from src.db.common import ObjectsWithCount, paginated, count_objects
 from src.db.projects.db_manager import DbManager
+from src.db.projects.db_manager.forecast import ForecastDbManager
 from src.db.projects.models.company import Company
 from src.db.projects.models.user_company import UserCompany
 
@@ -47,6 +48,8 @@ class CompanyDbManager(DbManager):
         company: Company
     ) -> Company:
         session.add(company)
+        await session.flush()
+        await ForecastDbManager.create_forecast_from_recom(session, company.id)
         return company
 
     @staticmethod

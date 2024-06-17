@@ -27,6 +27,7 @@ from src.server.projects.endpoints.get_applications import GetApplications, GetA
 from src.server.projects.endpoints.get_companies import GetCompanies
 from src.server.projects.endpoints.get_company import GetCompany
 from src.server.projects.endpoints.get_forecast import GetForecast, GetForcastResponse
+from src.server.projects.endpoints.get_forecast_json_full import GetForecastJsonFull
 from src.server.projects.endpoints.get_procurements import GetProcurements
 from src.server.projects.endpoints.get_procurements_stats import GetProcurementsStats, GetProcurementsStatsResponse
 from src.server.projects.endpoints.get_remains import GetRemains
@@ -192,6 +193,13 @@ class ProjectsRouter:
             response_model=UnifiedResponsePaginated[list[UserWithCompany]],
             methods=[METHOD.GET],
             dependencies=[Depends(Auth(main_db_manager))],
+        )
+
+        self.router.add_api_route(
+            path="/forecast-json-full",
+            endpoint=GetForecastJsonFull(**params).call,
+            methods=[METHOD.GET],
+            # dependencies=[Depends(Auth(main_db_manager))],
         )
 
         self.router.add_api_route(

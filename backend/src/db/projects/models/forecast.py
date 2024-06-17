@@ -15,7 +15,7 @@ class ForecastBase(ProjectsDataSQLModel):
     product_id: UUID | None = Field(nullable=False, foreign_key="products.id")
     quarter: int | None = Field(nullable=False)
     year: int | None = Field(nullable=False)
-    company_id: UUID | None = Field(nullable=False, foreign_key="companies.id")
+    company_id: UUID = Field(nullable=False, foreign_key="companies.id")
 
 
 class Forecast(ForecastBase, TimeStampWithIdMixin, table=True):

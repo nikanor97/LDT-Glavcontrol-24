@@ -18,12 +18,14 @@ class ExportForecastExcel(ProjectsEndpoints):
         self,  # TODO: добавить год и квартал и если ids пустые то исходя из года и квартала сформировать
         user_id: UUID,
         year: int,
-        quarter: int | None,
+        quarter: int | None = None,
     ) -> FileResponse:
         # user_id = get_user_id_from_token(token)
         async with self._main_db_manager.projects.make_autobegin_session() as session:
             user_company = await UserCompanyDbManager.get_user_company_by_user_id(session, user_id)
 
+            if quarter is None:
+                quarter = 1
             forecast = await ForecastDbManager.get_all_forecast(
                 session, user_company.company_id, quarter, year,
             )

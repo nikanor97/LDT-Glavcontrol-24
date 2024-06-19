@@ -11,7 +11,7 @@ export const Routes = {
             })
             return `/api/v1/projects/procurements-export-excel${query}`
         },
-        predictionsExportExcel: (year: number, userId: User.Id, quarter?: number,) => {
+        predictionsExportExcel: (year: number, userId: User.Id, quarter?: number) => {
             const query = qs.stringify({
                 user_id: userId,
                 quarter,
@@ -21,8 +21,15 @@ export const Routes = {
             })
             return `/api/v1/projects/forecast-export-excel${query}`
         },
-        predictionsExportJSON: () => {
-            return `/api/v1/projects/forecast-json-full`
+        predictionsExportJSON: (year: number, userId: User.Id, quarter?: number) => {
+            const query = qs.stringify({
+                user_id: userId,
+                quarter,
+                year
+            }, {
+                addQueryPrefix: true,
+            })
+            return `/api/v1/projects/forecast-json-full${query}`
         },
         remainsExportExcel: (userId: User.Id) => {
             const query = qs.stringify({

@@ -51,7 +51,7 @@ const Controls = () => {
                 Boolean(data?.items.length) && (
                     <a 
                         download="forecast.json"
-                        href={Routes.api.predictionsExportJSON()}>
+                        href={Routes.api.predictionsExportJSON(params.year, user.id, params.quarter)}>
                         <Button 
                             icon={<HiOutlineDownload />}
                             size="large">

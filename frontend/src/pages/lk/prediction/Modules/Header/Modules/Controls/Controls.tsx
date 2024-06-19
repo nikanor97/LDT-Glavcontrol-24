@@ -1,4 +1,4 @@
-import {Space, DatePicker, Button} from 'antd';
+import {Space, DatePicker, Button, Select} from 'antd';
 import { HiOutlineDownload } from "react-icons/hi";
 import {usePrivateStore} from '../../../../Store/Store';
 import styles from './Controls.module.scss';
@@ -60,24 +60,52 @@ const Controls = () => {
                     </a>
                 )
             }
-            {/* <DatePicker 
-                picker="quarter"
+            <Select<number | undefined> 
+                value={params.quarter}
+                placeholder="Выбор квартала"
+                onChange={(value) => {
+                    changeParams({
+                        quarter: value
+                    })
+                }}
+                style={{
+                    minWidth: 150
+                }}
+                allowClear
+                size="large">
+                <Select.Option value={1}>
+                    Q1
+                </Select.Option>
+                <Select.Option disabled value={2}>
+                    Q2
+                </Select.Option>
+                <Select.Option disabled value={3}>
+                    Q3
+                </Select.Option>
+                <Select.Option disabled value={4}>
+                    Q4
+                </Select.Option>
+            </Select>
+            <DatePicker 
+                picker="year"
                 value={value}
                 size="large"
-                placeholder="Выберите квартал"
+                placeholder="Выберите год"
+                disabledDate={(date) => {
+                    return date.year() !== 2023
+                }}
                 onChange={(date) => {
                     changeParams({
-                        quarter: date.quarter(),
                         year: date.year(),
+                        quarter: undefined,
                         offset: 0
                     })
                     if (selected) setSelected([]);
-
                 }}
-            /> */}
+            />
             <a 
                 download="forecast.xlsx"
-                href={Routes.api.predictionsExportExcel(params.quarter, params.year, user.id)}>
+                href={Routes.api.predictionsExportExcel(params.year, user.id, params.quarter)}>
                 <Button 
                     icon={<HiOutlineDownload />}
                     size="large">

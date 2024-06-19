@@ -37,7 +37,7 @@ export declare namespace iApi {
     type iCreateCompany = Company.Item;
     type oCreateCompany = Company.ExistItem;
     type iGetPrediction = Pagination.Params & {
-        quarter: number;
+        quarter?: number;
         year: number;
     }
     type oGetPrediction = {

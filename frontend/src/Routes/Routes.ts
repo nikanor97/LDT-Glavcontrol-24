@@ -11,7 +11,7 @@ export const Routes = {
             })
             return `/api/v1/projects/procurements-export-excel${query}`
         },
-        predictionsExportExcel: (quarter: number, year: number, userId: User.Id) => {
+        predictionsExportExcel: (year: number, userId: User.Id, quarter?: number,) => {
             const query = qs.stringify({
                 user_id: userId,
                 quarter,

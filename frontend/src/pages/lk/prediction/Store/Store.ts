@@ -9,7 +9,7 @@ export const {
     params: {
         limit: 10,
         offset: 0,
-        quarter: 1,
+        quarter: undefined,
         year: 2023
     },
     selected: [],

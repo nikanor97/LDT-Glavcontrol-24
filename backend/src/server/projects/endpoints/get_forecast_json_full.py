@@ -1,4 +1,5 @@
 import os
+from uuid import UUID
 
 from fastapi import HTTPException
 from starlette.responses import FileResponse
@@ -8,7 +9,13 @@ from src.server.projects import ProjectsEndpoints
 
 
 class GetForecastJsonFull(ProjectsEndpoints):
-    def call(self) -> FileResponse:
+    def call(
+        self,
+        user_id: UUID,
+        year: int,
+        quarter: int | None,
+    ) -> FileResponse:
+        # TODO: отправлять два разных json, если quarter не указан, то отправлять за год, если указан, то за квартал
         file_path = os.path.join(settings.BASE_DIR / "data", "рекомендации.json")
 
         # Ensure the file exists

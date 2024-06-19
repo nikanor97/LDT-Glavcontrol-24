@@ -55,7 +55,7 @@ class ForecastDbManager(DbManager):
         session: AsyncSession,
         ids: list[UUID],
     ) -> list[Forecast]:
-        stmt = select(Forecast).where(col(Forecast.id).in_(ids))
+        stmt = select(Forecast).where(col(Forecast.id).in_(ids)).options(selectinload(Forecast.product))
         forecast = (await session.execute(stmt)).scalars().all()
         return forecast
 
@@ -73,14 +73,16 @@ class ForecastDbManager(DbManager):
         session: AsyncSession,
         company_id: UUID,
     ) -> None:
-        with open(f'{settings.BASE_DIR}/data/рекомендации.json', 'r') as f:
+        with open(f'{settings.BASE_DIR}/data/рекомендации (1).json', 'r') as f:
             recom = json.load(f)
 
         products = [Product(
             name=r['name'],
             price=r['Цена ГК, руб.'],
-            number=1,
-            amount=r['Цена ГК, руб.'],
+            number=r['amount'],
+            amount=r['Цена ГК, руб.'] * r['amount'],
+            cluster=r['cluster'],
+            description=r['Объяснение'],
         ) for r in recom]
 
         forecast = [Forecast(

@@ -15,9 +15,9 @@ from src.server.projects import ProjectsEndpoints
 class ExportForecastExcel(ProjectsEndpoints):
     async def call(
         self,  # TODO: добавить год и квартал и если ids пустые то исходя из года и квартала сформировать
-        quarter: int,
-        year: int,
         user_id: UUID,
+        year: int,
+        quarter: int | None,
     ) -> FileResponse:
         # user_id = get_user_id_from_token(token)
         async with self._main_db_manager.projects.make_autobegin_session() as session:
@@ -27,7 +27,13 @@ class ExportForecastExcel(ProjectsEndpoints):
                 session, user_company.company_id, quarter, year,
             )
 
-        df = pd.DataFrame([p.dict() for p in forecast])
+        # df = pd.DataFrame([p.dict() for p in forecast])
+        df = pd.DataFrame({
+            "Наименование": [f.product.name for f in forecast],
+            "Цена": [f.product.price for f in forecast],
+            "Количество": [f.product.amount for f in forecast],
+            "Сумма": [f.product.amount * f.product.price for f in forecast],
+        })
 
         # Создаем BytesIO объект
         buffer = BytesIO()

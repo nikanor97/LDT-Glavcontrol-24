@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import date
 from decimal import Decimal
 from typing import Annotated
@@ -36,34 +37,41 @@ class CreateApplicationsFromForecast(ProjectsEndpoints):
         user_id = get_user_id_from_token(token)
         async with self._main_db_manager.projects.make_autobegin_session() as session:
             forecast_items = await ForecastDbManager.get_forecast_by_ids(session, data.forecast_ids)
+            cluster_to_products: defaultdict[int, list[Product]] = defaultdict(list)
+            for forecast_item in forecast_items:
+                cluster_to_products[forecast_item.product.cluster].append(forecast_item.product)
 
-            applications = [Application(
-                calculation_id=None,
-                lot_id=None,
-                client_id=None,
-                shipment_start_date=None,
-                shipment_end_date=None,
-                shipment_volume=None,
-                shipment_address=None,
-                shipment_terms=None,
-                year=None,
-                gar_id=None,
-                spgz_end_id=None,
-                amount=None,
-                unit_of_measurement=None,
-                author_id=user_id,
-                status="draft"
-            ) for _ in forecast_items]  # TODO: НАДО СОЗДАВАТЬ ЗАЯВКИ НЕ ДЛЯ КАЖДОГО ПРОДУКТА, А ОБЪЕДИНЯТЬ ПРОДУКТЫ в заявке
+            applications: list[Application] = []
+            application_products: list[ApplicationProduct] = []
+            for cluster, products in cluster_to_products.items():
+                application = Application(
+                    calculation_id=None,
+                    lot_id=None,
+                    client_id=None,
+                    shipment_start_date=None,
+                    shipment_end_date=None,
+                    shipment_volume=None,
+                    shipment_address=None,
+                    shipment_terms=None,
+                    year=None,
+                    gar_id=None,
+                    spgz_end_id=None,
+                    amount=None,
+                    unit_of_measurement=None,
+                    author_id=user_id,
+                    status="draft"
+                )
+                applications.append(application)
+                application_product_items = [ApplicationProduct(
+                    application_id=application.id,
+                    product_id=product.id
+                ) for product in products]
+                application_products.extend(application_product_items)
+
             new_applications = await ApplicationDbManager.create_applications(
                 session, applications
             )
-
             await session.flush()
-
-            application_products = [ApplicationProduct(
-                application_id=application.id,
-                product_id=forecast.product_id
-            ) for application, forecast in list(zip(applications, forecast_items))]
             new_application_products = await ApplicationProductDbManager.create_application_products(
                 session, application_products
             )

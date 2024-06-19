@@ -16,6 +16,9 @@ class ProductBase(ProjectsDataSQLModel):
     price: Decimal | None = Field(nullable=False)
     number: int | None = Field(nullable=False)
     amount: Decimal | None = Field(nullable=False)
+    type: str | None = Field(nullable=False)
+    cluster: int | None = Field(nullable=False)
+    description: str | None = Field(nullable=False)
 
 
 class Product(ProductBase, TimeStampWithIdMixin, table=True):

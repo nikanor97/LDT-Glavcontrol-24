@@ -2,6 +2,7 @@ from io import BytesIO
 from typing import Annotated
 from uuid import UUID
 
+import numpy as np
 import pandas as pd
 from fastapi import Depends
 from starlette.responses import StreamingResponse
@@ -25,7 +26,23 @@ class ExportRemainsExcel(ProjectsEndpoints):
                 session, user_company.company_id
             )
 
-        df = pd.DataFrame([p.dict() for p in remains])
+        # df = pd.DataFrame([p.dict() for p in remains])
+        df = pd.DataFrame({
+            "ЦМО": [r.cmo for r in remains],
+            "КОЦ": [r.koc for r in remains],
+            "Количество": [r.number for r in remains],
+            "Показатели": [r.indicator for r in remains],
+            "Сальдо на начало периода. Дебет": [r.saldo_begin_debet for r in remains],
+            "Сальдо за период. Дебет": [r.saldo_period_debet for r in remains],
+            "Сальдо за период. Кредит": [r.saldo_period_credit for r in remains],
+            "Сальдо на конец периода. Дебет": [r.saldo_end_debet for r in remains],
+        })
+        df = df.replace({np.nan: None})
+        df = df.dropna()
+        df['Сальдо на начало периода. Дебет'] = df['Сальдо на начало периода. Дебет'].astype(int)
+        df['Сальдо за период. Дебет'] = df['Сальдо за период. Дебет'].astype(int)
+        df['Сальдо за период. Кредит'] = df['Сальдо за период. Кредит'].astype(int)
+        df['Сальдо на конец периода. Дебет'] = df['Сальдо на конец периода. Дебет'].astype(int)
 
         # Создаем BytesIO объект
         buffer = BytesIO()

@@ -2,6 +2,7 @@ from io import BytesIO
 from typing import Annotated
 from uuid import UUID
 
+import numpy as np
 import pandas as pd
 from fastapi import Depends
 from starlette.responses import StreamingResponse, FileResponse
@@ -31,9 +32,13 @@ class ExportForecastExcel(ProjectsEndpoints):
         df = pd.DataFrame({
             "Наименование": [f.product.name for f in forecast],
             "Цена": [f.product.price for f in forecast],
-            "Количество": [f.product.amount for f in forecast],
-            "Сумма": [f.product.amount * f.product.price for f in forecast],
+            "Количество": [f.product.number for f in forecast],
+            "Сумма": [f.product.amount for f in forecast],
         })
+        df = df.replace({np.nan: None})
+        df = df.dropna()
+        df['Цена'] = df['Цена'].astype(int)
+        df['Сумма'] = df['Сумма'].astype(int)
 
         # Создаем BytesIO объект
         buffer = BytesIO()

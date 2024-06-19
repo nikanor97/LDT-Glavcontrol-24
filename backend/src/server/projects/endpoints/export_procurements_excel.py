@@ -2,6 +2,7 @@ from io import BytesIO
 from typing import Annotated
 from uuid import UUID
 
+import numpy as np
 import pandas as pd
 from fastapi import Depends
 from starlette.responses import FileResponse, StreamingResponse
@@ -25,7 +26,18 @@ class ExportProcurementsExcel(ProjectsEndpoints):
                 session, user_company.company_id
             )
 
-        df = pd.DataFrame([p.dict() for p in procurements])
+        # df = pd.DataFrame([p.dict() for p in procurements])
+        df = pd.DataFrame({
+            "ID СПГЗ": [p.spgz_id for p in procurements],
+            "Наименование СПГЗ": [p.spgz_name for p in procurements],
+            "Дата заключения": [p.procurement_date for p in procurements],
+            "Цена ГК, руб.": [p.price for p in procurements],
+            "Способ определения поставщика": [p.way_to_define_supplier for p in procurements],
+            "Основание заключения контракта": [p.contract_basis for p in procurements],
+        })
+        df = df.replace({np.nan: None})
+        df = df.dropna()
+        df['Цена ГК, руб.'] = df['Цена ГК, руб.'].astype(int)
 
         # Создаем BytesIO объект
         buffer = BytesIO()

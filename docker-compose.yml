@@ -11,7 +11,7 @@ services:
     image: nginx:1.27
     ports:
       - "${FRONTEND_PORT_ON_HOST}:80"
-      - "443:443"
+#      - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
     links:

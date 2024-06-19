@@ -1,3 +1,4 @@
+from datetime import datetime
 from io import BytesIO
 from typing import Annotated
 from uuid import UUID
@@ -38,6 +39,7 @@ class ExportProcurementsExcel(ProjectsEndpoints):
         df = df.replace({np.nan: None})
         df = df.dropna()
         df['Цена ГК, руб.'] = df['Цена ГК, руб.'].astype(int)
+        df['Дата заключения'] = df['Дата заключения'].apply(lambda x: x.strftime('%Y-%m-%d') if x else None)
 
         # Создаем BytesIO объект
         buffer = BytesIO()

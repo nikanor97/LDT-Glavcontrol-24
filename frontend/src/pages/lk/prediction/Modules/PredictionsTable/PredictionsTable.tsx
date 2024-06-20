@@ -24,10 +24,10 @@ const PredictionTable = () => {
                 pagination={false}
                 sticky
                 expandable={{
-                    rowExpandable: (record) => Boolean(record.description),
+                    rowExpandable: (record) => Boolean(record.product.description),
                     expandedRowRender: (record) => (
                         <div className={styles.rowDesc}>
-                            {record.description}
+                            {record.product.description}
                         </div>
                     )
                 }}

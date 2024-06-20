@@ -76,13 +76,15 @@ class ForecastDbManager(DbManager):
         with open(f'{settings.BASE_DIR}/data/рекомендации (1).json', 'r') as f:
             recom = json.load(f)
 
+        product_type = lambda x: 'Товар' if x == 'item' else 'Услуга'
         products = [Product(
             name=r['name'],
             price=r['Цена ГК, руб.'],
             number=r['amount'],
             amount=r['Цена ГК, руб.'] * r['amount'],
+            type=product_type(r['type']),
             cluster=r['cluster'],
-            description=r['Объяснение'],
+            description='\n'.join(row for row in r['Объяснение']),
         ) for r in recom]
 
         forecast = [Forecast(

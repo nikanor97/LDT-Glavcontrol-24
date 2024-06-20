@@ -20,6 +20,9 @@ class GetForcastResponseProduct(BaseModel):
     price: Decimal | None
     number: int | None
     amount: Decimal | None
+    type: str | None
+    # cluster: int | None
+    description: str | None
 
 
 class GetForcastResponse(BaseModel):
@@ -71,6 +74,8 @@ class GetForecast(ProjectsEndpoints):
                             price=forc.product.price,
                             number=forc.product.number,
                             amount=forc.product.amount,
+                            type=forc.product.type,
+                            description=forc.product.description
                         )
                     ))
                 return UnifiedResponsePaginated(

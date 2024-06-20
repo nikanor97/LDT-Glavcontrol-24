@@ -23,6 +23,14 @@ const PredictionTable = () => {
                 dataSource={data.items}
                 pagination={false}
                 sticky
+                expandable={{
+                    rowExpandable: (record) => Boolean(record.description),
+                    expandedRowRender: (record) => (
+                        <div className={styles.rowDesc}>
+                            {record.description}
+                        </div>
+                    )
+                }}
                 scroll={{
                     x: '100%'
                 }}
@@ -33,7 +41,9 @@ const PredictionTable = () => {
                         setSelected(selected.map(String));
                     }
                 }}
-                rowKey={(record) => record.id}
+                rowKey={(record) => {
+                    return record.id
+                }}
                 columns={[
                     {
                         title: 'Наименование',
@@ -51,6 +61,16 @@ const PredictionTable = () => {
                         title: 'Количество',
                         dataIndex: ['product', 'number'],
                         width: 240,
+
+                    },
+                    {
+                        title: 'Тип',
+                        dataIndex: ['product', 'type'],
+                        width: 240,
+                        render: (value: string | null) => {
+                            if (value === null) return '-';
+                            return value;
+                        }
 
                     },
                     {

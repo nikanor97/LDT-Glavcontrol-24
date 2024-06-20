@@ -20,7 +20,7 @@ export const useRequest = (params?: Partial<iApi.iGetRequest>) => {
             }
         },
         staleTime: Infinity,
-        gcTime: 20000,
+        gcTime: 0,
         enabled: Boolean(params)
     })
 }

@@ -9,5 +9,7 @@ export type Info = {
     "price": number,
     "number": number,
     "amount": number
+    type: null | string;
+    description?: string;
 }
 

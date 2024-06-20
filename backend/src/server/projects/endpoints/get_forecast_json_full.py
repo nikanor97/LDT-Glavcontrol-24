@@ -16,7 +16,7 @@ class GetForecastJsonFull(ProjectsEndpoints):
         quarter: int | None = None,
     ) -> FileResponse:
         # TODO: отправлять два разных json, если quarter не указан, то отправлять за год, если указан, то за квартал
-        file_path = os.path.join(settings.BASE_DIR / "data", "рекомендации (1).json")
+        file_path = os.path.join(settings.BASE_DIR / "data", "рекомендации.json")
 
         # Ensure the file exists
         if not os.path.exists(file_path):

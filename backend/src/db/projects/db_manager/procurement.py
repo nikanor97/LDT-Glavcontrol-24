@@ -50,7 +50,15 @@ class ProcurementDbManager(DbManager):
         amount_contracts = sum([p.price for p in procurements]) if len(procurements) > 0 else None
         latest_contract_date = max([procurement.procurement_date for procurement in procurements]) if len(procurements) > 0 else None
         contracts_stats = []
-        for month in range(1, 13):
+        if quarter == 1:
+            month_range = range(1, 4)
+        elif quarter == 2:
+            month_range = range(4, 7)
+        elif quarter == 3:
+            month_range = range(7, 10)
+        elif quarter == 4:
+            month_range = range(10, 13)
+        for month in month_range:
             contracts_stats.append(
                 ContractsStats(
                     amount_contracts=len([procurement for procurement in procurements if procurement.procurement_date.month == month]),

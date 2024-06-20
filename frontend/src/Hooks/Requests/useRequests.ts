@@ -9,6 +9,6 @@ export const useRequests = (params: iApi.iGetRequests) => {
         queryKey: getKey(params),
         queryFn: () => Api.Company.getRequests(params),
         staleTime: Infinity,
-        gcTime: 20000
+        gcTime: 0
     })
 }

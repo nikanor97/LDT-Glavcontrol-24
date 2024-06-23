@@ -63,6 +63,12 @@ const RegistrationForm = (props: iRegistrationForm) => {
                                 )}    
                     />
                 </Form.Item>
+                <Form.Item 
+                    rules={[required('Имя в telegram')]}
+                    name="telegram_username" 
+                    label="Имя пользователя Telegram">
+                    <Input size="large" placeholder="Введите имя в telegram" />
+                </Form.Item>
             </div>
             <div className={styles.block}>
                 <div className={styles.title}>

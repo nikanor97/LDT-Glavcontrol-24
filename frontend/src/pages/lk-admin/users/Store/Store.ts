@@ -8,7 +8,19 @@ export const {
     createUser: {
         visible: false,
     },
+    usersListParams: {
+        limit: 100,
+        offset: 0,
+    },
     actions: {
+        changeParams: (params) => {
+            set((state) => {
+                state.usersListParams = {
+                    ...state.usersListParams,
+                    ...params
+                }
+            })
+        },
         openDrawer: () => {
             set((state) => {
                 state.createUser.visible = true;

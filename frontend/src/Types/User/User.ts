@@ -1,3 +1,4 @@
+import { Company } from "..";
 
 
 export declare namespace Role {
@@ -34,4 +35,23 @@ export type Item = {
     permission_read_stat: boolean;
     email: string,
     role: Role.BaseRole;
+    telegram_username?: string;
+}
+
+export type WithCompany = {
+    "user_id": Id;
+    "user_name": string;
+    "user_email": "string",
+    "user_permission_read_stat": boolean;
+    "user_permission_create_order": boolean;
+    "user_is_deleted": boolean;
+    "user_role": Role.BaseRole;
+    "user_telegram_username"?: string;
+    "company_id": Company.ID;
+    "company_name": string;
+    "company_region": string;
+    "company_inn": string;
+    "company_ogrn": string;
+    "company_director": string;
+    "company_foundation_date": string;
 }

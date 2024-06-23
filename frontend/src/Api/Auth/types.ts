@@ -11,7 +11,7 @@ export declare namespace iApi {
         email: string;
         permission_read_stat: boolean;
         permission_create_order: boolean;
-        // is_deleted: true,
         password: string;
+        telegram_username?: string;
     }
 }

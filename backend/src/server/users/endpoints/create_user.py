@@ -22,6 +22,7 @@ class CreateUserRequest(BaseModel):
     password: str
     role: str = "user"
     company_id: UUID
+    telegram_username: str | None
 
 
 class CreateUser(UsersEndpoints):

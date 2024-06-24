@@ -20,11 +20,12 @@ const Controls = (props: iControls) => {
         <Space direction="horizontal">
             {
                 item.status !== 'draft' && (
-
                     <Tooltip title="Скачать JSON">
-                        <div className={styles.control}>
-                            <HiArrowDownTray />
-                        </div>
+                        <Link href={getRoute.lk.uploadRequestJSON(item.id)}>
+                            <div className={styles.control}>
+                                <HiArrowDownTray />
+                            </div>
+                        </Link>
                     </Tooltip>
                 )
             }

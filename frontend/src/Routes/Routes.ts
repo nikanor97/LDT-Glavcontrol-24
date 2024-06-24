@@ -64,6 +64,12 @@ export const Routes = {
                 addQueryPrefix: true,
             })
             return '/api/v1/projects/application-documents' + query;
+        },
+        uploadRequestJSON: (application_id?: Requests.ID) => {
+            const query = qs.stringify({application_id}, {
+                addQueryPrefix: true,
+            })
+            return '/api/v1/projects/application-export-json' + query;
         }
     },
     lkAdmin: {

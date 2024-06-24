@@ -1,4 +1,4 @@
-import {User} from '@/Types';
+import {User, Company} from '@/Types';
 
 export declare namespace iApi {
     type iLogin = {
@@ -13,5 +13,9 @@ export declare namespace iApi {
         permission_create_order: boolean;
         password: string;
         telegram_username?: string;
+        company_id: Company.ID
+    }
+    type iSaveUser = Omit<iRegistration, 'password'> & {
+        user_id: User.Id
     }
 }

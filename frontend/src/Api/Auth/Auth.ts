@@ -11,5 +11,11 @@ export default {
             ...params,
             is_deleted: false,
         });
+    },
+    saveUser: (params: iApi.iSaveUser) => {
+        return axios.put(paths.saveUser, {
+            ...params,
+            is_deleted: false
+        })
     }
 }

@@ -4,17 +4,20 @@ import {App} from '@/Types';
 import styles from './index.module.scss';
 import Logo from '@/Img/logo.png';
 import Image from 'next/image';
-import {Button, Form} from 'antd';
+import {Button, Form, message} from 'antd';
 import BasketImg from './Img/basket.png'
 import DiscountImg from './Img/discount.png'
 import {useRouter} from 'next/router';
 import {useUser} from '@/Hooks/User/useUser';
 import RegistrationForm from '@/Modules/Auth/RegistrationForm/RegistrationForm';
+import { useRegistration } from '@/Hooks/User/useRegistration';
+import { getErrorMessage } from '@/Utils/Api/getErrorMessage';
 
 
 const LoginPage: App.Next.NextPage = () => {
     const router = useRouter();
     const [form] = Form.useForm();
+    const registration = useRegistration();
     const {data: user} = useUser();
     useEffect(() => {
         if (!user) return;
@@ -37,7 +40,18 @@ const LoginPage: App.Next.NextPage = () => {
                 </div>
                 <div className={styles.formWrapper}>
                     <RegistrationForm 
+                        mode="new"
                         form={form}
+                        onFinish={(values) => {
+                            registration.mutate(values, {
+                                onSuccess: () => {
+                                    message.success('Пользователь заругистрирован')
+                                },
+                                onError: (ex) => {
+                                    message.error(getErrorMessage(ex))
+                                }
+                            })
+                        }}
                     />
                     <Button     
                         className={styles.btn}

@@ -1,3 +1,4 @@
+import tempfile
 from datetime import datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from typing import Annotated
@@ -6,13 +7,18 @@ import pandas as pd
 from fastapi import UploadFile, File, HTTPException, Depends
 from io import BytesIO
 
+from loguru import logger
+from starlette.background import BackgroundTasks
 from starlette.responses import Response
 
+import settings
+from src.db.projects.db_manager.forecast import ForecastDbManager
 from src.db.projects.db_manager.procurement import ProcurementDbManager
 from src.db.projects.db_manager.user_company import UserCompanyDbManager
 from src.db.projects.models.procurement import Procurement
 from src.server.auth_utils import oauth2_scheme, get_user_id_from_token
 from src.server.common import UnifiedResponse
+from src.server.forecasting import get_predictions
 from src.server.projects import ProjectsEndpoints
 
 COLUMN_MAPPING = {
@@ -28,8 +34,9 @@ COLUMN_MAPPING = {
 class UploadProcurementsExcel(ProjectsEndpoints):
     async def call(
         self,
+        background_tasks: BackgroundTasks,
         token: Annotated[str, Depends(oauth2_scheme)],
-        file: UploadFile = File(...)
+        file: UploadFile = File(...),
     # ) -> UnifiedResponse[list[Procurement]]:  # убрал ибо очень много объектов может вернуть
     ) -> Response:
         user_id = get_user_id_from_token(token)
@@ -96,7 +103,7 @@ class UploadProcurementsExcel(ProjectsEndpoints):
                         # price=Decimal(record.get('price')) if record.get('price') is not None else None,
                         price=price,
                         way_to_define_supplier=record.get('way_to_define_supplier'),
-                        contract_basis=record.get('contract_basis'),
+                        contract_basis=str(int(record.get('contract_basis'))),
                         company_id=company_id
                     )
                     procurements.append(procurement)
@@ -109,7 +116,33 @@ class UploadProcurementsExcel(ProjectsEndpoints):
 
         async with self._main_db_manager.projects.make_autobegin_session() as session:
             # Сохраняем данные в базу
+            logger.info(f"Started creating {len(procurements)} procurements")
             new_procurements = await ProcurementDbManager.create_procurements(session, procurements)
+            await session.flush()
+            logger.info(f"Finished creating {len(new_procurements)} procurements")
+
+            # Сохраняем содержимое файла во временный файл
+            logger.info("Started creating forecasts for procurements")
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp_file:
+                temp_file_path = tmp_file.name
+                tmp_file.write(contents)
+
+                forecast_by_quarters = get_predictions(
+                    temp_file_path,
+                    settings.BASE_DIR / "data" / "spgz.json"
+                )
+
+                for quarter, forecast in list(zip(range(1, 5), forecast_by_quarters)):
+                    # await ForecastDbManager.create_forecast_from_recom_dict(
+                    #       session, company_id, forecast, quarter
+                    # )
+
+                    # Запускаем фоновую задачу
+                    background_tasks.add_task(
+                        ForecastDbManager.create_forecast_from_recom_dict,
+                        session, company_id, forecast, quarter
+                    )
+            logger.info("Finished creating forecasts for procurements")
 
         # return UnifiedResponse(data=new_procurements)
         return Response(content="OK", media_type="text/plain")

@@ -49,7 +49,7 @@ class CompanyDbManager(DbManager):
     ) -> Company:
         session.add(company)
         await session.flush()
-        await ForecastDbManager.create_forecast_from_recom(session, company.id)
+        # await ForecastDbManager.create_forecast_from_recom(session, company.id)
         return company
 
     @staticmethod

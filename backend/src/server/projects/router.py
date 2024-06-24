@@ -23,6 +23,7 @@ from src.server.projects.endpoints.export_forecast_excel import ExportForecastEx
 from src.server.projects.endpoints.export_procurements_excel import ExportProcurementsExcel
 from src.server.projects.endpoints.export_remains_excel import ExportRemainsExcel
 from src.server.projects.endpoints.get_application import GetApplication, GetApplicationResponse
+from src.server.projects.endpoints.get_application_document import GetApplicationDocument
 from src.server.projects.endpoints.get_applications import GetApplications, GetApplicationsResponse
 from src.server.projects.endpoints.get_companies import GetCompanies
 from src.server.projects.endpoints.get_company import GetCompany
@@ -218,11 +219,11 @@ class ProjectsRouter:
             dependencies=[Depends(Auth(main_db_manager))],
         )
 
-        # self.router.add_api_route(
-        #     path="/companies",
-        #     endpoint=self._projects_endpoints.delete_companies,
-        #     response_model=UnifiedResponse[list[Company]],
-        #     methods=[METHOD.DELETE],
-        #     dependencies=[Depends(Auth(main_db_manager))],
-        # )
+        self.router.add_api_route(
+            path="/application-documents",
+            endpoint=GetApplicationDocument(**params).call,
+            response_model=UnifiedResponse[CreateApplicationsFromForecastResponse],
+            methods=[METHOD.GET],
+        )
+
 

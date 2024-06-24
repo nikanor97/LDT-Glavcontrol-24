@@ -143,91 +143,91 @@ async def init_db():
         for uc in user_companies_raw:
             user_companies.append(await UserCompanyDbManager.create_user_company(session, uc))
 
-        applications = [Application(
-            calculation_id=str(uuid.uuid4()),
-            lot_id=str(uuid.uuid4()),
-            client_id=str(uuid.uuid4()),
-            shipment_start_date=fake.date_of_birth(minimum_age=0, maximum_age=4),
-            shipment_end_date=fake.date_of_birth(minimum_age=0, maximum_age=4),
-            shipment_volume=random.randint(100, 1000),
-            shipment_address=fake.address(),
-            shipment_terms=fake.sentence(),
-            year=random.randint(2020, 2024),
-            gar_id=str(uuid.uuid4()),
-            spgz_end_id=str(uuid.uuid4()),
-            amount=Decimal(random.randint(10000, 100000) * random.random()),
-            unit_of_measurement=fake.word(),
-            author_id=random.choice(regular_users).id,
-            status="draft"
-        ) for _ in range(500)]
-
-        for application in applications:
-            await ApplicationDbManager.create_application(session, application)
-
-        products_raw = [Product(
-            name=fake.word(),
-            price=Decimal(random.randint(100, 1000) * random.random()),
-            number=random.randint(1, 100),
-            amount=Decimal(random.randint(10000, 100000) * random.random())
-        ) for _ in range(2000)]
-
-        products = await ProductDbManager.create_products(session, products_raw)
-
-        await session.flush()
-
-        application_products_raw: list[ApplicationProduct] = []
-
-        for i in range(3):
-            application_products_raw.extend([ApplicationProduct(
-                application_id=a.id,
-                product_id=products[idx + i * len(applications)].id
-            ) for idx, a in enumerate(applications)])
-
-        application_products = await ApplicationProductDbManager.create_application_products(
-            session, application_products_raw
-        )
-
-        remains_raw = [Remains(
-            cmo=fake.word(),
-            koc=fake.word(),
-            number=random.randint(1, 100),
-            indicator=random.randint(1, 100),
-            saldo_begin_debet=Decimal(random.randint(10000, 100000) * random.random()),
-            saldo_begin_credit=Decimal(random.randint(10000, 100000) * random.random()),
-            saldo_period_debet=Decimal(random.randint(10000, 100000) * random.random()),
-            saldo_period_credit=Decimal(random.randint(10000, 100000) * random.random()),
-            saldo_end_debet=Decimal(random.randint(10000, 100000) * random.random()),
-            saldo_end_credit=Decimal(random.randint(10000, 100000) * random.random()),
-            product_id=random.choice(products).id,
-            company_id=random.choice(companies).id
-        ) for _ in range(500)]
-
-        remains = await RemainsDbManager.create_remains(session, remains_raw)
-
-        forecasts_raw: list[Forecast] = []
-        for i in range(20):
-            forecasts_raw.extend([Forecast(
-            product_id=p.id,
-            quarter=random.randint(1, 50),
-            year=random.randint(2020, 2024),
-            company_id=random.choice(companies).id
-        ) for p in products])
-
-        forecasts: list[Forecast] = []
-        for f in forecasts_raw:
-            forecasts.append(await ForecastDbManager.create_forecast(session, f))
-
-        procurements_raw = [Procurement(
-            spgz_id=str(uuid.uuid4()),
-            spgz_name=fake.word(),
-            procurement_date=fake.date_of_birth(minimum_age=0, maximum_age=4),
-            price=Decimal(random.randint(10000, 100000) * random.random()),
-            way_to_define_supplier=fake.word(),
-            contract_basis=fake.word(),
-            company_id=random.choice(companies).id
-        ) for _ in range(1500)]
-
-        procurements = await ProcurementDbManager.create_procurements(session, procurements_raw)
+        # applications = [Application(
+        #     calculation_id=str(uuid.uuid4()),
+        #     lot_id=str(uuid.uuid4()),
+        #     client_id=str(uuid.uuid4()),
+        #     shipment_start_date=fake.date_of_birth(minimum_age=0, maximum_age=4),
+        #     shipment_end_date=fake.date_of_birth(minimum_age=0, maximum_age=4),
+        #     shipment_volume=random.randint(100, 1000),
+        #     shipment_address=fake.address(),
+        #     shipment_terms=fake.sentence(),
+        #     year=random.randint(2020, 2024),
+        #     gar_id=str(uuid.uuid4()),
+        #     spgz_end_id=str(uuid.uuid4()),
+        #     amount=Decimal(random.randint(10000, 100000) * random.random()),
+        #     unit_of_measurement=fake.word(),
+        #     author_id=random.choice(regular_users).id,
+        #     status="draft"
+        # ) for _ in range(500)]
+        #
+        # for application in applications:
+        #     await ApplicationDbManager.create_application(session, application)
+        #
+        # products_raw = [Product(
+        #     name=fake.word(),
+        #     price=Decimal(random.randint(100, 1000) * random.random()),
+        #     number=random.randint(1, 100),
+        #     amount=Decimal(random.randint(10000, 100000) * random.random())
+        # ) for _ in range(2000)]
+        #
+        # products = await ProductDbManager.create_products(session, products_raw)
+        #
+        # await session.flush()
+        #
+        # application_products_raw: list[ApplicationProduct] = []
+        #
+        # for i in range(3):
+        #     application_products_raw.extend([ApplicationProduct(
+        #         application_id=a.id,
+        #         product_id=products[idx + i * len(applications)].id
+        #     ) for idx, a in enumerate(applications)])
+        #
+        # application_products = await ApplicationProductDbManager.create_application_products(
+        #     session, application_products_raw
+        # )
+        #
+        # remains_raw = [Remains(
+        #     cmo=fake.word(),
+        #     koc=fake.word(),
+        #     number=random.randint(1, 100),
+        #     indicator=random.randint(1, 100),
+        #     saldo_begin_debet=Decimal(random.randint(10000, 100000) * random.random()),
+        #     saldo_begin_credit=Decimal(random.randint(10000, 100000) * random.random()),
+        #     saldo_period_debet=Decimal(random.randint(10000, 100000) * random.random()),
+        #     saldo_period_credit=Decimal(random.randint(10000, 100000) * random.random()),
+        #     saldo_end_debet=Decimal(random.randint(10000, 100000) * random.random()),
+        #     saldo_end_credit=Decimal(random.randint(10000, 100000) * random.random()),
+        #     product_id=random.choice(products).id,
+        #     company_id=random.choice(companies).id
+        # ) for _ in range(500)]
+        #
+        # remains = await RemainsDbManager.create_remains(session, remains_raw)
+        #
+        # forecasts_raw: list[Forecast] = []
+        # for i in range(20):
+        #     forecasts_raw.extend([Forecast(
+        #     product_id=p.id,
+        #     quarter=random.randint(1, 50),
+        #     year=random.randint(2020, 2024),
+        #     company_id=random.choice(companies).id
+        # ) for p in products])
+        #
+        # forecasts: list[Forecast] = []
+        # for f in forecasts_raw:
+        #     forecasts.append(await ForecastDbManager.create_forecast(session, f))
+        #
+        # procurements_raw = [Procurement(
+        #     spgz_id=str(uuid.uuid4()),
+        #     spgz_name=fake.word(),
+        #     procurement_date=fake.date_of_birth(minimum_age=0, maximum_age=4),
+        #     price=Decimal(random.randint(10000, 100000) * random.random()),
+        #     way_to_define_supplier=fake.word(),
+        #     contract_basis=fake.word(),
+        #     company_id=random.choice(companies).id
+        # ) for _ in range(1500)]
+        #
+        # procurements = await ProcurementDbManager.create_procurements(session, procurements_raw)
 
 
 if __name__ == "__main__":

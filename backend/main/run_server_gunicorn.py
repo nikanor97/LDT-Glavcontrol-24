@@ -1,22 +1,21 @@
 import asyncio
 
-import uvicorn
 import uvloop
 
+import settings
+from common.rabbitmq import consumer
 from common.rabbitmq.consumer import Consumer
 from common.rabbitmq.publisher import Publisher
 from scripts.init_db_users_only import init_db
 from src.db.base_manager import run_migrations
 from src.db.main_db_manager import MainDbManager
-from common.rabbitmq.connection_pool import ConnectionPool as AmqpConnectionPool
-
-import settings
 from src.server.server import make_server_app
+from common.rabbitmq.connection_pool import ConnectionPool as AmqpConnectionPool
 from src.server.amqp import Server as AMQPServer
 
 
-async def main(loop: asyncio.AbstractEventLoop) -> None:
 
+def main():
     run_migrations()
 
     main_db_manager = MainDbManager(db_name_prefix=settings.DB_NAME_PREFIX)
@@ -55,19 +54,15 @@ async def main(loop: asyncio.AbstractEventLoop) -> None:
         publisher=publisher
     )
 
-    await init_db()
-
-    config = uvicorn.Config(server_app, host="0.0.0.0", port=settings.APP_PORT)
-
-    server = uvicorn.Server(config)
-    await server.serve()
-
-
-if __name__ == "__main__":
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     try:
-        app = loop.run_until_complete(main(loop))
+        loop.run_until_complete(init_db())
     finally:
         loop.close()
+
+    return server_app
+
+
+app = main()

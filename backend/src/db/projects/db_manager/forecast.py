@@ -97,3 +97,35 @@ class ForecastDbManager(DbManager):
         await ProductDbManager.create_products(session, products)
         for f in forecast:
             await ForecastDbManager.create_forecast(session, f)
+
+    @staticmethod
+    async def create_forecast_from_recom_dict(
+        session: AsyncSession,
+        company_id: UUID,
+        recom: list[dict],
+        quarter: int,
+        year: int = 2023
+    ) -> None:
+
+        product_type = lambda x: 'Товар' if x == 'item' else 'Услуга'
+        products = [Product(
+            name=r['name'],
+            price=r['price'],
+            number=r['amount'],
+            amount=r['price'] * r['amount'],
+            type=product_type(r['type']),
+            cluster=r['cluster'],
+            description='\n'.join(row for row in r['Объяснение']),
+        ) for r in recom if r['type'] is not None]
+
+        forecast = [Forecast(
+            product_id=product.id,
+            quarter=quarter,
+            year=year,
+            company_id=company_id
+        ) for product in products]
+
+        await ProductDbManager.create_products(session, products)
+        for f in forecast:
+            await ForecastDbManager.create_forecast(session, f)
+        await session.flush()

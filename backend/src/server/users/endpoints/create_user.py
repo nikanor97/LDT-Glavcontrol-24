@@ -22,7 +22,7 @@ class CreateUserRequest(BaseModel):
     password: str
     role: str = "user"
     company_id: UUID
-    telegram_username: str | None
+    user_telegram_username: str | None
 
 
 class CreateUser(UsersEndpoints):
@@ -33,7 +33,7 @@ class CreateUser(UsersEndpoints):
         async with self._main_db_manager.projects.make_autobegin_session() as projects_session:
             async with self._main_db_manager.users.make_autobegin_session() as session:
                 try:
-                    user = UserBase(**user_create.dict())
+                    user = UserBase(**user_create.dict(), telegram_username=user_create.user_telegram_username)
                     new_user = await UserDbManager.create_user(session, user)
 
                     await UserPasswordDbManager.create_user_password(

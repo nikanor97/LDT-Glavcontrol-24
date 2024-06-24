@@ -6,12 +6,20 @@ import {useAllUsers} from '@/Hooks/User/useAllUsers';
 import {User} from '@/Types';
 import { ColumnsType } from 'antd/lib/table';
 import Permissions from './Components/Permissions/Permissions';
-import { Avatar, Space } from 'antd';
+import { Affix, Avatar, Pagination, Space } from 'antd';
 import { getUserAvatar } from '@/Utils/User/getUserAvatar/getUserAvatar';
+import classNames from 'classnames';
+import { getPageByOffset } from '@/Utils/Pagination/getPageByOffset';
+import { getOffsetByPage } from '@/Utils/Pagination/getOffsetByPage';
+import {usePrivateStore} from '../../Store/Store';
+
 
 const OrdersTable = () => {
-    const {data, isError, isLoading} = useAllUsers();
-    const columns:ColumnsType<User.Item> = [
+    const [sticked, setSticked] = useState(false);
+    const params = usePrivateStore((state) => state.usersListParams);
+    const {data, isError, isLoading} = useAllUsers(params);
+    const changeParams = usePrivateStore((state) => state.actions.changeParams)
+    const columns:ColumnsType<User.WithCompany> = [
         {
             title: 'ФИО',
             dataIndex: 'name',
@@ -24,11 +32,11 @@ const OrdersTable = () => {
                         size={12}
                         direction="horizontal">
                         <Avatar
-                            src={getUserAvatar(record.id).src}
+                            src={getUserAvatar(record.user_id).src}
                             size={24}
                         />
                         <div>
-                            {record.name}
+                            {record.user_name}
                         </div>
                     </Space>
                 )
@@ -36,7 +44,7 @@ const OrdersTable = () => {
         },
         {
             title: 'Email',
-            dataIndex: 'email',
+            dataIndex: 'user_email',
             width: 192,
         },
         {
@@ -51,7 +59,15 @@ const OrdersTable = () => {
         {
             title: 'Компания',
             width: 264,
-
+            dataIndex:'company_name'
+        },
+        {
+            title: 'Имя пользователя в Telegram',
+            width: 264,
+            render: (record: User.WithCompany) => {
+                if (!record.user_telegram_username) return '-';
+                return record.user_telegram_username;
+            }
         },
     ]
     
@@ -63,7 +79,7 @@ const OrdersTable = () => {
                 data && (
                     <div className={styles.wrapper}>
                         <Table 
-                            dataSource={data}
+                            dataSource={data.items}
                             pagination={false}
                             sticky
                             scroll={{
@@ -72,6 +88,28 @@ const OrdersTable = () => {
                             rowKey={(record) => record.id}
                             columns={columns}
                         />
+                        <Affix 
+                            onChange={(value) => {
+                                if (value) setSticked(true)
+                                else setSticked(false);
+                            }}
+                            offsetBottom={0}>
+                            <div className={classNames(styles.pagination, {
+                                [styles.paginationActive]: sticked
+                            })}>
+                                <Pagination 
+                                    hideOnSinglePage
+                                    total={data.pagination.count}
+                                    current={getPageByOffset(params.offset, params.limit)}
+                                    showSizeChanger={false}
+                                    onChange={(page) => {
+                                        changeParams({
+                                            offset: getOffsetByPage(page, params.limit)
+                                        })
+                                    }}
+                                />
+                            </div>
+                        </Affix>
                         
                     </div>
                 )

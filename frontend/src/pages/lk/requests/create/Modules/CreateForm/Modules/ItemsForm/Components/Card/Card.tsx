@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {Row, Col, Button, Form, Input, InputNumber, FormListFieldData, FormInstance} from 'antd';
+import {Row, Col, Button, Form, Input, InputNumber, FormListFieldData, FormInstance, Select} from 'antd';
 import { HiMiniTrash} from "react-icons/hi2";
 import styles from './Card.module.scss';
 import { NamePath } from 'antd/es/form/interface';
@@ -32,7 +32,7 @@ export const Card = (props: iCard) => {
             className={styles.card}
             key={field.key}>
             <Row gutter={[16,0]}>
-                <Col span={6}>
+                <Col className={styles.col}>
                     <Form.Item 
                         rules={[required()]}
                         name={[field.name, 'name']}
@@ -40,7 +40,7 @@ export const Card = (props: iCard) => {
                         <Input placeholder="Введите наименование" size="large" />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col className={styles.col}>
                     <Form.Item 
                         rules={[required()]}
                         name={[field.name, 'price']}
@@ -48,7 +48,7 @@ export const Card = (props: iCard) => {
                         <InputNumber placeholder="Введите цену" size="large" />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col className={styles.col}>
                     <Form.Item 
                         rules={[required()]}
                         name={[field.name, 'number']}
@@ -56,7 +56,23 @@ export const Card = (props: iCard) => {
                         <InputNumber placeholder="Введите количество" size="large" />
                     </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col className={styles.col}>
+                    <Form.Item 
+                        name={[field.name, 'type']}
+                        label="Тип">
+                        <Select 
+                            placeholder="Выберите тип"
+                            size="large">
+                            <Select.Option value="Товар">
+                                Товар
+                            </Select.Option>
+                            <Select.Option value="Услуга">
+                                Услуга
+                            </Select.Option>
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col className={styles.col}>
                     <Form.Item label="Сумма" name={[field.name, 'amount']}>
                         <Input placeholder="Мы расчитаем сумму" size="large" disabled />
                     </Form.Item>

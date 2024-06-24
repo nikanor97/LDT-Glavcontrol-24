@@ -15,4 +15,6 @@ export default {
     },
     getAllUsers: () => 
         axios.get<iApi.oGetAllUsers>(paths.getAllUsers),
+    getUsersWithCompany: (params: iApi.iGetUsersWithCompany) => 
+        axios.get<iApi.oGetUsersWithCompany>(paths.getUsersWithCompany, {params}),
 }

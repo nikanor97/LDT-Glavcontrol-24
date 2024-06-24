@@ -64,7 +64,7 @@ const RequestsTable = () => {
                                     }
                                 },
                                 {
-                                    title: 'Кол-во товаров',
+                                    title: 'Кол-во товаров/услуг',
                                     dataIndex: 'product_count',
                                     width: 278,
 

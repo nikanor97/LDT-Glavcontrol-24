@@ -1,5 +1,6 @@
 import {Space, Tooltip, Modal} from 'antd';
-import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
+import { HiOutlinePencilAlt, HiOutlineTrash, HiDownload } from "react-icons/hi";
+
 import { HiArrowDownTray} from "react-icons/hi2";
 import {Requests} from '@/Types';
 import {usePrivateStore} from '../../../../Store/Store';
@@ -33,7 +34,15 @@ const Controls = (props: iControls) => {
                         <HiOutlinePencilAlt />
                     </div>
                 </Link>
-                
+            </Tooltip>
+            <Tooltip title="Скачать документацию">
+                <Link 
+                    target="_blank" 
+                    href={getRoute.lk.uploadRequestDocumentation(item.id)}>
+                    <div className={styles.control}>
+                        <HiDownload />
+                    </div>
+                </Link>
             </Tooltip>
             {/* <Tooltip title="Удалить заявку">
                 <div 

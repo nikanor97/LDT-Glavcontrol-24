@@ -76,13 +76,13 @@ const Controls = () => {
                 <Select.Option value={1}>
                     Q1
                 </Select.Option>
-                <Select.Option disabled value={2}>
+                <Select.Option value={2}>
                     Q2
                 </Select.Option>
-                <Select.Option disabled value={3}>
+                <Select.Option value={3}>
                     Q3
                 </Select.Option>
-                <Select.Option disabled value={4}>
+                <Select.Option value={4}>
                     Q4
                 </Select.Option>
             </Select>

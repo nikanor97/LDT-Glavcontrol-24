@@ -58,6 +58,12 @@ export const Routes = {
                 addQueryPrefix: true,
             })
             return '/lk/requests/create' + query;
+        },
+        uploadRequestDocumentation: (id?: Requests.ID) => {
+            const query = qs.stringify({id}, {
+                addQueryPrefix: true,
+            })
+            return '/api/v1/projects/application-documents' + query;
         }
     },
     lkAdmin: {

@@ -77,7 +77,7 @@ async def init_db():
             permission_create_order=True,
             is_deleted=False,
             role="admin",
-            telegram_username=fake.user_name()
+            telegram_username=None
         )
         # custom_regular_user_raw = User(
         #     name="regular_user",

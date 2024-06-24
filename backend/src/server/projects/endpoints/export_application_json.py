@@ -142,7 +142,7 @@ class ExportApplicationJson(ProjectsEndpoints):
                     },
                     "entityId": product_json.get('entityId') , # Сквозной идентификатор СПГЗ
                     "id": product_json.get('id') , # Идентификатор (версии) СПГЗ
-                    "nmc": "WHAT?????" , # Сумма спецификации
+                    "nmc": "", #"WHAT?????" , # Сумма спецификации
                     "okei_code": product_json['okeis'][0]['code'], # Ед. измерения по ОКЕИ  # TODO: их несколько
                     "purchaseAmount": float(product_json.get('amount')) ,# Объем поставки
                     "spgzCharacteristics": [ # Характеристики СПГЗ. Заполняются в зависимости от типа характеристики в соответствии со структурой справочника СПГЗ
@@ -155,8 +155,8 @@ class ExportApplicationJson(ProjectsEndpoints):
                             ],
                             "conditionTypeId": characteristic.get('conditionTypeId') ,
                             "kpgzCharacteristicId": characteristic.get('kpgzCharacteristicId') ,
-                            "okei_id": "WHAT?????" ,
-                            "selectType": "WHAT?????" ,
+                            "okei_id": "", #"WHAT?????" ,
+                            "selectType": "", #"WHAT?????" ,
                             "typeId": characteristic.get('valueTypeId') ,
                             "value1": characteristic.get('value1') ,
                             "value2": characteristic.get('value2')

@@ -12,6 +12,7 @@ import classNames from 'classnames';
 import { getPageByOffset } from '@/Utils/Pagination/getPageByOffset';
 import { getOffsetByPage } from '@/Utils/Pagination/getOffsetByPage';
 import {usePrivateStore} from '../../Store/Store';
+import Controls from './Modules/Controls/Controls';
 
 
 const OrdersTable = () => {
@@ -69,6 +70,17 @@ const OrdersTable = () => {
                 return record.user_telegram_username;
             }
         },
+        {
+            title: 'Действия',
+            width: 120,
+            render: (record: User.WithCompany) => {
+                return (
+                    <Controls 
+                        item={record}
+                    />
+                )
+            }
+        }
     ]
     
     return (

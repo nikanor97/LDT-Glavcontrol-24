@@ -1,33 +1,22 @@
 import {Form, FormInstance, Input, Switch, Space} from 'antd';
-import * as Api from '@/Api'
 import {iApi} from '@/Api/Auth/types';
-import {useRegistration} from '@/Hooks/User/useRegistration';
 import styles from './RegistrationForm.module.scss';
 import { required } from '@/Utils/Form/required';
-import { getErrorMessage } from '@/Utils/Api/getErrorMessage';
 import CompanySelect from './Modules/CompanySelect/CompanySelect';
 export {useRegistrationState} from '@/Hooks/User/useRegistration';
 
 
 type iRegistrationForm = {
     form: FormInstance;
-    onSuccess?: () => any;
-    onError?: (text: string) => any;
+    mode: 'new' | 'edit'
+    onFinish?: (values: iApi.iRegistration) => any;
 }
 
 const RegistrationForm = (props: iRegistrationForm) => {
-    const registration = useRegistration();
     return (
         <Form<iApi.iRegistration>
             onFinish={(values) => {
-                registration.mutate(values, {
-                    onSuccess: () => {
-                        props.onSuccess && props.onSuccess();
-                    },
-                    onError: (err) => {
-                        props.onError && props.onError(getErrorMessage(err));
-                    }
-                })
+                props.onFinish && props.onFinish(values);
             }}
             form={props.form}
             initialValues={{
@@ -45,9 +34,13 @@ const RegistrationForm = (props: iRegistrationForm) => {
                 <Form.Item rules={[required('Email')]} name="email" label="Email">
                     <Input size="large" placeholder="Введите email" />
                 </Form.Item>
-                <Form.Item rules={[required('Пароль')]} name="password" label="Пароль">
-                    <Input.Password  size="large" placeholder="Пароль" />
-                </Form.Item>
+                {
+                    props.mode === 'new' && (
+                        <Form.Item rules={[required('Пароль')]} name="password" label="Пароль">
+                            <Input.Password  size="large" placeholder="Пароль" />
+                        </Form.Item>
+                    )
+                }
                 <Form.Item rules={[required('Компания')]} name="company_id" label="Компания">
                     <CompanySelect 
                         allowClear 

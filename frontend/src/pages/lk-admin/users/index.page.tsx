@@ -4,6 +4,7 @@ import {ContextComponent} from './Store/Store';
 import Header from './Modules/Header/Header';
 import UsersTable from './Modules/UsersTable/UsersTable';
 import CreateUserDrawer from './Modules/CreateUserDrawer/CreateUserDrawer';
+import EditUserDrawer from './Modules/EditUserDrawer/EditUserDrawer';
 
 const CompaniesPage:App.Next.NextPage = () => {
     return (
@@ -11,6 +12,7 @@ const CompaniesPage:App.Next.NextPage = () => {
             <Header />
             <UsersTable />
             <CreateUserDrawer />
+            <EditUserDrawer/>
         </ContextComponent>
     )
 }

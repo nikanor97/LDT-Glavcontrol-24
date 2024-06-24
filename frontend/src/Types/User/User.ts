@@ -38,6 +38,10 @@ export type Item = {
     telegram_username?: string;
 }
 
+export type RegUser = Omit<Item, 'created_at' | 'updated_at'> & {
+    company_id: Company.ID
+};
+
 export type WithCompany = {
     "user_id": Id;
     "user_name": string;

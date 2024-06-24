@@ -26,7 +26,7 @@ class UpdateUser(UsersEndpoints):
         self,
         data: UpdateUserRequest
     ) -> UnifiedResponse[User]:
-        with self._main_db_manager.users.make_autobegin_session() as session:
+        async with self._main_db_manager.users.make_autobegin_session() as session:
             user = await User.by_id(session, data.user_id)
             user.name = data.name
             user.email = data.email
@@ -35,7 +35,7 @@ class UpdateUser(UsersEndpoints):
             user.is_deleted = data.is_deleted
             user.telegram_username = data.telegram_username
 
-        with self._main_db_manager.projects.make_autobegin_session() as session:
+        async with self._main_db_manager.projects.make_autobegin_session() as session:
             uc = UserCompany(
                 user_id=data.user_id,
                 company_id=data.company_id

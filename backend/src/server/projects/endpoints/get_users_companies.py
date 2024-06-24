@@ -20,6 +20,7 @@ class UserWithCompany(BaseModel):
     user_permission_create_order: bool
     user_is_deleted: bool
     user_role: str
+    user_telegram_username: str | None
 
     company_id: UUID | None
     company_name: str | None
@@ -59,6 +60,7 @@ class GetUsersCompanies(ProjectsEndpoints):
             user_permission_create_order=user.permission_create_order,
             user_is_deleted=user.is_deleted,
             user_role=user.role,
+            user_telegram_username=user.telegram_username,
 
             company_id=company_by_user_id[user.id].id if user.id in company_by_user_id else None,
             company_name=company_by_user_id[user.id].name if user.id in company_by_user_id else None,

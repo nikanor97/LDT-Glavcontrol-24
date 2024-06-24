@@ -17,7 +17,7 @@ class UpdateUserRequest(BaseModel):
     permission_read_stat: bool
     permission_create_order: bool
     is_deleted: bool
-    user_telegram_username: str | None
+    telegram_username: str | None
 
 
 class UpdateUser(UsersEndpoints):
@@ -33,7 +33,7 @@ class UpdateUser(UsersEndpoints):
             user.permission_read_stat = data.permission_read_stat
             user.permission_create_order = data.permission_create_order
             user.is_deleted = data.is_deleted
-            user.telegram_username = data.user_telegram_username
+            user.telegram_username = data.telegram_username
 
         with self._main_db_manager.projects.make_autobegin_session() as session:
             uc = UserCompany(

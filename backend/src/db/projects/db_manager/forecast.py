@@ -116,6 +116,7 @@ class ForecastDbManager(DbManager):
             type=product_type(r['type']),
             cluster=r['cluster'],
             description='\n'.join(row for row in r['Объяснение']),
+            meta=json.dumps(r)
         ) for r in recom if r['type'] is not None]
 
         forecast = [Forecast(

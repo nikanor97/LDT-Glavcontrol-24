@@ -19,6 +19,7 @@ from src.server.projects.endpoints.create_application import CreateApplication, 
 from src.server.projects.endpoints.create_applications_by_forecast import CreateApplicationsFromForecast, \
     CreateApplicationsFromForecastResponse
 from src.server.projects.endpoints.create_company import CreateCompany
+from src.server.projects.endpoints.export_application_json import ExportApplicationJson
 from src.server.projects.endpoints.export_forecast_excel import ExportForecastExcel
 from src.server.projects.endpoints.export_procurements_excel import ExportProcurementsExcel
 from src.server.projects.endpoints.export_remains_excel import ExportRemainsExcel
@@ -159,6 +160,14 @@ class ProjectsRouter:
         self.router.add_api_route(
             path="/forecast-export-excel",
             endpoint=ExportForecastExcel(**params).call,
+            response_class=FileResponse,
+            methods=[METHOD.GET],
+            # dependencies=[Depends(Auth(main_db_manager))],
+        )
+
+        self.router.add_api_route(
+            path="/application-export-json",
+            endpoint=ExportApplicationJson(**params).call,
             response_class=FileResponse,
             methods=[METHOD.GET],
             # dependencies=[Depends(Auth(main_db_manager))],

@@ -12,13 +12,14 @@ if TYPE_CHECKING:
 
 
 class ProductBase(ProjectsDataSQLModel):
-    name: str | None = Field(nullable=False)  # TODO: исправить |None
+    name: str | None = Field(nullable=False)
     price: Decimal | None = Field(nullable=False)
     number: int | None = Field(nullable=False)
     amount: Decimal | None = Field(nullable=False)
     type: str | None = Field(nullable=False)
     cluster: int | None = Field(nullable=False)
     description: str | None = Field(nullable=False)
+    meta: str | None = Field(nullable=True)
 
 
 class Product(ProductBase, TimeStampWithIdMixin, table=True):

@@ -2,6 +2,7 @@ import pandas as pd
 import json
 from tqdm import tqdm
 from src.server import forecasting_constants as constants
+import math
 
 
 def load_data(contracts_data_path, item_property_store):
@@ -121,6 +122,9 @@ def process_dara(zakupki_df):
     count_df = filtered_df.groupby("Наименование СПГЗ").size().reset_index(name="count_4st_quarts_2022")
     common_data_service = common_data_service.merge(count_df, on="Наименование СПГЗ", how="left")
     common_data_service["count_4st_quarts_2022"] = common_data_service["count_4st_quarts_2022"].fillna(0).astype(int)
+
+    common_data_service["amount_average"] = (common_data_service["count_1st_quarts_2022"] + common_data_service["count_2st_quarts_2022"] + common_data_service["count_3st_quarts_2022"] + common_data_service["count_4st_quarts_2022"]) / 4
+    common_data_service["amount_average"] = common_data_service["amount_average"].apply(lambda x: math.ceil(x))
 
     return common_data_service, common_data_items
 
@@ -334,6 +338,8 @@ def do_json_object(recs, spgz_store, prices_items, services_price, type = "item"
         matching_dict = find_dict_by_name(spgz_store, name, explanation)
         if matching_dict:
             matching_dict["amount"] = constants.item2count.get(name, 1)
+            if type == "service":
+                matching_dict["amount"] = max(row["amount_average"], 1)
             matching_dict["type"] = type
             if type == "item":
                 # if row["Наименование СПГЗ"] not in prices_items:
@@ -373,7 +379,6 @@ def get_predictions(contracts_data_path: str, item_property_store: str) -> list[
     common_data_service, common_data_items = process_dara(zakupki_df)
     res_json_1q, res_json_2q, res_json_3q,res_json_4q = predictions(common_data_service, common_data_items, spgz_store)
     return res_json_1q, res_json_2q, res_json_3q,res_json_4q
-
 
 if __name__ == "__main__":
     preidcitons = get_predictions("../data/2. ГКУ/Выгрузка контрактов по Заказчику.xlsx", "../data/spgz.json")

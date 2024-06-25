@@ -5,6 +5,7 @@ from telegram.ext import ContextTypes, CallbackContext
 from random import choice
 import json
 import psycopg2
+import requests
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity 
@@ -381,6 +382,66 @@ async def button_callback(update: Update, context: CallbackContext) -> None:
         await get_applications(update, context)
         await ask_choice(update, context)
 
+    elif query.data == "save_application":
+        await save_application(update, context)
+
+    elif query.data.startswith("application_"):
+        appl_num = int(query.data.split("_")[-1])
+
+        appl_uuid = user_state.get_attr(update, "application_uuids")[appl_num - 1]
+        user_state.update_attr(update, "application_uuid", appl_uuid)
+        user_state.update_attr(update, "application_num", appl_num)
+
+        reply_markup = InlineKeyboardMarkup(
+            [
+                [InlineKeyboardButton("Техническое задание", callback_data="save_application_docx"),],
+                [InlineKeyboardButton("Json", callback_data="save_application_json"),]
+            ]
+        )
+
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=f"Выберите формат скачивания:", 
+            parse_mode=constants.ParseMode.MARKDOWN,
+            reply_markup=reply_markup)
+        
+    elif query.data in ("save_application_docx", "save_application_json"):
+        url = "http://www.glavcontrol.dev-stand.com/api/v1/projects/application-documents" \
+            if query.data == "save_application_docx" \
+                else "http://www.glavcontrol.dev-stand.com/api/v1/projects/application-export-json"
+        
+        appl_uuid = user_state.get_attr(update, "application_uuid")
+        appl_num = user_state.get_attr(update, "application_num")
+        
+        params = {'id': appl_uuid} if query.data == "save_application_docx" else {'application_id': appl_uuid}
+
+        response = requests.get(url, params=params)
+
+        filename = f"./applications/Техническое_задание_{appl_num}.docx" if query.data == "save_application_docx" else f"./applications/Заявка_{appl_num}.json"
+        
+        if response.status_code == 200:
+            if query.data == "save_application_docx":
+                with open(filename, 'wb') as file:
+                    file.write(response.content)
+
+            else:
+                with open(filename, 'w') as file:
+                    json.dump(response.json(), file)
+
+            await context.bot.send_document(
+                chat_id=update.effective_chat.id,
+                document=open(filename, 'rb')
+            )
+
+        else:
+            await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=f"Не удалось сформировать файл.", 
+                parse_mode=constants.ParseMode.MARKDOWN)
+
+        await ask_choice(update, context)
+
+
 async def send_forecast(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(
         [
@@ -543,6 +604,9 @@ where uc1.user_id = '{user_state.get_uuid(update)}'"""
             text="Вы еще не создали ни одной заявки.\n Переходите в веб-сервис и создайте свою первую заявку: http://glavcontrol.dev-stand.com !")
 
     else:
+        application_uuids = {ap_num: ap[0] for ap_num, ap in enumerate(applications)}
+        user_state.update_attr(update, "application_uuids", application_uuids)
+
         users = db_request(user_q, settings.db_name_users)
         users_dict = {u[0]: u[1] for u in users}
 
@@ -572,7 +636,35 @@ where uc1.user_id = '{user_state.get_uuid(update)}'"""
 
         applications_text = '\n\n'.join(applications_texts)
 
+        reply_markup = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("Скачать", callback_data="save_application"),
+                ],
+            ]
+        )
+
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=f"*Заявки:*\n\n{applications_text}", 
-            parse_mode=constants.ParseMode.MARKDOWN)
+            parse_mode=constants.ParseMode.MARKDOWN,
+            reply_markup=reply_markup)
+
+async def save_application(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    application_uuids = user_state.get_attr(update, "application_uuids")
+
+    buttons = []
+    for i in range(1, len(application_uuids) + 1):
+        buttons.append(InlineKeyboardButton(text=str(i), callback_data=f"application_{i}"))
+
+    button_layout = []
+    for i in range(0, len(buttons), 2):
+        button_layout.append(buttons[i:i + 2])
+
+    reply_markup = InlineKeyboardMarkup(button_layout)
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"Выберите номер заявки:", 
+        parse_mode=constants.ParseMode.MARKDOWN,
+        reply_markup=reply_markup)

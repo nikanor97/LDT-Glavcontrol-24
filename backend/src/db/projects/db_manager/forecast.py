@@ -110,7 +110,7 @@ class ForecastDbManager(DbManager):
         product_type = lambda x: 'Товар' if x == 'item' else 'Услуга'
         products = [Product(
             name=r['name'],
-            price=r['price'] / r['amount'],
+            price=int(r['price'] / r['amount']),
             number=r['amount'],
             amount=r['price'],
             type=product_type(r['type']),

@@ -37,9 +37,9 @@ for time, recoms in recom_dict.items():
     
     recom_items = [
         (f"""*{item_row + 1}. {item["name"]}*
-Цена: {round(item["Цена ГК, руб."] / item["amount"], 2)}
+Цена: {item["price"] /  item["amount"]}
 Количество: { item["amount"]}
-Сумма: {item["Цена ГК, руб."]}
+Сумма: {item["price"]}
 """, item["Объяснение"])
         for item_row, item in enumerate(recoms) # Объяснение
     ]
@@ -131,7 +131,7 @@ def check_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     q = f"""select * 
 from public.users u 
-where u.telegram_username is not null and u.telegram_username = '{username}'"""
+where u.telegram_username is not null and u.telegram_username = '{username.lower()}'"""
     
     user = db_request(q, settings.db_name_users)
 
@@ -160,7 +160,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     else:
-        user_state.update_nickname(update, user[0][4])
+        user_state.update_nickname(update, user[0][4].lower())
         user_state.update_uuid(update, user[0][0])
         await context.bot.send_message(
             chat_id=chat_id, text=prompts.GREETING_TEXT
@@ -231,9 +231,9 @@ async def get_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 *Дата последнего контракта:*
 29.12.2022
 *Самый дорогой товар:*
-Сертификат на техническую поддержку информационно-технологического оборудования
+Сертификат на техническую поддержку информационно-технологического оборудования — 749962342.38 рублей
 *Самая дорогая услуга:*
-Услуги по предоставлению программного обеспечения, инженерной, вычислительной и информационно-телекоммуникационной инфраструктуры центров обработки данных, шт""",
+Услуги по предоставлению программного обеспечения, инженерной, вычислительной и информационно-телекоммуникационной инфраструктуры центров обработки данных, шт — 1453720391.58 рублей""",
         parse_mode=constants.ParseMode.MARKDOWN
     )
 
@@ -347,9 +347,9 @@ async def button_callback(update: Update, context: CallbackContext) -> None:
 
 *Наименование:* {good_recs[time][0]["name"]}
 *Тип:* {"Товар" if good_recs[time][0]["type"] == "item" else "Услуга"}
-*Цена:* {good_recs[time][0]["price"]}
+*Цена:* {round(good_recs[time][0]["price"] / good_recs[time][0]["amount"], 2)}
 *Количество:* {good_recs[time][0]["amount"]}
-*Сумма:* {good_recs[time][0]["Цена ГК, руб."]}
+*Сумма:* {good_recs[time][0]["price"]}
 *Обоснование:* {choice(good_recs[time][0]["Объяснение"])}""",
                 parse_mode=constants.ParseMode.MARKDOWN)
             
